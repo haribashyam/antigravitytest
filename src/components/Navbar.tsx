@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/navigation';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Gauge,
@@ -68,7 +68,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-[#1f2e45] bg-[#090d16]/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Brand Logo */}
-        <a href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-600 shadow-lg shadow-emerald-500/20">
             <Gauge className="h-5 w-5 text-white" />
           </div>
@@ -83,7 +83,7 @@ export default function Navbar() {
               PRECISION CONSUMPTION ENGINE
             </p>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-1">

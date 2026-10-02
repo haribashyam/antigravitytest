@@ -107,8 +107,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 5. Deployment to Production
 
-### PostgreSQL (Neon / Supabase / AWS RDS)
-To deploy with PostgreSQL:
+### Option A: 1-Click Zero-Config Deployment (Vercel / Netlify / Render)
+1. Push this repository to GitHub.
+2. In [Vercel](https://vercel.com) or [Netlify](https://netlify.com), click **Import Project** and select this repository.
+3. The build configuration is pre-configured:
+   - **Framework Preset**: Next.js
+   - **Build Command**: `prisma generate && next build`
+   - **Install Command**: `npm install`
+4. The application comes pre-bundled with a pre-seeded SQLite database (`prisma/dev.db`) containing the demo user (`demo@fuelwise.io` / `Password123!`), calibrated vehicles, and trip logs. On serverless runtimes (like Vercel AWS Lambda), the database automatically mounts into `/tmp` for write access.
+
+### Option B: Cloud PostgreSQL (Neon / Supabase / AWS RDS)
+For high-scale multi-region production with persistent cloud SQL:
 1. In `prisma/schema.prisma`, update the provider:
    ```prisma
    datasource db {
@@ -116,5 +125,5 @@ To deploy with PostgreSQL:
      url      = env("DATABASE_URL")
    }
    ```
-2. Set your production `DATABASE_URL` and `SESSION_SECRET` in Vercel or your hosting environment.
-3. Run `npx prisma migrate deploy`.
+2. Set your production `DATABASE_URL` and `SESSION_SECRET` in your hosting dashboard environment variables.
+3. Run `npx prisma db push` to synchronize tables to your PostgreSQL instance.

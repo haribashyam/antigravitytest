@@ -187,12 +187,12 @@ export function calibrateVehicleCoefficients(
   }
 
   // Extract raw fitted weights
-  let raw_kv = weights.get(0, 0);
-  let raw_kt = weights.get(1, 0);
-  let raw_kl = weights.get(2, 0);
-  let raw_ka = weights.get(3, 0);
-  let raw_kg = weights.get(4, 0);
-  let raw_ki = weights.get(5, 0);
+  const raw_kv = weights.get(0, 0);
+  const raw_kt = weights.get(1, 0);
+  const raw_kl = weights.get(2, 0);
+  const raw_ka = weights.get(3, 0);
+  const raw_kg = weights.get(4, 0);
+  const raw_ki = weights.get(5, 0);
 
   // Physical bounds enforcement:
   // Speed, traffic, load, aggressive, and idle fuel rates cannot be negative.

@@ -38,6 +38,7 @@ yarn-error.log*
 *.db
 *.db-journal
 *.sqlite
+!prisma/dev.db
 
 # binaries & compiled files
 /main
