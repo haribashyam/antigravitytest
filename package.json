@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "./node_modules/.bin/next dev",
-    "build": "./node_modules/.bin/next build",
-    "start": "./node_modules/.bin/next start",
-    "lint": "./node_modules/.bin/eslint",
-    "test": "./node_modules/.bin/vitest run",
-    "db:push": "./node_modules/.bin/prisma db push",
-    "db:seed": "./node_modules/.bin/tsx prisma/seed.ts"
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "test": "vitest run",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
