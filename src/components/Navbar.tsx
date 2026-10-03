@@ -4,20 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  Gauge,
+  Fuel,
   Navigation,
   GitCompare,
   PlusCircle,
   History,
   Sliders,
-  CheckCircle2,
-  Settings as SettingsIcon,
-  LogOut,
   Car,
-  User as UserIcon,
+  LogOut,
   Menu,
   X,
-  Activity,
+  Sparkles,
 } from 'lucide-react';
 
 interface UserData {
@@ -53,145 +50,138 @@ export default function Navbar() {
     router.refresh();
   };
 
-  const navLinks = [
+  const primaryLinks = [
     { href: '/plan', label: 'Plan Trip', icon: Navigation },
-    { href: '/compare', label: 'What-If Compare', icon: GitCompare },
+    { href: '/compare', label: 'Compare', icon: GitCompare },
     { href: '/trips/new', label: 'Log Trip', icon: PlusCircle },
     { href: '/trips', label: 'History', icon: History },
-    { href: '/calibration', label: 'Calibration', icon: Sliders },
-    { href: '/validation', label: 'Validation', icon: CheckCircle2 },
     { href: '/vehicles', label: 'Vehicles', icon: Car },
-    { href: '/settings', label: 'Settings', icon: SettingsIcon },
+    { href: '/calibration', label: 'Calibration', icon: Sliders },
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#1f2e45] bg-[#090d16]/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-600 shadow-lg shadow-emerald-500/20">
-            <Gauge className="h-5 w-5 text-white" />
+    <header className="sticky top-3 z-50 px-3 sm:px-6 w-full">
+      {/* visionOS 2 Floating Pill Ornament */}
+      <div className="visionos-ornament mx-auto max-w-7xl px-3 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between transition-all">
+        {/* Brand Identity */}
+        <Link href="/" className="flex items-center gap-2.5 group pl-1">
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 shadow-md shadow-emerald-500/30 group-hover:scale-105 group-hover:shadow-emerald-400/50 transition-all">
+            <Fuel className="h-4 w-4 text-white" />
+            <div className="absolute inset-0 rounded-full border border-white/40 pointer-events-none" />
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-bold tracking-tight text-white text-lg">FuelWise</span>
-              <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-emerald-400 border border-emerald-500/30">
-                PROD
-              </span>
-            </div>
-            <p className="text-[10px] text-gray-400 font-mono tracking-wider hidden sm:block">
-              PRECISION CONSUMPTION ENGINE
-            </p>
+          <div className="flex flex-col">
+            <span className="font-bold tracking-tight text-white text-[15px] leading-tight">FuelWise</span>
+            <span className="hidden xl:inline text-[9px] text-emerald-400/80 font-medium tracking-wider uppercase">
+              visionOS Spatial
+            </span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => {
+        <nav className="hidden lg:flex items-center gap-1 bg-white/[0.04] p-1 rounded-full border border-white/[0.08]">
+          {primaryLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
             return (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm'
-                    : 'text-gray-300 hover:bg-gray-800/60 hover:text-white'
+                    ? 'bg-white/20 text-white shadow-sm shadow-black/30 border border-white/25'
+                    : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
-                {link.label}
-              </a>
+                <span>{link.label}</span>
+              </Link>
             );
           })}
         </nav>
 
-        {/* User Session Info & Action Buttons */}
-        <div className="hidden sm:flex items-center gap-3">
+        {/* Right Actions */}
+        <div className="hidden sm:flex items-center gap-2">
           {user ? (
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 rounded-full border border-[#1f2e45] bg-[#111827] px-3 py-1 text-xs text-gray-300">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="font-medium text-white max-w-[120px] truncate">{user.name}</span>
-                <span className="text-[10px] text-gray-400 font-mono">({user.currency})</span>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.12] px-3 py-1.5 text-xs">
+                <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60 animate-pulse" />
+                <span className="font-medium text-white max-w-[110px] truncate">{user.name}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1 rounded-md border border-gray-700/60 bg-gray-800/40 px-2.5 py-1.5 text-xs text-gray-300 transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+                className="visionos-pill-btn py-1.5 px-3 text-xs text-rose-300 hover:text-rose-200 hover:border-rose-400/30"
                 title="Sign Out"
               >
-                <LogOut className="h-3.5 w-3.5" />
+                <LogOut className="h-3 w-3" />
                 <span className="hidden md:inline">Sign Out</span>
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <a
+            <div className="flex items-center gap-1.5">
+              <Link
                 href="/login"
-                className="rounded-md px-3 py-1.5 text-xs font-medium text-gray-300 hover:text-white transition-colors"
+                className="visionos-pill-btn text-xs px-3.5 py-1.5"
               >
                 Log In
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/signup"
-                className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-500 transition-all"
+                className="visionos-pill-btn-primary text-xs px-4 py-1.5"
               >
-                Get Started
-              </a>
+                <Sparkles className="h-3 w-3" />
+                <span>Get Started</span>
+              </Link>
             </div>
           )}
         </div>
 
-        {/* Mobile menu toggle button */}
-        <div className="flex lg:hidden items-center gap-2">
+        {/* Mobile menu trigger */}
+        <div className="flex lg:hidden items-center pr-1">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="rounded-md p-2 text-gray-400 hover:bg-gray-800 hover:text-white"
-            aria-label="Toggle navigation menu"
+            className="p-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] transition-all"
+            aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer as a Floating visionOS Glass Window */}
       {mobileMenuOpen && (
-        <div className="border-b border-[#1f2e45] bg-[#0c121e] px-4 py-4 lg:hidden">
+        <div className="visionos-window mt-2 p-4 max-w-7xl mx-auto lg:hidden animate-fade-in-up">
+          <div className="visionos-grab-bar mb-3" />
           <nav className="flex flex-col gap-1.5">
-            {navLinks.map((link) => {
+            {primaryLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
               return (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2.5 rounded-2xl px-3.5 py-2.5 text-xs font-medium transition-all ${
                     isActive
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                      ? 'bg-white/20 text-white border border-white/20'
+                      : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
-                  {link.label}
-                </a>
+                  <span>{link.label}</span>
+                </Link>
               );
             })}
 
-            <div className="mt-4 pt-3 border-t border-gray-800 flex flex-col gap-2">
+            <div className="mt-3 pt-3 border-t border-white/[0.1] flex flex-col gap-2">
               {user ? (
                 <>
-                  <div className="flex items-center justify-between text-xs text-gray-300 py-1 px-2">
+                  <div className="flex items-center justify-between text-xs text-slate-300 py-1.5 px-3 rounded-xl bg-white/[0.04]">
                     <span className="font-semibold text-white">{user.name}</span>
-                    <span className="font-mono text-gray-400">{user.email}</span>
+                    <span className="text-slate-400">{user.email}</span>
                   </div>
                   <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      handleLogout();
-                    }}
-                    className="flex w-full items-center justify-center gap-2 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-400"
+                    onClick={() => { setMobileMenuOpen(false); handleLogout(); }}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs font-medium text-rose-300"
                   >
                     <LogOut className="h-3.5 w-3.5" />
                     Sign Out
@@ -199,20 +189,20 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="flex gap-2">
-                  <a
+                  <Link
                     href="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex-1 rounded-md border border-gray-700 bg-gray-800 py-2 text-center text-xs font-medium text-white"
+                    className="flex-1 visionos-pill-btn text-center justify-center py-2"
                   >
                     Log In
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/signup"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex-1 rounded-md bg-emerald-600 py-2 text-center text-xs font-semibold text-white"
+                    className="flex-1 visionos-pill-btn-primary text-center justify-center py-2"
                   >
                     Sign Up
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>

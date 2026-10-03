@@ -5,21 +5,17 @@ import { useSearchParams } from 'next/navigation';
 import {
   Navigation,
   Car,
-  DollarSign,
   Fuel,
-  Gauge,
   Sliders,
   MapPin,
-  TrendingDown,
-  Layers,
-  ArrowRight,
   ShieldCheck,
-  AlertTriangle,
-  RotateCcw,
-  Sparkles,
   Search,
+  Sparkles,
+  Compass,
+  ArrowRight,
 } from 'lucide-react';
 import { DataSourceBadge, ModelStatusBadge } from '@/components/Badges';
+import { SpatialGauge } from '@/components/visionOS/SpatialGauge';
 
 interface Vehicle {
   id: string;
@@ -160,42 +156,49 @@ function TripPlannerContent() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      {/* Title */}
-      <div className="border-b border-[#1f2e45] pb-6">
-        <div className="flex items-center gap-2">
-          <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-mono font-semibold text-emerald-400 border border-emerald-500/20">
-            PRECISION PREDICTOR
-          </span>
-          {prediction?.modelStatus && (
-            <span className="text-xs text-gray-400 font-mono">
-              [{prediction.modelStatus.label}]
-            </span>
-          )}
+      {/* visionOS Spatial Page Header */}
+      <div className="visionos-window p-6 sm:p-8 mb-8">
+        <div className="visionos-grab-bar" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/12 border border-emerald-400/25 px-3 py-0.5 text-[11px] font-semibold text-emerald-300">
+                <Sparkles className="h-3 w-3" />
+                visionOS Spatial Journey Predictor
+              </span>
+              {prediction?.modelStatus && (
+                <span className="text-[11px] text-slate-400 font-mono">
+                  [{prediction.modelStatus.label}]
+                </span>
+              )}
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              Trip Fuel & Cost Predictor
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm text-slate-400">
+              Compute mathematically grounded fuel consumption for your journey using live routing, elevation telemetry, and regression coefficients.
+            </p>
+          </div>
         </div>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white">
-          Trip Fuel & Cost Predictor
-        </h1>
-        <p className="mt-1 text-sm text-gray-400">
-          Compute mathematically grounded fuel consumption for your planned journey using live routing, elevation, and personal vehicle coefficients.
-        </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Side: Route and Driving Conditions Inputs (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Vehicle Selector */}
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-5">
+          <div className="visionos-window p-6">
             <div className="flex items-center justify-between mb-3">
-              <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Vehicle
+              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Car className="h-4 w-4 text-emerald-400" />
+                Active Vehicle
               </label>
-              <a href="/vehicles" className="text-xs text-emerald-400 hover:underline">
+              <a href="/vehicles" className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
                 Manage fleet →
               </a>
             </div>
 
             {loadingVehicles ? (
-              <p className="text-xs text-gray-400">Loading vehicles...</p>
+              <p className="text-xs text-slate-400">Loading vehicles...</p>
             ) : vehicles.length === 0 ? (
               <p className="text-xs text-amber-400">
                 No vehicles configured.{' '}
@@ -207,10 +210,10 @@ function TripPlannerContent() {
               <select
                 value={selectedVehicleId}
                 onChange={(e) => setSelectedVehicleId(e.target.value)}
-                className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full visionos-input cursor-pointer"
               >
                 {vehicles.map((v) => (
-                  <option key={v.id} value={v.id}>
+                  <option key={v.id} value={v.id} className="bg-[#0b101d] text-white">
                     {v.name} ({v.year} {v.make} {v.model}) — M₀: {v.m0} km/L ({v.tripCount} trips)
                   </option>
                 ))}
@@ -218,8 +221,8 @@ function TripPlannerContent() {
             )}
 
             {selectedVehicle && (
-              <div className="mt-3 flex items-center justify-between text-xs text-gray-400 border-t border-[#1f2e45] pt-2.5">
-                <span>Base Ideal Mileage: <strong className="text-white">{selectedVehicle.m0} km/L</strong></span>
+              <div className="mt-4 flex items-center justify-between text-xs text-slate-400 border-t border-white/[0.08] pt-3">
+                <span>Base Ideal Mileage: <strong className="text-white font-mono">{selectedVehicle.m0} km/L</strong></span>
                 <ModelStatusBadge
                   isCalibrated={selectedVehicle.isCalibrated}
                   tripsCount={selectedVehicle.tripCount}
@@ -229,34 +232,34 @@ function TripPlannerContent() {
           </div>
 
           {/* Route Finder Card */}
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-5 space-y-4">
+          <div className="visionos-window p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                Planned Route
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <MapPin className="h-4 w-4 text-cyan-400" />
+                Route Telemetry
               </span>
               <DataSourceBadge source={routeSource} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Origin City / Landmark</label>
+                <label className="block text-xs text-slate-400 mb-1">Origin City / Landmark</label>
                 <input
                   type="text"
                   value={origin}
                   onChange={(e) => setOrigin(e.target.value)}
                   placeholder="e.g. Mumbai, Maharashtra"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input"
                 />
               </div>
-
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Destination</label>
+                <label className="block text-xs text-slate-400 mb-1">Destination</label>
                 <input
                   type="text"
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
                   placeholder="e.g. Pune, Maharashtra"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input"
                 />
               </div>
             </div>
@@ -264,84 +267,85 @@ function TripPlannerContent() {
             <button
               type="button"
               onClick={handleCalculateRoute}
-              disabled={routingInProgress}
-              className="flex items-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-xs font-semibold text-emerald-400 hover:bg-gray-700 transition-colors border border-gray-700"
+              disabled={routingInProgress || !origin || !destination}
+              className="visionos-pill-btn-primary w-full py-2.5 text-xs font-semibold"
             >
               <Search className="h-3.5 w-3.5" />
-              {routingInProgress ? 'Calculating OSRM Route & Elevation...' : 'Query Live Driving Route & Gradient'}
+              <span>{routingInProgress ? 'Fetching Live Route & Elevation...' : 'Fetch Live OSRM Distance & Grade'}</span>
             </button>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 border-t border-[#1f2e45] pt-3">
-              <div>
-                <label className="block text-[11px] text-gray-400 mb-1">Route Distance (km)</label>
-                <input
-                  type="number"
-                  step="0.5"
-                  min="1"
-                  value={distanceKm}
-                  onChange={(e) => setDistanceKm(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-1.5 text-xs font-mono font-bold text-emerald-400 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] text-gray-400 mb-1">Expected Avg Speed</label>
-                <input
-                  type="number"
-                  step="1"
-                  min="10"
-                  max="140"
-                  value={avgSpeedKmh}
-                  onChange={(e) => setAvgSpeedKmh(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-1.5 text-xs font-mono font-bold text-cyan-300 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] text-gray-400 mb-1">Road Incline (%)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={Number((gradientDecimal * 100).toFixed(1))}
-                  onChange={(e) => setGradientDecimal(Number(e.target.value) / 100)}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-1.5 text-xs font-mono font-bold text-purple-300 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-            </div>
           </div>
 
-          {/* Driving Conditions Card */}
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-5 space-y-4">
-            <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider block">
-              Driving Conditions & Payload
-            </span>
+          {/* Driving Dynamics Sliders */}
+          <div className="visionos-window p-6 space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Sliders className="h-4 w-4 text-purple-400" />
+                Physical Driving Parameters
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono">Dynamic Inputs</span>
+            </div>
 
-            {/* Traffic Presets */}
+            {/* Distance Slider */}
+            <div>
+              <div className="flex justify-between items-center text-xs mb-1.5">
+                <span className="text-slate-300">Road Distance (D)</span>
+                <span className="font-mono text-emerald-400 font-bold bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full">
+                  {distanceKm} km
+                </span>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="800"
+                step="2"
+                value={distanceKm}
+                onChange={(e) => setDistanceKm(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+
+            {/* Speed Slider */}
+            <div>
+              <div className="flex justify-between items-center text-xs mb-1.5">
+                <span className="text-slate-300">Average Speed (V)</span>
+                <span className="font-mono text-cyan-300 font-bold bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full">
+                  {avgSpeedKmh} km/h
+                </span>
+              </div>
+              <input
+                type="range"
+                min="20"
+                max="140"
+                step="5"
+                value={avgSpeedKmh}
+                onChange={(e) => setAvgSpeedKmh(Number(e.target.value))}
+                className="w-full slider-cyan"
+              />
+            </div>
+
+            {/* Traffic Selector */}
             <div>
               <div className="flex justify-between items-center text-xs mb-2">
-                <span className="text-gray-400">Traffic Congestion</span>
-                <span className="font-mono text-amber-400 font-bold">
-                  {(trafficIntensity * 100).toFixed(0)}% Intensity
+                <span className="text-slate-300">Traffic Intensity (T)</span>
+                <span className="font-mono text-amber-300 font-bold">
+                  {(trafficIntensity * 100).toFixed(0)}%
                 </span>
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {[
-                  { key: 'free', label: 'Free-flow', val: 0.10 },
-                  { key: 'light', label: 'Light', val: 0.35 },
-                  { key: 'moderate', label: 'Moderate', val: 0.65 },
-                  { key: 'heavy', label: 'Heavy Crawl', val: 0.95 },
+                  { label: 'Free (10%)', val: 0.10 },
+                  { label: 'Light (35%)', val: 0.35 },
+                  { label: 'Moderate (65%)', val: 0.65 },
+                  { label: 'Heavy (95%)', val: 0.95 },
                 ].map((t) => (
                   <button
-                    key={t.key}
+                    key={t.label}
                     type="button"
-                    onClick={() => {
-                      setTrafficLevel(t.key as any);
-                      setTrafficIntensity(t.val);
-                    }}
-                    className={`rounded-lg py-2 text-xs font-medium border transition-all ${
-                      trafficIntensity === t.val
-                        ? 'border-amber-500 bg-amber-500/15 text-amber-300 font-bold'
-                        : 'border-[#1f2e45] bg-[#090d16] text-gray-400 hover:border-gray-600'
+                    onClick={() => setTrafficIntensity(t.val)}
+                    className={`rounded-full py-1.5 text-xs font-medium border transition-all ${
+                      Math.abs(trafficIntensity - t.val) < 0.05
+                        ? 'border-amber-400 bg-amber-500/20 text-amber-300 font-semibold shadow-sm'
+                        : 'border-white/[0.1] bg-white/[0.04] text-slate-400 hover:text-white hover:bg-white/[0.08]'
                     }`}
                   >
                     {t.label}
@@ -353,9 +357,9 @@ function TripPlannerContent() {
             {/* Payload Load */}
             <div>
               <div className="flex justify-between items-center text-xs mb-2">
-                <span className="text-gray-400">Vehicle Passenger & Cargo Load</span>
-                <span className="font-mono text-blue-400 font-bold">
-                  {(loadRatio * 100).toFixed(0)}% of Rated Payload
+                <span className="text-slate-300">Payload & Cargo Ratio (L)</span>
+                <span className="font-mono text-blue-300 font-bold">
+                  {(loadRatio * 100).toFixed(0)}%
                 </span>
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -363,16 +367,16 @@ function TripPlannerContent() {
                   { label: 'Solo (10%)', val: 0.10 },
                   { label: '2 Ppl (30%)', val: 0.30 },
                   { label: 'Family (60%)', val: 0.60 },
-                  { label: 'Full Luggage (90%)', val: 0.90 },
-                ].map((l, i) => (
+                  { label: 'Full Cargo (90%)', val: 0.90 },
+                ].map((l) => (
                   <button
-                    key={i}
+                    key={l.label}
                     type="button"
                     onClick={() => setLoadRatio(l.val)}
-                    className={`rounded-lg py-2 text-xs font-medium border transition-all ${
-                      loadRatio === l.val
-                        ? 'border-blue-500 bg-blue-500/15 text-blue-300 font-bold'
-                        : 'border-[#1f2e45] bg-[#090d16] text-gray-400 hover:border-gray-600'
+                    className={`rounded-full py-1.5 text-xs font-medium border transition-all ${
+                      Math.abs(loadRatio - l.val) < 0.05
+                        ? 'border-blue-400 bg-blue-500/20 text-blue-300 font-semibold shadow-sm'
+                        : 'border-white/[0.1] bg-white/[0.04] text-slate-400 hover:text-white hover:bg-white/[0.08]'
                     }`}
                   >
                     {l.label}
@@ -381,26 +385,26 @@ function TripPlannerContent() {
               </div>
             </div>
 
-            {/* Driving Aggressiveness & Idle Time */}
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            {/* Driving Style & Idling */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/[0.08]">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">
+                <label className="block text-xs text-slate-300 mb-2">
                   Driving Style (A = {aggressiveFactor} events/km)
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
                     { label: 'Eco', val: 0.15 },
                     { label: 'Normal', val: 0.45 },
-                    { label: 'Aggressive', val: 0.95 },
+                    { label: 'Sport', val: 0.95 },
                   ].map((s) => (
                     <button
                       key={s.label}
                       type="button"
                       onClick={() => setAggressiveFactor(s.val)}
-                      className={`rounded py-1.5 text-[11px] border font-medium ${
-                        aggressiveFactor === s.val
-                          ? 'border-emerald-500 bg-emerald-500/20 text-emerald-300'
-                          : 'border-[#1f2e45] bg-[#090d16] text-gray-400'
+                      className={`rounded-full py-1.5 text-xs border font-medium transition-all ${
+                        Math.abs(aggressiveFactor - s.val) < 0.05
+                          ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 font-semibold shadow-sm'
+                          : 'border-white/[0.1] bg-white/[0.04] text-slate-400 hover:text-white'
                       }`}
                     >
                       {s.label}
@@ -410,155 +414,155 @@ function TripPlannerContent() {
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Expected Idling Time</label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={idleMinutes}
-                  onChange={(e) => setIdleMinutes(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-1.5 text-xs font-mono text-red-400 focus:border-emerald-500 focus:outline-none"
-                />
-                <span className="text-[10px] text-gray-500">Tolls + signals</span>
+                <label className="block text-xs text-slate-300 mb-1">Expected Idling Time</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={idleMinutes}
+                    onChange={(e) => setIdleMinutes(Number(e.target.value))}
+                    className="w-full visionos-input font-mono text-rose-300"
+                  />
+                  <span className="text-xs text-slate-400 whitespace-nowrap">mins</span>
+                </div>
               </div>
             </div>
 
             {/* Fuel Price */}
-            <div className="pt-2 border-t border-[#1f2e45] flex items-center justify-between">
+            <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between">
               <div>
-                <span className="text-xs text-gray-400 block">Fuel Price</span>
+                <span className="text-xs text-slate-300 block mb-1">Fuel Price</span>
                 <DataSourceBadge source={priceSource} />
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-gray-400">₹</span>
+                <span className="text-xs text-slate-400 font-mono">₹</span>
                 <input
                   type="number"
                   step="0.1"
                   value={fuelPrice}
                   onChange={(e) => setFuelPrice(Number(e.target.value))}
-                  className="w-24 rounded-lg border border-[#1f2e45] bg-[#090d16] px-2.5 py-1 text-xs font-mono text-yellow-300 focus:border-emerald-500 focus:outline-none"
+                  className="w-24 visionos-input font-mono text-amber-300 text-right"
                 />
-                <span className="text-xs text-gray-400">/ Litre</span>
+                <span className="text-xs text-slate-400">/ Litre</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Side: Prediction Output & Decomposition Card (5 Cols) */}
+        {/* Right Side: Prediction Output & Decomposition Window (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="sticky top-20 rounded-2xl border border-[#1f2e45] bg-[#111827] p-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#1f2e45] pb-4">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Predicted Trip Consumption
+          <div className="sticky top-20 visionos-window p-6">
+            <div className="visionos-grab-bar" />
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-4">
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Compass className="h-4 w-4 text-emerald-400" />
+                Predicted Journey Output
               </span>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-400/20">
                 Formula Output
               </span>
             </div>
 
             {calculating ? (
-              <div className="py-16 text-center text-xs text-gray-400 font-mono">
+              <div className="py-16 text-center text-xs text-slate-400 font-mono">
                 Calculating physics engine output...
               </div>
             ) : calcError ? (
-              <div className="my-6 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+              <div className="my-6 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-300">
                 {calcError}
               </div>
             ) : prediction && prediction.breakdown ? (
               <>
+                {/* Circular Telemetry Gauges */}
+                <div className="grid grid-cols-2 gap-2 visionos-panel p-2 mb-4">
+                  <SpatialGauge
+                    value={prediction.breakdown.totalFuelLiters}
+                    min={1}
+                    max={Math.max(50, prediction.breakdown.totalFuelLiters * 1.3)}
+                    unit="Litres"
+                    label="Total Fuel"
+                    sublabel="Required"
+                    color="emerald"
+                    size={110}
+                  />
+                  <SpatialGauge
+                    value={prediction.breakdown.effectiveMileageKmPerL}
+                    min={5}
+                    max={30}
+                    unit="km / L"
+                    label="Effective Mileage"
+                    sublabel={`vs ${prediction.vehicle.m0} base`}
+                    color="cyan"
+                    size={110}
+                  />
+                </div>
+
                 {/* Big Metric Badges */}
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4">
-                    <span className="text-xs text-gray-400 block">Total Fuel Required</span>
-                    <div className="mt-1 flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-white">
-                        {prediction.breakdown.totalFuelLiters.toFixed(2)}
-                      </span>
-                      <span className="text-xs text-gray-400 font-mono">L</span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4">
-                    <span className="text-xs text-gray-400 block">Estimated Cost</span>
-                    <div className="mt-1 flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-emerald-400">
-                        ₹{prediction.breakdown.totalCost.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4">
-                    <span className="text-xs text-gray-400 block">Effective Mileage</span>
-                    <div className="mt-1 flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-cyan-300">
-                        {prediction.breakdown.effectiveMileageKmPerL.toFixed(1)}
-                      </span>
-                      <span className="text-xs text-gray-400 font-mono">km/L</span>
-                    </div>
-                    <span className="text-[10px] text-gray-500">
-                      vs {prediction.vehicle.m0} km/L baseline
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="visionos-panel p-3.5">
+                    <span className="text-[11px] text-slate-400 block font-medium">Estimated Cost</span>
+                    <span className="text-2xl font-bold font-mono text-emerald-400 glow-green mt-1 block">
+                      ₹{prediction.breakdown.totalCost.toFixed(0)}
                     </span>
                   </div>
 
-                  <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4">
-                    <span className="text-xs text-gray-400 block">Cost Per km</span>
-                    <div className="mt-1 flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-amber-300">
-                        ₹{prediction.breakdown.costPerKm.toFixed(2)}
-                      </span>
-                      <span className="text-xs text-gray-400 font-mono">/km</span>
-                    </div>
+                  <div className="visionos-panel p-3.5">
+                    <span className="text-[11px] text-slate-400 block font-medium">Cost Per km</span>
+                    <span className="text-2xl font-bold font-mono text-amber-300 mt-1 block">
+                      ₹{prediction.breakdown.costPerKm.toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
                 {/* Factor Contribution Breakdown Waterfall */}
-                <div className="mt-6 border-t border-[#1f2e45] pt-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-gray-300 tracking-wide">
-                      What's Driving This Number?
+                <div className="mt-5 border-t border-white/[0.08] pt-4">
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-xs font-semibold text-slate-300">
+                      Physical Resistance Breakdown
                     </span>
-                    <span className="text-[11px] text-gray-400 font-mono">
-                      Breakdown (Litres)
+                    <span className="text-[10px] text-slate-500 font-mono">
+                      (Litres)
                     </span>
                   </div>
 
-                  <div className="space-y-2.5 text-xs">
-                    <div className="flex justify-between items-center text-gray-300">
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between items-center py-0.5 text-slate-300">
                       <span>Base Fuel Consumption (D / M₀)</span>
                       <span className="font-mono font-bold text-white">
                         {prediction.breakdown.baseFuelLiters.toFixed(2)} L
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-emerald-400">
+                    <div className="flex justify-between items-center py-0.5 text-emerald-400">
                       <span>+ Speed Drag Resistance (kv·V²)</span>
                       <span className="font-mono font-bold">
                         +{prediction.breakdown.speedTermLiters.toFixed(2)} L
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-amber-400">
+                    <div className="flex justify-between items-center py-0.5 text-amber-400">
                       <span>+ Traffic Delays & Stop-and-Go (kt·T)</span>
                       <span className="font-mono font-bold">
                         +{prediction.breakdown.trafficTermLiters.toFixed(2)} L
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-blue-400">
+                    <div className="flex justify-between items-center py-0.5 text-cyan-400">
                       <span>+ Vehicle Payload Resistance (kl·L)</span>
                       <span className="font-mono font-bold">
                         +{prediction.breakdown.loadTermLiters.toFixed(2)} L
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-rose-400">
-                      <span>+ Aggressive Driving Acceleration (ka·A)</span>
+                    <div className="flex justify-between items-center py-0.5 text-rose-400">
+                      <span>+ Aggressive Acceleration (ka·A)</span>
                       <span className="font-mono font-bold">
                         +{prediction.breakdown.aggressiveTermLiters.toFixed(2)} L
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-purple-400">
+                    <div className="flex justify-between items-center py-0.5 text-purple-400">
                       <span>+ Road Gradient Elevation (kg·G)</span>
                       <span className="font-mono font-bold">
                         {prediction.breakdown.gradientTermLiters >= 0 ? '+' : ''}
@@ -566,8 +570,8 @@ function TripPlannerContent() {
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-red-400">
-                      <span>+ Idling Consumption (ki·t_idle)</span>
+                    <div className="flex justify-between items-center py-0.5 text-rose-400">
+                      <span>+ Engine Idling Runtime (ki·t_idle)</span>
                       <span className="font-mono font-bold">
                         +{prediction.breakdown.idleTermLiters.toFixed(2)} L
                       </span>
@@ -576,12 +580,12 @@ function TripPlannerContent() {
                 </div>
 
                 {/* Model Attribution Badge */}
-                <div className="mt-6 rounded-lg border border-[#1f2e45] bg-[#090d16] p-3 text-[11px] text-gray-400">
-                  <div className="flex items-center gap-1.5 font-semibold text-gray-300">
+                <div className="mt-5 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3.5 text-[11px] text-slate-400">
+                  <div className="flex items-center gap-1.5 font-semibold text-slate-300">
                     <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
                     <span>Calculation Provenance</span>
                   </div>
-                  <p className="mt-1">
+                  <p className="mt-1 leading-relaxed">
                     {prediction.modelStatus.label}. Base mileage {prediction.vehicle.m0} km/L.
                     Formula: F = (D/M₀)·(1 + kvV² + ktT + klL + kaA + kgG) + ki·t_idle.
                   </p>
@@ -599,8 +603,8 @@ export default function TripPlannerPage() {
   return (
     <Suspense
       fallback={
-        <div className="py-20 text-center text-gray-400 font-mono text-sm">
-          Loading trip predictor...
+        <div className="py-24 text-center text-slate-400 font-mono text-sm">
+          Loading spatial trip predictor...
         </div>
       }
     >

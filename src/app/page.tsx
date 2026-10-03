@@ -3,21 +3,21 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
-  Gauge,
+  Fuel,
   Navigation,
   GitCompare,
-  Sliders,
-  ShieldCheck,
-  TrendingDown,
   ArrowRight,
-  Database,
+  TrendingDown,
   BarChart3,
-  Cpu,
-  Check,
-  AlertCircle,
-  Activity,
-  Layers,
   Sparkles,
+  Zap,
+  Shield,
+  MapPin,
+  Car,
+  ChevronRight,
+  Sliders,
+  Compass,
+  Waves,
 } from 'lucide-react';
 import {
   predictFuelConsumption,
@@ -25,20 +25,71 @@ import {
   POPULATION_BASELINE_COEFFICIENTS,
   TripInput,
 } from '@/lib/fuelModel';
+import { SpatialGauge } from '@/components/visionOS/SpatialGauge';
+import { MacOSWindowChrome } from '@/components/widgets/MacOSWindowChrome';
+import { NothingWidgetDeck } from '@/components/widgets/NothingWidgetDeck';
+import { NothingFuelGauge, NothingAnalogClock } from '@/components/widgets/NothingWidgets';
+import { DotMatrixText } from '@/components/widgets/DotMatrixDisplay';
+import { NothingPhoneMockup } from '@/components/widgets/NothingPhoneMockup';
+import PatternWaves from '@/components/PatternWaves/PatternWaves';
 
 export default function LandingPage() {
-  // Interactive Live Formula Explorer State
-  const [distanceKm, setDistanceKm] = useState(50);
-  const [baseMileageKmPerL, setBaseMileageKmPerL] = useState(16);
-  const [avgSpeedKmh, setAvgSpeedKmh] = useState(65);
+  // PatternWaves Presets and Showcase State
+  const [heroWavePreset, setHeroWavePreset] = useState<'silk' | 'ocean' | 'pond' | 'lines' | 'terminal' | 'mesh'>('silk');
+  const [showcasePreset, setShowcasePreset] = useState<'silk' | 'ocean' | 'pond' | 'lines' | 'terminal' | 'mesh'>('silk');
+  const [showcaseColor, setShowcaseColor] = useState('#34d399');
+  const [showcaseBg, setShowcaseBg] = useState('#000000');
+  const [showcaseFade, setShowcaseFade] = useState<'edges' | 'center' | 'bottom' | 'top' | 'none'>('edges');
+  const [showcaseInteractive, setShowcaseInteractive] = useState(true);
+  const [showcaseCursorStrength, setShowcaseCursorStrength] = useState(0.6);
+  const [showcaseCursorSize, setShowcaseCursorSize] = useState(50);
+  const [showcasePaused, setShowcasePaused] = useState(false);
+
+  // Interactive Calculator State
+  const [distanceKm, setDistanceKm] = useState(65);
+  const [baseMileageKmPerL, setBaseMileageKmPerL] = useState(16.5);
+  const [avgSpeedKmh, setAvgSpeedKmh] = useState(70);
   const [trafficIntensity, setTrafficIntensity] = useState(0.4);
-  const [loadRatio, setLoadRatio] = useState(0.3);
-  const [aggressiveFactor, setAggressiveFactor] = useState(0.5);
-  const [gradientPercent, setGradientPercent] = useState(1.5);
+  const [loadRatio, setLoadRatio] = useState(0.35);
+  const [aggressiveFactor, setAggressiveFactor] = useState(0.4);
+  const [gradientPercent, setGradientPercent] = useState(1.2);
   const [idleMinutes, setIdleMinutes] = useState(8);
   const [fuelPricePerLitre, setFuelPricePerLitre] = useState(102.5);
 
-  // Compute live breakdown using pure fuelModel engine
+  // Quick Preset Presets
+  const applyPreset = (preset: 'city' | 'highway' | 'mountain' | 'commute') => {
+    switch (preset) {
+      case 'city':
+        setDistanceKm(25);
+        setAvgSpeedKmh(32);
+        setTrafficIntensity(0.75);
+        setIdleMinutes(18);
+        setGradientPercent(0.2);
+        break;
+      case 'highway':
+        setDistanceKm(180);
+        setAvgSpeedKmh(95);
+        setTrafficIntensity(0.15);
+        setIdleMinutes(4);
+        setGradientPercent(0.5);
+        break;
+      case 'mountain':
+        setDistanceKm(80);
+        setAvgSpeedKmh(48);
+        setTrafficIntensity(0.3);
+        setIdleMinutes(6);
+        setGradientPercent(4.5);
+        break;
+      case 'commute':
+        setDistanceKm(42);
+        setAvgSpeedKmh(55);
+        setTrafficIntensity(0.5);
+        setIdleMinutes(12);
+        setGradientPercent(1.0);
+        break;
+    }
+  };
+
   const calculation = useMemo(() => {
     try {
       const input: TripInput = {
@@ -57,127 +108,161 @@ export default function LandingPage() {
     } catch {
       return { pred: null, cost: null, valid: false };
     }
-  }, [
-    distanceKm,
-    baseMileageKmPerL,
-    avgSpeedKmh,
-    trafficIntensity,
-    loadRatio,
-    aggressiveFactor,
-    gradientPercent,
-    idleMinutes,
-    fuelPricePerLitre,
-  ]);
+  }, [distanceKm, baseMileageKmPerL, avgSpeedKmh, trafficIntensity, loadRatio, aggressiveFactor, gradientPercent, idleMinutes, fuelPricePerLitre]);
 
   return (
-    <div className="flex flex-col gap-16 pb-20">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-[#1f2e45] bg-gradient-to-b from-[#0e1626] via-[#090d16] to-[#090d16] pt-16 pb-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(255,255,255,0))]"></div>
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 text-center">
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 mb-6 shadow-sm">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            <span>Mathematical Ground Truth • No Simulated Data</span>
-          </div>
+    <div className="flex flex-col">
+      {/* ═══════════ HERO SECTION WITH PATTERNWAVES BACKGROUND ═══════════ */}
+      <section className="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32 min-h-[580px]">
+        {/* PatternWaves interactive WebGL background from React Bits */}
+        <div className="absolute inset-0 z-0 pointer-events-auto opacity-75">
+          <PatternWaves
+            preset={heroWavePreset}
+            color="#34d399"
+            backgroundColor="transparent"
+            fade="edges"
+            fadeSize={0.65}
+            interactive={true}
+            cursorSize={60}
+            cursorStrength={0.55}
+            speed={0.28}
+          />
+        </div>
 
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl">
-            Predict Real Trip Fuel & Costs.
-            <br />
-            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-teal-300 bg-clip-text text-transparent">
-              Calibrated to Your Driving.
-            </span>
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-2xl text-base text-gray-300 sm:text-lg">
-            Manufacturer ARAI / EPA figures assume lab dynos. FuelWise uses a mathematically
-            grounded aerodynamic, load, gradient, and traffic model — calibrated directly against your
-            own logged trips via Ordinary Least Squares regression.
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/plan"
-              className="flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all hover:scale-[1.02]"
-            >
-              <Navigation className="h-4 w-4" />
-              Plan a Trip Now
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/trips/new"
-              className="flex items-center gap-2 rounded-lg border border-[#1f2e45] bg-[#111827] px-6 py-3 text-sm font-semibold text-gray-200 hover:bg-[#1a2333] hover:text-white transition-all"
-            >
-              <Activity className="h-4 w-4 text-cyan-400" />
-              Log Driving Telemetry
-            </Link>
-            <Link
-              href="/calibration"
-              className="flex items-center gap-2 rounded-lg border border-[#1f2e45] bg-[#111827] px-6 py-3 text-sm font-semibold text-gray-200 hover:bg-[#1a2333] hover:text-white transition-all"
-            >
-              <Sliders className="h-4 w-4 text-emerald-400" />
-              View OLS Regression
-            </Link>
-          </div>
-
-          {/* Key Principles Checklist */}
-          <div className="mt-12 flex flex-wrap justify-center gap-6 text-xs text-gray-400">
-            <div className="flex items-center gap-1.5">
-              <Check className="h-4 w-4 text-emerald-400" />
-              <span>Real OLS Matrix Regression</span>
+        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center pointer-events-none">
+          <div className="animate-fade-in-up pointer-events-auto">
+            {/* visionOS Spatial pill tag */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.18] backdrop-blur-xl px-4 py-1.5 text-xs font-medium text-emerald-300 mb-8 shadow-lg shadow-black/20"
+                 style={{ boxShadow: 'inset 0 1px 0.5px rgba(255, 255, 255, 0.35)' }}>
+              <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+              <span>visionOS 2 Spatial Telemetry & Physical OLS Calibration</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="h-4 w-4 text-emerald-400" />
-              <span>OSRM Live Routing Engine</span>
+
+            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl leading-[1.08]">
+              Know your real
+              <br />
+              <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent">
+                fuel costs
+              </span>
+              {' '}before
+              <br />
+              you drive.
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-2xl text-base text-slate-300/90 sm:text-lg leading-relaxed font-normal">
+              Automotive-grade journey fuel predictions calibrated directly against your vehicle&apos;s real driving telemetry. 
+              Zero guesswork, grounded in fluid dynamics and OLS regression.
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/plan"
+                className="visionos-pill-btn-primary py-3 px-6 text-sm"
+              >
+                <Navigation className="h-4 w-4" />
+                <span>Plan a Spatial Journey</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/trips/new"
+                className="visionos-pill-btn py-3 px-6 text-sm"
+              >
+                <Fuel className="h-4 w-4 text-emerald-400" />
+                <span>Log Driving Telemetry</span>
+              </Link>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="h-4 w-4 text-emerald-400" />
-              <span>Open-Elevation Topography Sampling</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="h-4 w-4 text-emerald-400" />
-              <span>Zero Fabricated Benchmarks</span>
+
+            {/* Fluid Wave Preset Selector Chips */}
+            <div className="mt-8 inline-flex items-center gap-1.5 p-1 rounded-full bg-black/50 border border-white/10 backdrop-blur-xl text-xs">
+              <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 px-2.5 flex items-center gap-1.5">
+                <Waves className="h-3 w-3 text-emerald-400" />
+                Surface Wave:
+              </span>
+              {(['silk', 'ocean', 'pond', 'lines', 'terminal', 'mesh'] as const).map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => setHeroWavePreset(p)}
+                  className={`px-2.5 py-1 rounded-full transition-all capitalize font-mono text-[11px] ${
+                    heroWavePreset === p
+                      ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40 shadow-sm'
+                      : 'text-slate-400 hover:text-white hover:bg-white/[0.05]'
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Live Mathematical Formula Explorer */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 w-full">
-        <div className="rounded-2xl border border-[#1f2e45] bg-[#111827] p-6 sm:p-8 shadow-2xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1f2e45] pb-6">
+      {/* ═══════════ LIVE visionOS SPATIAL CALCULATOR WINDOW ═══════════ */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full -mt-8 mb-24">
+        <div className="visionos-window overflow-hidden">
+          {/* macOS 27 Desktop Chrome Header */}
+          <MacOSWindowChrome
+            title="FuelWise Spatial Cockpit"
+            subtitle="macOS 27 System Chrome • OLS Physics Kernel"
+          />
+
+          <div className="p-6 sm:p-10">
+            {/* visionOS window top grab bar */}
+            <div className="visionos-grab-bar" />
+
+          {/* Window Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/[0.08]">
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-mono font-semibold text-emerald-400 border border-emerald-500/20">
-                  LIVE CALCULATION ENGINE
-                </span>
-                <span className="text-xs text-gray-400 font-mono">
-                  [Population Engineering Baseline]
-                </span>
+                <Sliders className="h-5 w-5 text-emerald-400" />
+                <h2 className="text-xl font-bold text-white tracking-tight sm:text-2xl">
+                  Interactive Physics Simulator
+                </h2>
               </div>
-              <h2 className="mt-2 text-2xl font-bold text-white tracking-tight">
-                The FuelWise Multi-Factor Physical Model
-              </h2>
-              <p className="text-sm text-gray-400 mt-1">
-                Adjust any parameter below to see the exact formula terms recalculate in real time.
+              <p className="text-xs text-slate-400 mt-1">
+                Real-time quadratic aerodynamic drag ($V^2$), payload load ratio, grade gradient, and traffic friction.
               </p>
             </div>
 
-            {/* LaTeX Mathematical Formula Display */}
-            <div className="rounded-lg border border-[#1f2e45] bg-[#090d16] p-3 text-xs font-mono text-cyan-300 overflow-x-auto">
-              F = (D / M₀) · (1 + kᵥ·V² + kₜ·T + kₗ·L + kₐ·A + k_g·G) + kᵢ·t_idle
+            {/* Quick Presets Ornament */}
+            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-full bg-white/[0.05] border border-white/[0.1] backdrop-blur-md">
+              <span className="text-[10px] uppercase font-semibold text-slate-400 px-2.5">Presets:</span>
+              <button
+                type="button"
+                onClick={() => applyPreset('city')}
+                className="px-2.5 py-1 text-[11px] font-medium rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] transition-all"
+              >
+                City Grid
+              </button>
+              <button
+                type="button"
+                onClick={() => applyPreset('highway')}
+                className="px-2.5 py-1 text-[11px] font-medium rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] transition-all"
+              >
+                Expressway
+              </button>
+              <button
+                type="button"
+                onClick={() => applyPreset('mountain')}
+                className="px-2.5 py-1 text-[11px] font-medium rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] transition-all"
+              >
+                Ghats/Mountain
+              </button>
+              <button
+                type="button"
+                onClick={() => applyPreset('commute')}
+                className="px-2.5 py-1 text-[11px] font-medium rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] transition-all"
+              >
+                Mixed Commute
+              </button>
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left Column: Interactive Inputs */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {/* Distance Slider */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Distance (D)</span>
-                  <span className="text-emerald-400 font-mono font-bold">{distanceKm} km</span>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Sliders in visionOS Panels */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Distance */}
+              <SliderCard label="Trip Distance" value={`${distanceKm} km`} color="emerald">
                 <input
                   type="range"
                   min="5"
@@ -185,16 +270,12 @@ export default function LandingPage() {
                   step="5"
                   value={distanceKm}
                   onChange={(e) => setDistanceKm(Number(e.target.value))}
-                  className="w-full accent-emerald-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full"
                 />
-              </div>
+              </SliderCard>
 
-              {/* Base Mileage M0 */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Base Ideal Mileage (M₀)</span>
-                  <span className="text-cyan-400 font-mono font-bold">{baseMileageKmPerL} km/L</span>
-                </div>
+              {/* Base Mileage */}
+              <SliderCard label="Base Rated Mileage (M₀)" value={`${baseMileageKmPerL} km/L`} color="cyan">
                 <input
                   type="range"
                   min="8"
@@ -202,16 +283,12 @@ export default function LandingPage() {
                   step="0.5"
                   value={baseMileageKmPerL}
                   onChange={(e) => setBaseMileageKmPerL(Number(e.target.value))}
-                  className="w-full accent-cyan-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full slider-cyan"
                 />
-              </div>
+              </SliderCard>
 
-              {/* Average Speed V */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Average Speed (V)</span>
-                  <span className="text-emerald-400 font-mono font-bold">{avgSpeedKmh} km/h</span>
-                </div>
+              {/* Average Speed */}
+              <SliderCard label="Average Speed (V² Drag)" value={`${avgSpeedKmh} km/h`} color="emerald" hint="Quadratic aero penalty above 60 km/h">
                 <input
                   type="range"
                   min="20"
@@ -219,19 +296,12 @@ export default function LandingPage() {
                   step="5"
                   value={avgSpeedKmh}
                   onChange={(e) => setAvgSpeedKmh(Number(e.target.value))}
-                  className="w-full accent-emerald-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full"
                 />
-                <span className="text-[10px] text-gray-500">Aerodynamic drag scales quadratically (V²)</span>
-              </div>
+              </SliderCard>
 
-              {/* Traffic Intensity T */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Traffic Intensity (T)</span>
-                  <span className="text-amber-400 font-mono font-bold">
-                    {(trafficIntensity * 100).toFixed(0)}%
-                  </span>
-                </div>
+              {/* Traffic */}
+              <SliderCard label="Traffic Intensity (T)" value={`${(trafficIntensity * 100).toFixed(0)}%`} color="amber" hint="0% = Open Highway, 100% = Gridlock">
                 <input
                   type="range"
                   min="0"
@@ -239,19 +309,12 @@ export default function LandingPage() {
                   step="0.05"
                   value={trafficIntensity}
                   onChange={(e) => setTrafficIntensity(Number(e.target.value))}
-                  className="w-full accent-amber-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full slider-amber"
                 />
-                <span className="text-[10px] text-gray-500">0 = Open Highway, 1.0 = Gridlock</span>
-              </div>
+              </SliderCard>
 
-              {/* Load Ratio L */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Payload Load Ratio (L)</span>
-                  <span className="text-blue-400 font-mono font-bold">
-                    {(loadRatio * 100).toFixed(0)}% rated
-                  </span>
-                </div>
+              {/* Passenger Load */}
+              <SliderCard label="Payload Load Ratio (L)" value={`${(loadRatio * 100).toFixed(0)}%`} color="purple">
                 <input
                   type="range"
                   min="0"
@@ -259,18 +322,12 @@ export default function LandingPage() {
                   step="0.05"
                   value={loadRatio}
                   onChange={(e) => setLoadRatio(Number(e.target.value))}
-                  className="w-full accent-blue-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full slider-purple"
                 />
-              </div>
+              </SliderCard>
 
-              {/* Road Gradient G */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Road Gradient (G)</span>
-                  <span className="text-purple-400 font-mono font-bold">
-                    {gradientPercent > 0 ? `+${gradientPercent}%` : `${gradientPercent}%`}
-                  </span>
-                </div>
+              {/* Road Incline */}
+              <SliderCard label="Road Gradient (G)" value={`${gradientPercent > 0 ? '+' : ''}${gradientPercent}%`} color="purple">
                 <input
                   type="range"
                   min="-4"
@@ -278,16 +335,12 @@ export default function LandingPage() {
                   step="0.5"
                   value={gradientPercent}
                   onChange={(e) => setGradientPercent(Number(e.target.value))}
-                  className="w-full accent-purple-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full slider-purple"
                 />
-              </div>
+              </SliderCard>
 
               {/* Idle Time */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Idling Time (t_idle)</span>
-                  <span className="text-red-400 font-mono font-bold">{idleMinutes} min</span>
-                </div>
+              <SliderCard label="Engine Idling (t_idle)" value={`${idleMinutes} min`} color="rose" hint="Signals, stops, AC runtime">
                 <input
                   type="range"
                   min="0"
@@ -295,16 +348,12 @@ export default function LandingPage() {
                   step="1"
                   value={idleMinutes}
                   onChange={(e) => setIdleMinutes(Number(e.target.value))}
-                  className="w-full accent-red-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full slider-rose"
                 />
-              </div>
+              </SliderCard>
 
               {/* Fuel Price */}
-              <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400 font-medium">Fuel Price (P)</span>
-                  <span className="text-yellow-400 font-mono font-bold">₹{fuelPricePerLitre}/L</span>
-                </div>
+              <SliderCard label="Fuel Price (P)" value={`₹${fuelPricePerLitre}/L`} color="yellow">
                 <input
                   type="range"
                   min="80"
@@ -312,211 +361,502 @@ export default function LandingPage() {
                   step="0.5"
                   value={fuelPricePerLitre}
                   onChange={(e) => setFuelPricePerLitre(Number(e.target.value))}
-                  className="w-full accent-yellow-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer"
+                  className="w-full"
+                />
+              </SliderCard>
+            </div>
+
+            {/* Results Window Panel with visionOS Gauges */}
+            <div className="lg:col-span-5 flex flex-col justify-between visionos-panel p-6">
+              {calculation.valid && calculation.pred && calculation.cost ? (
+                <>
+                  <div>
+                    <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+                      <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <Compass className="h-3.5 w-3.5 text-emerald-400" />
+                        Predicted Telemetry
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
+                        OLS Baseline Model
+                      </span>
+                    </div>
+
+                    {/* Circular visionOS Gauges */}
+                    <div className="mt-4 grid grid-cols-2 gap-2 bg-white/[0.02] p-2 rounded-2xl border border-white/[0.05]">
+                      <SpatialGauge
+                        value={calculation.pred.totalFuelLiters}
+                        min={1}
+                        max={35}
+                        unit="Litres"
+                        label="Total Fuel"
+                        sublabel="Predicted Consumption"
+                        color="emerald"
+                        size={110}
+                      />
+                      <SpatialGauge
+                        value={calculation.pred.effectiveMileageKmPerL}
+                        min={5}
+                        max={30}
+                        unit="km / L"
+                        label="Real Mileage"
+                        sublabel={`vs ${baseMileageKmPerL} rated`}
+                        color="cyan"
+                        size={110}
+                      />
+                    </div>
+
+                    {/* Cost Metrics */}
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
+                        <span className="text-[11px] text-slate-400 block font-medium">Estimated Cost</span>
+                        <span className="text-2xl font-bold font-mono text-emerald-400 glow-green mt-1 block">
+                          ₹{calculation.cost.totalCost.toFixed(0)}
+                        </span>
+                      </div>
+                      <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
+                        <span className="text-[11px] text-slate-400 block font-medium">Cost per km</span>
+                        <span className="text-2xl font-bold font-mono text-amber-300 mt-1 block">
+                          ₹{calculation.cost.costPerKm.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Physics Breakdown */}
+                    <div className="mt-5 pt-4 border-t border-white/[0.08]">
+                      <span className="text-xs font-semibold text-slate-300 mb-2.5 block">
+                        Physical Consumption Breakdown
+                      </span>
+                      <div className="space-y-1.5 text-xs">
+                        <BreakdownRow label="Base Highway Cruising" value={`${calculation.pred.baseFuelLiters.toFixed(2)} L`} color="text-slate-300" />
+                        <BreakdownRow label="Aerodynamic Drag (V²)" value={`+${calculation.pred.speedTermLiters.toFixed(2)} L`} color="text-emerald-400" />
+                        <BreakdownRow label="Traffic Congestion" value={`+${calculation.pred.trafficTermLiters.toFixed(2)} L`} color="text-amber-400" />
+                        <BreakdownRow label="Payload & Passenger Weight" value={`+${calculation.pred.loadTermLiters.toFixed(2)} L`} color="text-cyan-400" />
+                        <BreakdownRow label="Elevation Grade" value={`${calculation.pred.gradientTermLiters >= 0 ? '+' : ''}${calculation.pred.gradientTermLiters.toFixed(2)} L`} color="text-purple-400" />
+                        <BreakdownRow label="Engine Idling Runtime" value={`+${calculation.pred.idleTermLiters.toFixed(2)} L`} color="text-rose-400" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-white/[0.08]">
+                    <Link
+                      href="/plan"
+                      className="w-full visionos-pill-btn-primary py-3 text-center justify-center text-xs"
+                    >
+                      <span>Plan Route with Live Elevation</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <p className="py-8 text-sm text-rose-400 text-center">Adjust inputs to calculate</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      {/* ═══════════ NOTHING OS 2.0 & NOTHING PHONE (2) COCKPIT ═══════════ */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 w-full mb-28">
+        <div className="visionos-window overflow-hidden">
+          <MacOSWindowChrome
+            title="Nothing OS 2.0 & Nothing Phone (2) Hardware Cockpit"
+            subtitle="Industrial Dot-Matrix Hybrid Gauges & Glyph Interface"
+          />
+          <div className="p-6 sm:p-10 bg-dot-matrix-fine">
+            <div className="visionos-grab-bar" />
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 items-start">
+              {/* Left 8 Cols: Nothing Widgets Suite */}
+              <div className="xl:col-span-8">
+                <NothingWidgetDeck
+                  onPresetSelect={applyPreset}
+                  currentSpeed={avgSpeedKmh}
+                  currentEfficiency={calculation.pred?.effectiveMileageKmPerL || baseMileageKmPerL}
+                  fuelRate={calculation.pred ? (100 / calculation.pred.effectiveMileageKmPerL) : 6.06}
+                  costPerKm={calculation.cost?.costPerKm || 6.21}
+                  dragLevel={Math.min(1, Math.pow(avgSpeedKmh / 120, 2))}
+                  gradientLevel={Math.min(1, Math.max(0, (gradientPercent + 4) / 10))}
+                  trafficLevel={trafficIntensity}
+                  loadLevel={loadRatio}
+                />
+              </div>
+
+              {/* Right 4 Cols: Nothing Phone (2) Mockup with Glyph Interface */}
+              <div className="xl:col-span-4 flex flex-col items-center justify-center pt-2">
+                <div className="text-center mb-3">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-red-500 font-bold">
+                    NOTHING PHONE (2)
+                  </span>
+                  <h4 className="text-sm font-bold text-white font-nothing">
+                    Interactive Glyph Cockpit
+                  </h4>
+                </div>
+                <NothingPhoneMockup
+                  speed={avgSpeedKmh}
+                  efficiency={calculation.pred?.effectiveMileageKmPerL || baseMileageKmPerL}
+                  fuelLiters={calculation.pred?.totalFuelLiters || 4.2}
+                  cost={calculation.cost?.totalCost || 430}
+                  vehicleName="Tata Nexon 1.5 Diesel"
                 />
               </div>
             </div>
-
-            {/* Right Column: Computed Outputs & Breakdown Card */}
-            <div className="lg:col-span-5 flex flex-col justify-between rounded-xl border border-[#1f2e45] bg-[#090d16] p-6 shadow-inner">
-              <div>
-                <div className="flex items-center justify-between border-b border-[#1f2e45] pb-4">
-                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Prediction Summary
-                  </span>
-                  <span className="text-xs text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                    Computed Outputs
-                  </span>
-                </div>
-
-                {calculation.valid && calculation.pred && calculation.cost ? (
-                  <>
-                    <div className="mt-6 grid grid-cols-2 gap-4">
-                      {/* Total Fuel */}
-                      <div className="rounded-lg border border-[#1f2e45] bg-[#111827] p-4">
-                        <span className="text-xs text-gray-400">Total Fuel Consumed</span>
-                        <div className="mt-1 flex items-baseline gap-1">
-                          <span className="text-3xl font-extrabold text-white">
-                            {calculation.pred.totalFuelLiters.toFixed(2)}
-                          </span>
-                          <span className="text-xs text-gray-400 font-mono">Litres</span>
-                        </div>
-                      </div>
-
-                      {/* Total Cost */}
-                      <div className="rounded-lg border border-[#1f2e45] bg-[#111827] p-4">
-                        <span className="text-xs text-gray-400">Estimated Cost</span>
-                        <div className="mt-1 flex items-baseline gap-1">
-                          <span className="text-3xl font-extrabold text-emerald-400">
-                            ₹{calculation.cost.totalCost.toFixed(2)}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Effective Mileage */}
-                      <div className="rounded-lg border border-[#1f2e45] bg-[#111827] p-4">
-                        <span className="text-xs text-gray-400">Real Trip Mileage</span>
-                        <div className="mt-1 flex items-baseline gap-1">
-                          <span className="text-2xl font-bold text-cyan-300">
-                            {calculation.pred.effectiveMileageKmPerL.toFixed(1)}
-                          </span>
-                          <span className="text-xs text-gray-400 font-mono">km/L</span>
-                        </div>
-                        <span className="text-[10px] text-gray-500">
-                          vs M₀ ideal ({baseMileageKmPerL} km/L)
-                        </span>
-                      </div>
-
-                      {/* Cost per km */}
-                      <div className="rounded-lg border border-[#1f2e45] bg-[#111827] p-4">
-                        <span className="text-xs text-gray-400">Cost per km</span>
-                        <div className="mt-1 flex items-baseline gap-1">
-                          <span className="text-2xl font-bold text-amber-300">
-                            ₹{calculation.cost.costPerKm.toFixed(2)}
-                          </span>
-                          <span className="text-xs text-gray-400 font-mono">/km</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* What's Driving This Number Waterfall Breakdown */}
-                    <div className="mt-6 border-t border-[#1f2e45] pt-4">
-                      <span className="text-xs font-semibold text-gray-300 tracking-wider">
-                        Factor Decomposition Breakdown
-                      </span>
-                      <div className="mt-3 space-y-2 text-xs">
-                        <div className="flex justify-between items-center text-gray-300">
-                          <span>Base Fuel (D / M₀)</span>
-                          <span className="font-mono text-gray-200">
-                            {calculation.pred.baseFuelLiters.toFixed(2)} L
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-emerald-400">
-                          <span>+ Speed Drag Penalty (kv·V²)</span>
-                          <span className="font-mono">
-                            +{calculation.pred.speedTermLiters.toFixed(2)} L
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-amber-400">
-                          <span>+ Traffic Stop-and-Go (kt·T)</span>
-                          <span className="font-mono">
-                            +{calculation.pred.trafficTermLiters.toFixed(2)} L
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-blue-400">
-                          <span>+ Payload Resistance (kl·L)</span>
-                          <span className="font-mono">
-                            +{calculation.pred.loadTermLiters.toFixed(2)} L
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-purple-400">
-                          <span>+ Road Incline (kg·G)</span>
-                          <span className="font-mono">
-                            {calculation.pred.gradientTermLiters >= 0 ? '+' : ''}
-                            {calculation.pred.gradientTermLiters.toFixed(2)} L
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-red-400">
-                          <span>+ Idling Consumption (ki·t_idle)</span>
-                          <span className="font-mono">
-                            +{calculation.pred.idleTermLiters.toFixed(2)} L
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <p className="mt-6 text-sm text-red-400">Invalid input parameters</p>
-                )}
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-[#1f2e45]">
-                <Link
-                  href="/plan"
-                  className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-2.5 text-xs font-semibold text-white hover:bg-emerald-500 transition-colors"
-                >
-                  Plan Route with Live Map & OSRM
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Architecture & How It Works Steps */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 w-full">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+      {/* ═══════════ HOW IT WORKS (visionOS SPATIAL CARDS) ═══════════ */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+        <div className="text-center max-w-2xl mx-auto mb-14">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            The 4-Step Personal Calibration Journey
+            Four Steps to Mathematical Precision
           </h2>
-          <p className="mt-3 text-sm text-gray-400">
-            From generic population defaults to your car's personal aerodynamic and traffic signature.
+          <p className="mt-3 text-slate-400 text-sm">
+            Moving beyond inaccurate window-sticker ratings with your personal driving calibration.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-6 flex flex-col justify-between">
-            <div>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 font-mono font-bold text-sm border border-emerald-500/20 mb-4">
-                01
-              </span>
-              <h3 className="text-base font-semibold text-white">Add Vehicle Profile</h3>
-              <p className="mt-2 text-xs text-gray-400 leading-relaxed">
-                Enter your vehicle's make, model, base ideal mileage (M₀ in km/L), and rated payload in kg.
-              </p>
-            </div>
-            <span className="mt-4 text-[11px] text-emerald-400 font-mono">
-              [Population Baseline Active]
-            </span>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <StepCard
+            step="01"
+            icon={<Car className="h-5 w-5 text-emerald-400" />}
+            title="Register Vehicle"
+            description="Add your vehicle specification, rated baseline mileage M₀, and fuel grade."
+            accent="emerald"
+          />
+          <StepCard
+            step="02"
+            icon={<MapPin className="h-5 w-5 text-cyan-400" />}
+            title="Log Journey Trips"
+            description="Log trips with real GPS distance, average speed, traffic levels, and actual fuel pumped."
+            accent="cyan"
+          />
+          <StepCard
+            step="03"
+            icon={<BarChart3 className="h-5 w-5 text-purple-400" />}
+            title="OLS Calibration"
+            description="At 8+ logged trips, our matrix engine solves regression coefficients specific to your driving style."
+            accent="purple"
+          />
+          <StepCard
+            step="04"
+            icon={<Zap className="h-5 w-5 text-amber-400" />}
+            title="Spatial Predictions"
+            description="Preview exact fuel quantities and rupee expenses for any route before starting the engine."
+            accent="amber"
+          />
+        </div>
+      </section>
 
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-6 flex flex-col justify-between">
-            <div>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400 font-mono font-bold text-sm border border-cyan-500/20 mb-4">
-                02
-              </span>
-              <h3 className="text-base font-semibold text-white">Log Driving Trips</h3>
-              <p className="mt-2 text-xs text-gray-400 leading-relaxed">
-                Log real trips manually or run the companion in-browser GPS & accelerometer tracker to measure real driving.
-              </p>
-            </div>
-            <span className="mt-4 text-[11px] text-cyan-400 font-mono">
-              [Trip Logs Stored in SQL]
-            </span>
-          </div>
+      {/* ═══════════ REACT BITS PATTERNWAVES INTERACTIVE SHOWCASE ═══════════ */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+        <div className="visionos-window overflow-hidden">
+          <MacOSWindowChrome
+            title="React Bits • <PatternWaves /> WebGL Dynamics Surface"
+            subtitle="OpenGL ES 3.00 WebGL2 Shaders • 60 FPS Fluid Cursor Wake • Mathematical Fluid Simulation"
+          />
 
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-6 flex flex-col justify-between">
-            <div>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 font-mono font-bold text-sm border border-purple-500/20 mb-4">
-                03
-              </span>
-              <h3 className="text-base font-semibold text-white">Automatic OLS Calibration</h3>
-              <p className="mt-2 text-xs text-gray-400 leading-relaxed">
-                Upon reaching ≥8 trips, our Ordinary Least Squares engine runs multiple linear regression, holding out 20% for test validation.
-              </p>
-            </div>
-            <span className="mt-4 text-[11px] text-purple-400 font-mono">
-              [R², MAE, MAPE Evaluated]
-            </span>
-          </div>
+          <div className="p-6 sm:p-8">
+            <div className="visionos-grab-bar" />
 
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-6 flex flex-col justify-between">
-            <div>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 font-mono font-bold text-sm border border-amber-500/20 mb-4">
-                04
-              </span>
-              <h3 className="text-base font-semibold text-white">Plan & Optimize</h3>
-              <p className="mt-2 text-xs text-gray-400 leading-relaxed">
-                Predict fuel and cost for any future route with pinpoint accuracy. Compare routes, payloads, and departure times side by side.
-              </p>
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-6 border-b border-white/[0.08]">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Waves className="h-5 w-5 text-emerald-400" />
+                  <h2 className="text-xl font-bold text-white tracking-tight sm:text-2xl">
+                    &lt;PatternWaves /&gt; Fluid Surface
+                  </h2>
+                  <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-bold">
+                    React Bits
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+                  Interactive fluid dynamics shader modeling aerodynamic boundary layer turbulence. Move or click your cursor across the surface to cast interactive wakes, ripples, and specular glints.
+                </p>
+              </div>
+
+              {/* Action Controls */}
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowcasePaused(!showcasePaused)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium border flex items-center gap-1.5 transition-all ${
+                    showcasePaused
+                      ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
+                      : 'bg-white/[0.05] text-slate-300 border-white/[0.1] hover:bg-white/[0.1]'
+                  }`}
+                >
+                  {showcasePaused ? '▶ Resume Surface' : '⏸ Pause Surface'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowcaseInteractive(!showcaseInteractive)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                    showcaseInteractive
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
+                      : 'bg-white/[0.05] text-slate-400 border-white/[0.1]'
+                  }`}
+                >
+                  {showcaseInteractive ? 'Cursor Ripples: Active' : 'Cursor Ripples: Off'}
+                </button>
+              </div>
             </div>
-            <span className="mt-4 text-[11px] text-amber-400 font-mono">
-              [Custom Calibrated Model]
-            </span>
+
+            {/* Presets and Attributes Toolbar */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              {/* Presets */}
+              <div className="visionos-panel p-3.5">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-2 font-bold">
+                  Surface Preset
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {(['silk', 'ocean', 'pond', 'lines', 'terminal', 'mesh'] as const).map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => setShowcasePreset(p)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
+                        showcasePreset === p
+                          ? 'bg-emerald-500 text-slate-950 font-semibold shadow-sm shadow-emerald-500/25'
+                          : 'bg-white/[0.05] text-slate-300 hover:bg-white/[0.1] border border-white/[0.05]'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Color Tints */}
+              <div className="visionos-panel p-3.5">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-2 font-bold">
+                  Color Accent
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { name: 'Fuel Emerald', hex: '#34d399' },
+                    { name: 'Pure White', hex: '#ffffff' },
+                    { name: 'Aero Cyan', hex: '#38bdf8' },
+                    { name: 'Exhaust Amber', hex: '#fbbf24' },
+                    { name: 'Nothing Red', hex: '#ef4444' },
+                  ].map((c) => (
+                    <button
+                      key={c.name}
+                      type="button"
+                      onClick={() => setShowcaseColor(c.hex)}
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border ${
+                        showcaseColor === c.hex
+                          ? 'border-white text-white bg-white/[0.1]'
+                          : 'border-white/[0.06] text-slate-400 hover:text-white bg-white/[0.03]'
+                      }`}
+                    >
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: c.hex }} />
+                      <span>{c.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Edge Vignette */}
+              <div className="visionos-panel p-3.5">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-2 font-bold">
+                  Fade Vignette
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {(['edges', 'center', 'bottom', 'top', 'none'] as const).map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setShowcaseFade(f)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
+                        showcaseFade === f
+                          ? 'bg-white text-slate-950 font-semibold'
+                          : 'bg-white/[0.05] text-slate-300 hover:bg-white/[0.1] border border-white/[0.05]'
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Exactly 600px height container as specified by React Bits */}
+            <div
+              className="rounded-2xl overflow-hidden border border-white/[0.12] shadow-2xl relative bg-black"
+              style={{ width: '100%', height: '600px', position: 'relative' }}
+            >
+              <PatternWaves
+                preset={showcasePreset}
+                color={showcaseColor}
+                backgroundColor={showcaseBg}
+                fade={showcaseFade}
+                fadeSize={0.5}
+                interactive={showcaseInteractive}
+                cursorSize={showcaseCursorSize}
+                cursorStrength={showcaseCursorStrength}
+                paused={showcasePaused}
+              />
+
+              {/* Overlay HUD indicators */}
+              <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 bg-black/70 backdrop-blur-xl border border-white/10 px-3.5 py-1.5 rounded-full shadow-lg">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                <span className="text-xs font-mono text-emerald-300 font-semibold">
+                  SURFACE: {showcasePreset.toUpperCase()}
+                </span>
+                <span className="text-[10px] font-mono text-slate-400">
+                  • Move cursor to ripple • Click for impulse splash
+                </span>
+              </div>
+
+              <div className="absolute bottom-4 right-4 pointer-events-none z-10 bg-black/70 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-400 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>React Bits &lt;PatternWaves /&gt; • ogl WebGL2</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* ═══════════ FEATURE CARDS ═══════════ */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <FeatureCard
+            icon={<GitCompare className="h-5 w-5" />}
+            title="Scenario & Route Comparison"
+            description="Compare driving during morning peak vs off-peak hours, or cruising at 75 vs 105 km/h to see direct cost differences."
+            href="/compare"
+          />
+          <FeatureCard
+            icon={<TrendingDown className="h-5 w-5" />}
+            title="Physical Loss Diagnostics"
+            description="Isolate aerodynamic drag penalties, idling losses, and weight penalties to pinpoint how to save 15-25% on fuel."
+            href="/calibration"
+          />
+          <FeatureCard
+            icon={<Shield className="h-5 w-5" />}
+            title="Validation & Accuracy Audit"
+            description="Inspect real regression metrics (R², Mean Absolute Error, test holdouts) with zero simulated or fake numbers."
+            href="/validation"
+          />
+        </div>
+      </section>
     </div>
+  );
+}
+
+/* ─── Reusable visionOS Sub-Components ─── */
+
+function SliderCard({
+  label,
+  value,
+  color,
+  hint,
+  children,
+}: {
+  label: string;
+  value: string;
+  color: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  const colorMap: Record<string, string> = {
+    emerald: 'text-emerald-400',
+    cyan: 'text-cyan-400',
+    amber: 'text-amber-400',
+    blue: 'text-blue-400',
+    purple: 'text-purple-400',
+    rose: 'text-rose-400',
+    yellow: 'text-yellow-400',
+  };
+
+  return (
+    <div className="visionos-panel p-4 flex flex-col justify-between">
+      <div>
+        <div className="flex justify-between items-center mb-2.5">
+          <span className="text-xs font-medium text-slate-300">{label}</span>
+          <span className={`text-xs font-bold font-mono px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.08] ${colorMap[color] || 'text-white'}`}>
+            {value}
+          </span>
+        </div>
+        {children}
+      </div>
+      {hint && <span className="text-[10px] text-slate-500 mt-2 block">{hint}</span>}
+    </div>
+  );
+}
+
+function BreakdownRow({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div className="flex justify-between items-center py-0.5">
+      <span className="text-slate-400">{label}</span>
+      <span className={`font-mono font-medium ${color}`}>{value}</span>
+    </div>
+  );
+}
+
+function StepCard({
+  step,
+  icon,
+  title,
+  description,
+}: {
+  step: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  accent: string;
+}) {
+  return (
+    <div className="visionos-panel p-6 flex flex-col justify-between">
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.08] border border-white/[0.14] shadow-inner">
+            {icon}
+          </div>
+          <span className="text-[10px] font-bold text-slate-400 font-mono tracking-widest uppercase bg-white/[0.05] border border-white/[0.08] px-2 py-0.5 rounded-full">
+            {step}
+          </span>
+        </div>
+        <h3 className="text-base font-semibold text-white mb-2">{title}</h3>
+        <p className="text-xs text-slate-400 leading-relaxed">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+  href,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  href: string;
+}) {
+  return (
+    <Link href={href} className="visionos-panel block p-6 group">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500/12 border border-emerald-400/25 text-emerald-400 group-hover:scale-105 transition-transform">
+          {icon}
+        </div>
+        <h3 className="text-base font-semibold text-white group-hover:text-emerald-300 transition-colors">
+          {title}
+        </h3>
+      </div>
+      <p className="text-sm text-slate-400 leading-relaxed mb-4">{description}</p>
+      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 group-hover:gap-2.5 transition-all">
+        Open Feature <ChevronRight className="h-3.5 w-3.5" />
+      </span>
+    </Link>
   );
 }

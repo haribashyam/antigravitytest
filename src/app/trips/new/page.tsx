@@ -4,20 +4,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   PlusCircle,
-  Car,
-  Navigation,
-  Activity,
-  Gauge,
   Sliders,
-  DollarSign,
-  AlertCircle,
   CheckCircle2,
   Play,
   Square,
   Radio,
-  Clock,
   Sparkles,
-  ArrowRight,
+  Activity,
+  Compass,
 } from 'lucide-react';
 import {
   predictFuelConsumption,
@@ -44,7 +38,7 @@ export default function NewTripPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
   const [activeTab, setActiveTab] = useState<'manual' | 'live_gps'>('manual');
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   // Form Fields
   const [tripName, setTripName] = useState('');
@@ -68,11 +62,11 @@ export default function NewTripPage() {
 
   // Live GPS Tracking State
   const [isTracking, setIsTracking] = useState(false);
-  const [gpsSupported, setGpsSupported] = useState(true);
+  const [, setGpsSupported] = useState(true);
   const [gpsError, setGpsError] = useState('');
   const [trackedDistanceKm, setTrackedDistanceKm] = useState(0);
   const [trackedSpeedKmh, setTrackedSpeedKmh] = useState(0);
-  const [topSpeedKmh, setTopSpeedKmh] = useState(0);
+  const [, setTopSpeedKmh] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [liveIdleMinutes, setLiveIdleMinutes] = useState(0);
   const [detectedHarshEvents, setDetectedHarshEvents] = useState(0);
@@ -304,50 +298,87 @@ export default function NewTripPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-      <div className="border-b border-[#1f2e45] pb-6">
-        <div className="flex items-center gap-2">
-          <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-mono font-semibold text-emerald-400 border border-emerald-500/20">
-            TELEMETRY INGESTION
-          </span>
+      {/* visionOS Window Header */}
+      <div className="visionos-window p-6 sm:p-8 mb-8">
+        <div className="visionos-grab-bar" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/12 border border-emerald-400/25 px-3 py-0.5 text-[11px] font-semibold text-emerald-300">
+                <Sparkles className="h-3 w-3" />
+                visionOS Telemetry Recording
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
+              <Activity className="h-7 w-7 text-emerald-400" />
+              Log Driving Journey
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm text-slate-400">
+              Ingest real trip distance, speeds, and pump fuel amounts to train the vehicle&apos;s OLS calibration matrix.
+            </p>
+          </div>
         </div>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white">
-          Log Driving Trip
-        </h1>
-        <p className="mt-1 text-sm text-gray-400">
-          Record actual trip distance, driving parameters, and fuel consumption to feed the OLS calibration engine.
-        </p>
+
+        {/* Floating Segmented Mode Control */}
+        <div className="mt-6 flex items-center p-1 rounded-full bg-white/[0.05] border border-white/[0.1] max-w-fit">
+          <button
+            type="button"
+            onClick={() => setActiveTab('manual')}
+            className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold transition-all ${
+              activeTab === 'manual'
+                ? 'bg-white/20 text-white shadow-sm shadow-black/30 border border-white/20'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+            }`}
+          >
+            <Sliders className="h-3.5 w-3.5" />
+            <span>Comprehensive Telemetry Form</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('live_gps')}
+            className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold transition-all ${
+              activeTab === 'live_gps'
+                ? 'bg-cyan-500/25 text-cyan-300 shadow-sm shadow-cyan-500/20 border border-cyan-400/30'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+            }`}
+          >
+            <Radio className="h-3.5 w-3.5" />
+            <span>Live In-Browser GPS Tracker</span>
+          </button>
+        </div>
       </div>
 
       {/* Recalibration Success Banner */}
       {successInfo && (
-        <div className="mt-6 rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-5 text-emerald-300 shadow-xl">
+        <div className="visionos-window mb-8 p-6 border-emerald-500/40 bg-emerald-500/10 text-emerald-300">
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
+            <div className="flex items-center gap-3">
+              <CheckCircle2 className="h-7 w-7 text-emerald-400 shrink-0" />
               <div>
                 <h3 className="font-bold text-white text-base">Trip Logged Successfully!</h3>
-                <p className="text-xs text-gray-300 mt-0.5">
+                <p className="text-xs text-slate-300 mt-1">
                   Actual Fuel: <span className="font-mono font-bold text-white">{successInfo.trip.fuelUsedLitres} L</span> |{' '}
                   Predicted: <span className="font-mono font-bold text-white">{successInfo.trip.predictedFuelLitres} L</span> |{' '}
-                  Cost: <span className="font-mono text-emerald-300">₹{successInfo.trip.actualCost}</span>
+                  Cost: <span className="font-mono text-emerald-300 font-bold">₹{successInfo.trip.actualCost}</span>
                 </p>
               </div>
             </div>
             <button
               onClick={() => router.push('/trips')}
-              className="rounded bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500"
+              className="visionos-pill-btn-primary py-2 px-4 text-xs font-semibold"
             >
               View in History →
             </button>
           </div>
 
           {successInfo.recalibrated && (
-            <div className="mt-4 rounded-lg border border-emerald-500/30 bg-[#090d16] p-3 text-xs">
+            <div className="mt-4 visionos-panel p-4 text-xs">
               <div className="flex items-center gap-2 font-semibold text-emerald-400">
                 <Sparkles className="h-4 w-4" />
                 <span>Personal OLS Model Recalibrated (v{successInfo.activeCoefficients.version})</span>
               </div>
-              <p className="text-[11px] text-gray-400 mt-1">
+              <p className="text-[11px] text-slate-400 mt-1">
                 Your model was refitted against {successInfo.activeCoefficients.sampleSize} stored trips.
                 Test R²: <span className="text-white font-mono">{successInfo.activeCoefficients.rSquared}</span> |{' '}
                 MAE: <span className="text-white font-mono">{successInfo.activeCoefficients.mae} L</span> |{' '}
@@ -358,40 +389,13 @@ export default function NewTripPage() {
         </div>
       )}
 
-      {/* Tabs Selector: Manual Entry vs Live GPS Tracker */}
-      <div className="mt-6 flex border-b border-[#1f2e45]">
-        <button
-          onClick={() => setActiveTab('manual')}
-          className={`flex items-center gap-2 px-6 py-3 text-sm font-semibold border-b-2 transition-all ${
-            activeTab === 'manual'
-              ? 'border-emerald-500 text-emerald-400 bg-emerald-500/5'
-              : 'border-transparent text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          <Sliders className="h-4 w-4" />
-          Comprehensive Trip Form
-        </button>
-
-        <button
-          onClick={() => setActiveTab('live_gps')}
-          className={`flex items-center gap-2 px-6 py-3 text-sm font-semibold border-b-2 transition-all ${
-            activeTab === 'live_gps'
-              ? 'border-cyan-500 text-cyan-400 bg-cyan-500/5'
-              : 'border-transparent text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          <Radio className="h-4 w-4" />
-          Live GPS Tracker
-        </button>
-      </div>
-
       {/* Tab 2: Live In-Browser GPS Tracker */}
       {activeTab === 'live_gps' && (
-        <div className="mt-8 rounded-2xl border border-[#1f2e45] bg-[#111827] p-8 shadow-xl">
-          <div className="flex items-center justify-between border-b border-[#1f2e45] pb-4">
+        <div className="visionos-window p-8 mb-8">
+          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
             <div>
               <h2 className="text-lg font-bold text-white">Live In-Vehicle Telemetry Tracker</h2>
-              <p className="text-xs text-gray-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Uses HTML5 Geolocation and device accelerometer to compute distance, speed, and idle periods in real time.
               </p>
             </div>
@@ -399,62 +403,62 @@ export default function NewTripPage() {
           </div>
 
           {gpsError && (
-            <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+            <div className="mt-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs text-rose-300">
               {gpsError}
             </div>
           )}
 
           {/* Telemetry Dashboard Meters */}
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Distance Covered</span>
-              <span className="text-3xl font-extrabold text-emerald-400 font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Distance Covered</span>
+              <span className="text-3xl font-extrabold text-emerald-400 font-mono mt-1 block">
                 {trackedDistanceKm.toFixed(2)}
               </span>
-              <span className="text-[11px] text-gray-500 block">km</span>
+              <span className="text-[10px] text-slate-500 block uppercase">km</span>
             </div>
 
-            <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Current Speed</span>
-              <span className="text-3xl font-extrabold text-cyan-300 font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Current Speed</span>
+              <span className="text-3xl font-extrabold text-cyan-300 font-mono mt-1 block">
                 {trackedSpeedKmh}
               </span>
-              <span className="text-[11px] text-gray-500 block">km/h</span>
+              <span className="text-[10px] text-slate-500 block uppercase">km/h</span>
             </div>
 
-            <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Duration Elapsed</span>
-              <span className="text-3xl font-extrabold text-white font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Duration Elapsed</span>
+              <span className="text-3xl font-extrabold text-white font-mono mt-1 block">
                 {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
               </span>
-              <span className="text-[11px] text-gray-500 block">min:sec</span>
+              <span className="text-[10px] text-slate-500 block uppercase">min:sec</span>
             </div>
 
-            <div className="rounded-xl border border-[#1f2e45] bg-[#090d16] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Idling Duration</span>
-              <span className="text-3xl font-extrabold text-amber-400 font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Idling Duration</span>
+              <span className="text-3xl font-extrabold text-amber-300 font-mono mt-1 block">
                 {liveIdleMinutes.toFixed(1)}
               </span>
-              <span className="text-[11px] text-gray-500 block">min (&lt;3 km/h)</span>
+              <span className="text-[10px] text-slate-500 block uppercase">min (&lt;3 km/h)</span>
             </div>
           </div>
 
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             {!isTracking ? (
               <button
                 onClick={startTracking}
-                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all"
+                className="visionos-pill-btn-primary py-3.5 px-8 text-sm font-bold"
               >
-                <Play className="h-5 w-5 fill-current" />
-                Start Drive Tracking
+                <Play className="h-4 w-4 fill-current" />
+                <span>Start Live Telemetry Recording</span>
               </button>
             ) : (
               <button
                 onClick={stopTracking}
-                className="flex items-center gap-2 rounded-xl bg-red-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-red-600/30 hover:bg-red-500 transition-all animate-pulse"
+                className="inline-flex items-center gap-2 rounded-full border border-rose-500/40 bg-rose-500/20 px-8 py-3.5 text-sm font-bold text-rose-300 hover:bg-rose-500/30 transition-all animate-pulse"
               >
-                <Square className="h-5 w-5 fill-current" />
-                Finish Drive & Populate Form
+                <Square className="h-4 w-4 fill-current" />
+                <span>Finish Drive & Populate Form</span>
               </button>
             )}
           </div>
@@ -463,16 +467,16 @@ export default function NewTripPage() {
 
       {/* Tab 1: Comprehensive Trip Form */}
       {activeTab === 'manual' && (
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400">
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-300">
               {error}
             </div>
           )}
 
           {/* Vehicle Selection Card */}
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-5">
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+          <div className="visionos-window p-6">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">
               1. Select Vehicle
             </label>
             {vehicles.length === 0 ? (
@@ -488,20 +492,20 @@ export default function NewTripPage() {
                   <div
                     key={v.id}
                     onClick={() => setSelectedVehicleId(v.id)}
-                    className={`cursor-pointer rounded-lg border p-3.5 transition-all ${
+                    className={`cursor-pointer rounded-2xl border p-4 transition-all ${
                       selectedVehicleId === v.id
-                        ? 'border-emerald-500 bg-emerald-500/10 text-white'
-                        : 'border-[#1f2e45] bg-[#090d16] text-gray-300 hover:border-gray-600'
+                        ? 'border-emerald-400 bg-emerald-500/15 text-white ring-1 ring-emerald-400/30 shadow-md'
+                        : 'border-white/[0.08] bg-white/[0.03] text-slate-300 hover:bg-white/[0.06]'
                     }`}
                   >
                     <div className="flex justify-between items-start">
                       <span className="font-semibold text-sm">{v.name}</span>
-                      <span className="text-[10px] font-mono text-gray-400 uppercase">
+                      <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full uppercase">
                         {v.fuelType}
                       </span>
                     </div>
-                    <div className="mt-2 text-xs text-gray-400 flex justify-between">
-                      <span>M₀: {v.m0} km/L</span>
+                    <div className="mt-3 text-xs text-slate-400 flex justify-between border-t border-white/[0.06] pt-2">
+                      <span>M₀: <strong className="text-white font-mono">{v.m0} km/L</strong></span>
                       <span>{v.tripCount} trips logged</span>
                     </div>
                   </div>
@@ -511,26 +515,26 @@ export default function NewTripPage() {
           </div>
 
           {/* Route & Distance Card */}
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-5 space-y-4">
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider">
+          <div className="visionos-window p-6 space-y-4">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
               2. Route & Measured Consumptions
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Trip / Route Name</label>
+                <label className="block text-xs text-slate-400 mb-1">Trip / Route Name</label>
                 <input
                   type="text"
                   required
                   value={tripName}
                   onChange={(e) => setTripName(e.target.value)}
                   placeholder="e.g. Pune Highway Expressway"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Distance (km)</label>
+                <label className="block text-xs text-slate-400 mb-1">Distance (km)</label>
                 <input
                   type="number"
                   step="0.1"
@@ -540,12 +544,12 @@ export default function NewTripPage() {
                   onChange={(e) =>
                     setDistanceKm(e.target.value === '' ? '' : Number(e.target.value))
                   }
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-emerald-400 focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input font-mono text-emerald-400"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">
+                <label className="block text-xs text-slate-400 mb-1">
                   Actual Fuel Used (Litres)
                 </label>
                 <input
@@ -558,48 +562,50 @@ export default function NewTripPage() {
                     setFuelUsedLitres(e.target.value === '' ? '' : Number(e.target.value))
                   }
                   placeholder="From tank-to-tank pump receipt"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-cyan-300 focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input font-mono text-cyan-300"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Origin (Optional)</label>
+                <label className="block text-xs text-slate-400 mb-1">Origin (Optional)</label>
                 <input
                   type="text"
                   value={origin}
                   onChange={(e) => setOrigin(e.target.value)}
                   placeholder="Mumbai"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Destination (Optional)</label>
+                <label className="block text-xs text-slate-400 mb-1">Destination (Optional)</label>
                 <input
                   type="text"
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
                   placeholder="Pune"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input"
                 />
               </div>
             </div>
           </div>
 
           {/* Driving Parameters Card */}
-          <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-5 space-y-4">
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider">
+          <div className="visionos-window p-6 space-y-4">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
               3. Driving Parameters & Route Factors
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* Average Speed */}
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Average Speed (V)</span>
-                  <span className="text-white font-mono">{avgSpeedKmh || 0} km/h</span>
+                <div className="flex justify-between text-xs mb-1.5">
+                  <span className="text-slate-400">Average Speed (V)</span>
+                  <span className="text-white font-mono font-bold bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full text-[10px]">
+                    {avgSpeedKmh || 0} km/h
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -608,15 +614,15 @@ export default function NewTripPage() {
                   step="5"
                   value={avgSpeedKmh || 50}
                   onChange={(e) => setAvgSpeedKmh(Number(e.target.value))}
-                  className="w-full accent-emerald-500"
+                  className="w-full slider-cyan"
                 />
               </div>
 
               {/* Traffic Intensity */}
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Traffic Level (T)</span>
-                  <span className="text-amber-400 font-mono">
+                <div className="flex justify-between text-xs mb-1.5">
+                  <span className="text-slate-400">Traffic Level (T)</span>
+                  <span className="text-amber-300 font-mono font-bold bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full text-[10px]">
                     {(trafficIntensity * 100).toFixed(0)}%
                   </span>
                 </div>
@@ -627,16 +633,16 @@ export default function NewTripPage() {
                   step="0.05"
                   value={trafficIntensity}
                   onChange={(e) => setTrafficIntensity(Number(e.target.value))}
-                  className="w-full accent-amber-500"
+                  className="w-full slider-amber"
                 />
               </div>
 
               {/* Load Ratio */}
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Load (L)</span>
-                  <span className="text-blue-400 font-mono">
-                    {(loadRatio * 100).toFixed(0)}% rated
+                <div className="flex justify-between text-xs mb-1.5">
+                  <span className="text-slate-400">Payload Load (L)</span>
+                  <span className="text-blue-300 font-mono font-bold bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full text-[10px]">
+                    {(loadRatio * 100).toFixed(0)}%
                   </span>
                 </div>
                 <input
@@ -646,61 +652,61 @@ export default function NewTripPage() {
                   step="0.05"
                   value={loadRatio}
                   onChange={(e) => setLoadRatio(Number(e.target.value))}
-                  className="w-full accent-blue-500"
+                  className="w-full slider-purple"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 pt-2">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Hard Accel Events</label>
+                <label className="block text-xs text-slate-400 mb-1">Hard Accel Events</label>
                 <input
                   type="number"
                   min="0"
                   value={hardAccelEvents}
                   onChange={(e) => setHardAccelEvents(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Hard Brake Events</label>
+                <label className="block text-xs text-slate-400 mb-1">Hard Brake Events</label>
                 <input
                   type="number"
                   min="0"
                   value={hardBrakeEvents}
                   onChange={(e) => setHardBrakeEvents(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Road Gradient (%)</label>
+                <label className="block text-xs text-slate-400 mb-1">Road Gradient (%)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={gradientPercent}
                   onChange={(e) => setGradientPercent(Number(e.target.value))}
                   placeholder="0.0"
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Idle Time (min)</label>
+                <label className="block text-xs text-slate-400 mb-1">Idle Time (min)</label>
                 <input
                   type="number"
                   step="1"
                   min="0"
                   value={idleMinutes}
                   onChange={(e) => setIdleMinutes(Number(e.target.value))}
-                  className="w-full rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-white focus:border-emerald-500 focus:outline-none"
+                  className="w-full visionos-input font-mono"
                 />
               </div>
             </div>
 
             <div className="pt-2">
-              <label className="block text-xs text-gray-400 mb-1">
+              <label className="block text-xs text-slate-400 mb-1">
                 Fuel Price (₹/Litre at time of trip)
               </label>
               <input
@@ -709,37 +715,38 @@ export default function NewTripPage() {
                 min="10"
                 value={fuelPricePerLitre}
                 onChange={(e) => setFuelPricePerLitre(Number(e.target.value))}
-                className="w-48 rounded-lg border border-[#1f2e45] bg-[#090d16] px-3 py-2 text-xs font-mono text-yellow-300 focus:border-emerald-500 focus:outline-none"
+                className="w-48 visionos-input font-mono text-amber-300"
               />
             </div>
           </div>
 
           {/* Model Prediction Live Comparison Callout */}
           {previewPrediction && fuelUsedLitres !== '' && Number(fuelUsedLitres) > 0 && (
-            <div className="rounded-xl border border-[#1f2e45] bg-[#0b101b] p-4 text-xs">
-              <span className="font-semibold text-gray-300 block mb-2">
-                Live Calculation Comparison
+            <div className="visionos-window p-5">
+              <span className="font-semibold text-slate-200 block mb-3 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                <Compass className="h-4 w-4 text-emerald-400" />
+                Live Telemetry vs Model Prediction
               </span>
               <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <span className="text-gray-500 block">Actual Fuel Entered</span>
-                  <span className="text-white font-mono font-bold text-sm">
+                <div className="visionos-panel p-3 text-center">
+                  <span className="text-slate-400 block text-[10px] font-medium">Actual Measured</span>
+                  <span className="text-white font-mono font-bold text-base mt-1 block">
                     {Number(fuelUsedLitres).toFixed(2)} L
                   </span>
                 </div>
-                <div>
-                  <span className="text-gray-500 block">Model Predicted</span>
-                  <span className="text-emerald-400 font-mono font-bold text-sm">
+                <div className="visionos-panel p-3 text-center">
+                  <span className="text-slate-400 block text-[10px] font-medium">Model Predicted</span>
+                  <span className="text-emerald-400 font-mono font-bold text-base mt-1 block">
                     {previewPrediction.totalFuelLiters.toFixed(2)} L
                   </span>
                 </div>
-                <div>
-                  <span className="text-gray-500 block">Difference</span>
+                <div className="visionos-panel p-3 text-center">
+                  <span className="text-slate-400 block text-[10px] font-medium">Residual Difference</span>
                   <span
-                    className={`font-mono font-bold text-sm ${
+                    className={`font-mono font-bold text-base mt-1 block ${
                       Math.abs(Number(fuelUsedLitres) - previewPrediction.totalFuelLiters) < 0.3
                         ? 'text-emerald-400'
-                        : 'text-amber-400'
+                        : 'text-amber-300'
                     }`}
                   >
                     {(Number(fuelUsedLitres) - previewPrediction.totalFuelLiters).toFixed(2)} L
@@ -752,10 +759,10 @@ export default function NewTripPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all disabled:opacity-50"
+            className="visionos-pill-btn-primary w-full py-3.5 text-center justify-center text-sm font-semibold disabled:opacity-50"
           >
             <PlusCircle className="h-4 w-4" />
-            {submitting ? 'Recording Trip & Evaluating OLS...' : 'Save Trip to Database'}
+            <span>{submitting ? 'Recording Trip & Evaluating OLS...' : 'Save Journey to Database'}</span>
           </button>
         </form>
       )}

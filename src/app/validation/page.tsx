@@ -2,15 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  CheckCircle2,
-  TrendingUp,
-  AlertTriangle,
-  Layers,
-  Database,
-  ShieldCheck,
+  Sparkles,
   BarChart3,
-  Car,
-  Filter,
 } from 'lucide-react';
 import {
   ScatterChart,
@@ -20,7 +13,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Line,
   BarChart,
   Bar,
   ReferenceLine,
@@ -63,7 +55,7 @@ export default function ValidationPage() {
       .catch(console.error);
   }, []);
 
-  const loadData = () => {
+  const loadData = React.useCallback(() => {
     setLoading(true);
     const query = selectedVehicleId ? `?vehicleId=${selectedVehicleId}` : '';
     fetch(`/api/validation${query}`)
@@ -71,11 +63,11 @@ export default function ValidationPage() {
       .then((resData) => setData(resData))
       .catch(console.error)
       .finally(() => setLoading(false));
-  };
+  }, [selectedVehicleId]);
 
   useEffect(() => {
     loadData();
-  }, [selectedVehicleId]);
+  }, [loadData]);
 
   // Compute domain max for 45-degree reference line
   const maxFuel = React.useMemo(() => {
@@ -88,112 +80,119 @@ export default function ValidationPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      {/* Title */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2e45] pb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-mono font-semibold text-emerald-400 border border-emerald-500/20">
-              EMPIRICAL VALIDATION
-            </span>
+      {/* visionOS Window Header */}
+      <div className="visionos-window p-6 sm:p-8 mb-8">
+        <div className="visionos-grab-bar" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/12 border border-emerald-400/25 px-3 py-0.5 text-[11px] font-semibold text-emerald-300">
+                <Sparkles className="h-3 w-3" />
+                visionOS Empirical Validation Engine
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
+              <BarChart3 className="h-7 w-7 text-emerald-400" />
+              Predicted vs Actual Accuracy Audit
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm text-slate-400">
+              Audit actual pump fuel readings against model estimations across individual journey data points.
+            </p>
           </div>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white">
-            Predicted vs Actual Model Accuracy
-          </h1>
-          <p className="mt-1 text-sm text-gray-400">
-            Real data scatter analysis comparing actual pump-measured fuel against formula predictions.
-          </p>
-        </div>
 
-        {vehicles.length > 0 && (
-          <div className="w-full sm:w-64">
-            <label className="block text-[11px] text-gray-400 mb-1">Filter by Vehicle</label>
-            <select
-              value={selectedVehicleId}
-              onChange={(e) => setSelectedVehicleId(e.target.value)}
-              className="w-full rounded-lg border border-[#1f2e45] bg-[#111827] px-3 py-2 text-xs text-white focus:border-emerald-500 focus:outline-none"
-            >
-              <option value="">All Fleet Vehicles</option>
-              {vehicles.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+          {vehicles.length > 0 && (
+            <div className="w-full sm:w-64">
+              <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                Filter Fleet
+              </label>
+              <select
+                value={selectedVehicleId}
+                onChange={(e) => setSelectedVehicleId(e.target.value)}
+                className="w-full visionos-input text-xs cursor-pointer"
+              >
+                <option value="" className="bg-[#0b101d] text-white">All Fleet Vehicles</option>
+                {vehicles.map((v) => (
+                  <option key={v.id} value={v.id} className="bg-[#0b101d] text-white">
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
       </div>
 
       {loading || !data ? (
-        <div className="py-20 text-center font-mono text-xs text-gray-400">
+        <div className="py-24 text-center font-mono text-xs text-slate-400">
           Calculating statistical correlation from stored trip records...
         </div>
       ) : data.tripsCount === 0 ? (
-        <div className="mt-12 rounded-xl border border-dashed border-[#1f2e45] p-12 text-center text-gray-400">
+        <div className="visionos-window p-16 text-center text-slate-400">
           No trip logs with actual fuel available for validation.{' '}
-          <a href="/trips/new" className="text-emerald-400 underline">
+          <a href="/trips/new" className="text-emerald-400 underline ml-1">
             Log your first trip now.
           </a>
         </div>
       ) : (
-        <div className="mt-8 space-y-8">
+        <div className="space-y-8">
           {/* Top Metric Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Overall R² Correlation</span>
-              <span className="text-3xl font-extrabold text-emerald-400 font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Overall R² Correlation</span>
+              <span className="text-3xl font-extrabold text-emerald-400 glow-green font-mono mt-1 block">
                 {data.metrics.rSquared.toFixed(3)}
               </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">
+              <span className="text-[10px] text-slate-500 block mt-1">
                 Closer to 1.0 = higher accuracy
               </span>
             </div>
 
-            <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Mean Absolute Error (MAE)</span>
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Mean Absolute Error (MAE)</span>
               <div className="mt-1 flex items-baseline justify-center gap-1">
                 <span className="text-3xl font-extrabold text-cyan-300 font-mono">
                   {data.metrics.mae.toFixed(2)}
                 </span>
-                <span className="text-xs text-gray-400 font-mono">L</span>
+                <span className="text-xs text-slate-400 font-mono">L</span>
               </div>
-              <span className="text-[10px] text-gray-500 block">
+              <span className="text-[10px] text-slate-500 block mt-1">
                 Avg deviation per trip
               </span>
             </div>
 
-            <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Mean Abs Pct Error (MAPE)</span>
-              <span className="text-3xl font-extrabold text-amber-300 font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Mean Abs % Error (MAPE)</span>
+              <span className="text-3xl font-extrabold text-amber-300 font-mono mt-1 block">
                 {data.metrics.mape.toFixed(1)}%
               </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">
+              <span className="text-[10px] text-slate-500 block mt-1">
                 Average percentage error
               </span>
             </div>
 
-            <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4 text-center">
-              <span className="text-xs text-gray-400 block">Validated Trips</span>
-              <span className="text-3xl font-extrabold text-white font-mono">
+            <div className="visionos-panel p-4 text-center">
+              <span className="text-xs text-slate-400 block font-medium">Validated Trips</span>
+              <span className="text-3xl font-extrabold text-white font-mono mt-1 block">
                 {data.tripsCount}
               </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">
+              <span className="text-[10px] text-slate-500 block mt-1">
                 Total real trips in dataset
               </span>
             </div>
           </div>
 
           {/* Scatter Plot: Predicted vs Actual */}
-          <div className="rounded-2xl border border-[#1f2e45] bg-[#111827] p-6 shadow-xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1f2e45] pb-4">
+          <div className="visionos-window p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-lg font-bold text-white">
-                  Predicted vs Actual Scatter Analysis
+                  Predicted vs Actual Scatter Correlation
                 </h3>
-                <p className="text-xs text-gray-400">
-                  Each dot represents one real trip. Points falling along the dashed 45° green line reflect high model precision.
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Points along the 45° green diagonal line reflect high physical model alignment.
                 </p>
               </div>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 self-start sm:self-auto">
+              <span className="text-xs font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-400/25 self-start sm:self-auto">
                 Diagonal = Perfect Fit (Y = X)
               </span>
             </div>
@@ -201,19 +200,19 @@ export default function ValidationPage() {
             <div className="mt-6 h-96 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart margin={{ top: 20, right: 30, bottom: 25, left: 10 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1f2e45" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                   <XAxis
                     type="number"
                     dataKey="predictedFuelLitres"
                     name="Predicted Fuel"
                     unit=" L"
-                    stroke="#9ca3af"
+                    stroke="#94a3b8"
                     domain={[0, maxFuel]}
                     label={{
                       value: 'Predicted Fuel (Litres)',
                       position: 'insideBottom',
                       offset: -15,
-                      fill: '#9ca3af',
+                      fill: '#94a3b8',
                       fontSize: 12,
                     }}
                   />
@@ -222,13 +221,13 @@ export default function ValidationPage() {
                     dataKey="actualFuelLitres"
                     name="Actual Fuel"
                     unit=" L"
-                    stroke="#9ca3af"
+                    stroke="#94a3b8"
                     domain={[0, maxFuel]}
                     label={{
                       value: 'Actual Fuel (Litres)',
                       angle: -90,
                       position: 'insideLeft',
-                      fill: '#9ca3af',
+                      fill: '#94a3b8',
                       fontSize: 12,
                     }}
                   />
@@ -238,20 +237,24 @@ export default function ValidationPage() {
                       if (active && payload && payload.length) {
                         const pt = payload[0].payload as ScatterPoint;
                         return (
-                          <div className="rounded-lg border border-[#1f2e45] bg-[#090d16] p-3 text-xs text-gray-200 shadow-xl font-mono">
-                            <p className="font-bold text-white font-sans">{pt.tripName}</p>
-                            <p className="text-[11px] text-gray-400">{pt.vehicleName} • {pt.date}</p>
-                            <div className="mt-2 space-y-1">
-                              <p className="text-cyan-300">
-                                Actual Fuel: <strong>{pt.actualFuelLitres.toFixed(2)} L</strong>
-                              </p>
-                              <p className="text-emerald-400">
-                                Predicted: <strong>{pt.predictedFuelLitres.toFixed(2)} L</strong>
-                              </p>
-                              <p className="text-amber-300">
-                                Error: <strong>{pt.errorLitres > 0 ? `+${pt.errorLitres.toFixed(2)}` : pt.errorLitres.toFixed(2)} L ({pt.absPctError.toFixed(1)}%)</strong>
-                              </p>
-                              <p className="text-gray-400">Distance: {pt.distanceKm.toFixed(1)} km</p>
+                          <div className="visionos-window p-3 text-xs shadow-xl min-w-[200px]">
+                            <span className="font-bold text-white block mb-1">{pt.tripName}</span>
+                            <span className="text-slate-400 text-[10px] block mb-2">{pt.vehicleName} · {pt.distanceKm} km</span>
+                            <div className="space-y-1 font-mono text-[11px]">
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">Actual:</span>
+                                <span className="text-white font-bold">{pt.actualFuelLitres.toFixed(2)} L</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">Predicted:</span>
+                                <span className="text-emerald-400 font-bold">{pt.predictedFuelLitres.toFixed(2)} L</span>
+                              </div>
+                              <div className="flex justify-between border-t border-white/[0.08] pt-1">
+                                <span className="text-slate-400">Error:</span>
+                                <span className={Math.abs(pt.errorLitres) < 0.3 ? 'text-emerald-400' : 'text-amber-300'}>
+                                  {pt.errorLitres > 0 ? `+${pt.errorLitres.toFixed(2)}` : pt.errorLitres.toFixed(2)} L ({pt.absPctError.toFixed(1)}%)
+                                </span>
+                              </div>
                             </div>
                           </div>
                         );
@@ -259,23 +262,17 @@ export default function ValidationPage() {
                       return null;
                     }}
                   />
-                  {/* 45-degree reference line */}
                   <ReferenceLine
-                    segment={[
-                      { x: 0, y: 0 },
-                      { x: maxFuel, y: maxFuel },
-                    ]}
+                    segment={[{ x: 0, y: 0 }, { x: maxFuel, y: maxFuel }]}
                     stroke="#10b981"
-                    strokeDasharray="4 4"
                     strokeWidth={2}
+                    strokeDasharray="4 4"
                   />
                   <Scatter
-                    name="Trip Logs"
+                    name="Trips"
                     data={data.points}
-                    fill="#06b6d4"
-                    fillOpacity={0.8}
-                    stroke="#22d3ee"
-                    strokeWidth={1}
+                    fill="#34d399"
+                    shape="circle"
                   />
                 </ScatterChart>
               </ResponsiveContainer>
@@ -284,45 +281,61 @@ export default function ValidationPage() {
 
           {/* Residuals Distribution Histogram */}
           {data.residualsHistogram && data.residualsHistogram.length > 0 && (
-            <div className="rounded-2xl border border-[#1f2e45] bg-[#111827] p-6 shadow-xl">
-              <h3 className="text-lg font-bold text-white">Prediction Residuals Distribution</h3>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Frequency count of error margins (Actual − Predicted in Litres). Centered around 0.0 indicates unbiased calibration.
-              </p>
+            <div className="visionos-window p-6 sm:p-8">
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-white">Residuals Error Distribution</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Distribution of prediction errors (Actual - Predicted). Gaussian bell distribution centered around 0L confirms un-biased regression.
+                  </p>
+                </div>
+                <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-400/25">
+                  Mean Error: {data.metrics.meanError.toFixed(2)} L
+                </span>
+              </div>
 
-              <div className="mt-6 h-64 w-full">
+              <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={data.residualsHistogram}
-                    margin={{ top: 10, right: 30, left: 10, bottom: 20 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1f2e45" />
+                  <BarChart data={data.residualsHistogram} margin={{ top: 15, right: 30, left: 10, bottom: 25 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                     <XAxis
                       dataKey="label"
-                      stroke="#9ca3af"
+                      stroke="#94a3b8"
                       fontSize={11}
                       label={{
-                        value: 'Error Margin (Litres)',
+                        value: 'Error Interval (Litres)',
                         position: 'insideBottom',
                         offset: -12,
-                        fill: '#9ca3af',
+                        fill: '#94a3b8',
+                        fontSize: 12,
                       }}
                     />
-                    <YAxis stroke="#9ca3af" fontSize={11} allowDecimals={false} />
+                    <YAxis
+                      stroke="#94a3b8"
+                      fontSize={11}
+                      label={{
+                        value: 'Trip Count',
+                        angle: -90,
+                        position: 'insideLeft',
+                        fill: '#94a3b8',
+                        fontSize: 12,
+                      }}
+                    />
                     <Tooltip
                       content={({ active, payload }) => {
                         if (active && payload && payload.length) {
-                          const item = payload[0].payload;
+                          const bin = payload[0].payload;
                           return (
-                            <div className="rounded-lg border border-[#1f2e45] bg-[#090d16] p-2 text-xs text-white font-mono">
-                              <span>{item.label}: <strong>{item.count} trips</strong></span>
+                            <div className="visionos-window p-2.5 text-xs">
+                              <span className="text-slate-400 block font-medium">Bin: {bin.label}</span>
+                              <span className="font-mono text-emerald-400 font-bold mt-0.5 block">{bin.count} Trips</span>
                             </div>
                           );
                         }
                         return null;
                       }}
                     />
-                    <Bar dataKey="count" fill="#10b981" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="count" fill="#22d3ee" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

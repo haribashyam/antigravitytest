@@ -6,14 +6,8 @@ import {
   History,
   Download,
   Search,
-  Filter,
-  Car,
-  Fuel,
-  TrendingDown,
-  TrendingUp,
   PlusCircle,
-  Calendar,
-  Layers,
+  Sparkles,
 } from 'lucide-react';
 import { DataSourceBadge } from '@/components/Badges';
 
@@ -60,7 +54,7 @@ export default function TripHistoryPage() {
       .catch(console.error);
   }, []);
 
-  const fetchTrips = () => {
+  const fetchTrips = React.useCallback(() => {
     setLoading(true);
     const query = new URLSearchParams();
     if (selectedVehicleId) query.set('vehicleId', selectedVehicleId);
@@ -71,216 +65,171 @@ export default function TripHistoryPage() {
       .then((data) => setTrips(data.trips || []))
       .catch(console.error)
       .finally(() => setLoading(false));
-  };
+  }, [selectedVehicleId, search]);
 
   useEffect(() => {
     fetchTrips();
-  }, [selectedVehicleId, search]);
+  }, [fetchTrips]);
 
   const handleExportCsv = () => {
     const query = selectedVehicleId ? `?vehicleId=${selectedVehicleId}` : '';
     window.location.href = `/api/trips/export${query}`;
   };
 
-  // Aggregate stats
   const totalDistance = trips.reduce((sum, t) => sum + t.distanceKm, 0);
   const totalFuel = trips.reduce((sum, t) => sum + t.fuelUsedLitres, 0);
-  const totalCost = trips.reduce((sum, t) => sum + t.actualCost, 0);
   const avgMileage = totalFuel > 0 ? totalDistance / totalFuel : 0;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2e45] pb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-mono font-semibold text-emerald-400 border border-emerald-500/20">
-              PERSISTENT DATABASE LOGS
-            </span>
+      {/* visionOS Window Header */}
+      <div className="visionos-window p-6 sm:p-8 mb-8">
+        <div className="visionos-grab-bar" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/12 border border-emerald-400/25 px-3 py-0.5 text-[11px] font-semibold text-emerald-300">
+                <Sparkles className="h-3 w-3" />
+                visionOS Telemetry Logs
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
+              <History className="h-7 w-7 text-emerald-400" />
+              Journey History & Ingestion Log
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm text-slate-400">
+              Audit recorded journeys against model predictions to evaluate accuracy residuals and regression convergence.
+            </p>
           </div>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white">
-            Historical Trip Ledger
-          </h1>
-          <p className="mt-1 text-sm text-gray-400">
-            Real trip records with actual vs predicted fuel use, telemetry parameters, and CSV export.
-          </p>
-        </div>
 
-        <div className="flex items-center gap-3 self-start sm:self-auto">
-          <button
-            onClick={handleExportCsv}
-            disabled={trips.length === 0}
-            className="flex items-center gap-2 rounded-lg border border-[#1f2e45] bg-[#111827] px-4 py-2.5 text-xs font-semibold text-gray-300 hover:bg-[#1a2333] hover:text-white transition-all disabled:opacity-50"
-          >
-            <Download className="h-4 w-4" />
-            Export CSV
-          </button>
-          <Link
-            href="/trips/new"
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all"
-          >
-            <PlusCircle className="h-4 w-4" />
-            Log Trip
-          </Link>
-        </div>
-      </div>
-
-      {/* Aggregate Stats Summary Cards */}
-      <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4">
-          <span className="text-xs text-gray-400">Total Trips Logged</span>
-          <span className="mt-1 block text-2xl font-bold text-white font-mono">
-            {trips.length}
-          </span>
-        </div>
-
-        <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4">
-          <span className="text-xs text-gray-400">Total Distance</span>
-          <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-emerald-400 font-mono">
-              {totalDistance.toFixed(1)}
-            </span>
-            <span className="text-xs text-gray-400 font-mono">km</span>
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4">
-          <span className="text-xs text-gray-400">Actual Fuel Burned</span>
-          <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-cyan-300 font-mono">
-              {totalFuel.toFixed(1)}
-            </span>
-            <span className="text-xs text-gray-400 font-mono">L</span>
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-[#1f2e45] bg-[#111827] p-4">
-          <span className="text-xs text-gray-400">Average Real Mileage</span>
-          <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-amber-300 font-mono">
-              {avgMileage.toFixed(1)}
-            </span>
-            <span className="text-xs text-gray-400 font-mono">km/L</span>
+          <div className="flex items-center gap-2.5 self-start sm:self-auto">
+            <button
+              onClick={handleExportCsv}
+              disabled={trips.length === 0}
+              className="visionos-pill-btn py-2 px-3.5 text-xs font-medium disabled:opacity-40"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span>Export CSV</span>
+            </button>
+            <Link
+              href="/trips/new"
+              className="visionos-pill-btn-primary py-2 px-4 text-xs font-semibold"
+            >
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span>Log Trip</span>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="mt-6 flex flex-col sm:flex-row gap-3">
+      {/* Stats Summary in visionOS Panels */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <StatCard label="Total Trips" value={trips.length.toString()} />
+        <StatCard label="Distance Covered" value={`${totalDistance.toFixed(0)} km`} accent="emerald" />
+        <StatCard label="Fuel Used" value={`${totalFuel.toFixed(1)} L`} accent="cyan" />
+        <StatCard label="Avg. Mileage" value={`${avgMileage.toFixed(1)} km/L`} accent="amber" />
+      </div>
+
+      {/* Search & Filter */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="relative flex-1">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <Search className="h-4 w-4 text-gray-500" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <Search className="h-4 w-4 text-slate-400" />
           </div>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by trip name, origin, or destination..."
-            className="w-full rounded-lg border border-[#1f2e45] bg-[#111827] py-2 pl-9 pr-3 text-xs text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+            placeholder="Search trips by name or location..."
+            className="w-full visionos-input pl-10 text-xs"
           />
         </div>
 
         {vehicles.length > 0 && (
-          <div className="w-full sm:w-64">
-            <select
-              value={selectedVehicleId}
-              onChange={(e) => setSelectedVehicleId(e.target.value)}
-              className="w-full rounded-lg border border-[#1f2e45] bg-[#111827] py-2 px-3 text-xs text-white focus:border-emerald-500 focus:outline-none"
-            >
-              <option value="">All Vehicles</option>
-              {vehicles.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={selectedVehicleId}
+            onChange={(e) => setSelectedVehicleId(e.target.value)}
+            className="w-full sm:w-60 visionos-input text-xs cursor-pointer"
+          >
+            <option value="" className="bg-[#0b101d] text-white">All Vehicles</option>
+            {vehicles.map((v) => (
+              <option key={v.id} value={v.id} className="bg-[#0b101d] text-white">{v.name}</option>
+            ))}
+          </select>
         )}
       </div>
 
-      {/* Trips Table */}
-      <div className="mt-6 overflow-hidden rounded-xl border border-[#1f2e45] bg-[#111827] shadow-xl">
+      {/* Trips Table in visionOS Window Frame */}
+      <div className="visionos-window overflow-hidden p-0 shadow-2xl">
         {loading ? (
-          <div className="py-20 text-center text-xs font-mono text-gray-400">
-            Querying trip logs from database...
-          </div>
+          <div className="py-20 text-center text-xs text-slate-400 font-mono">Loading trips telemetry...</div>
         ) : trips.length === 0 ? (
-          <div className="py-16 text-center text-gray-400 text-xs">
-            No matching trips found in database.
+          <div className="py-20 text-center p-6">
+            <History className="mx-auto h-10 w-10 text-slate-600 mb-3" />
+            <p className="text-xs text-slate-400">No journeys logged yet. Record your first trip to initiate calibration.</p>
+            <Link href="/trips/new" className="mt-4 inline-flex items-center gap-2 visionos-pill-btn-primary py-2 px-4 text-xs font-semibold">
+              <PlusCircle className="h-3.5 w-3.5" /> Log First Journey
+            </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-[#1f2e45] bg-[#090d16] font-mono text-gray-400 uppercase text-[11px]">
+              <thead className="border-b border-white/[0.08] bg-white/[0.03] text-[11px] text-slate-400 uppercase tracking-wider">
                 <tr>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Trip Route / Name</th>
-                  <th className="py-3 px-4">Vehicle</th>
-                  <th className="py-3 px-4">Distance (km)</th>
-                  <th className="py-3 px-4">Speed</th>
-                  <th className="py-3 px-4">Actual (L)</th>
-                  <th className="py-3 px-4">Predicted (L)</th>
-                  <th className="py-3 px-4">Delta Error</th>
-                  <th className="py-3 px-4">Cost</th>
-                  <th className="py-3 px-4">Source</th>
+                  <th className="py-4 px-4 font-semibold">Date</th>
+                  <th className="py-4 px-4 font-semibold">Trip</th>
+                  <th className="py-4 px-4 font-semibold">Vehicle</th>
+                  <th className="py-4 px-4 font-semibold">Distance</th>
+                  <th className="py-4 px-4 font-semibold">Speed</th>
+                  <th className="py-4 px-4 font-semibold">Actual</th>
+                  <th className="py-4 px-4 font-semibold">Predicted</th>
+                  <th className="py-4 px-4 font-semibold">Residual Error</th>
+                  <th className="py-4 px-4 font-semibold">Expense</th>
+                  <th className="py-4 px-4 font-semibold">Source</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1f2e45] text-gray-300 font-mono">
+              <tbody className="divide-y divide-white/[0.04]">
                 {trips.map((t) => {
-                  const error =
-                    t.predictedFuelLitres != null
-                      ? t.fuelUsedLitres - t.predictedFuelLitres
-                      : null;
-                  const pctError =
-                    error != null && t.fuelUsedLitres > 0
-                      ? (Math.abs(error) / t.fuelUsedLitres) * 100
-                      : null;
+                  const error = t.predictedFuelLitres != null ? t.fuelUsedLitres - t.predictedFuelLitres : null;
+                  const pctError = error != null && t.fuelUsedLitres > 0 ? (Math.abs(error) / t.fuelUsedLitres) * 100 : null;
 
                   return (
-                    <tr key={t.id} className="hover:bg-[#162032] transition-colors">
-                      <td className="py-3 px-4 text-gray-400 whitespace-nowrap">
+                    <tr key={t.id} className="hover:bg-white/[0.04] transition-colors">
+                      <td className="py-3.5 px-4 text-slate-400 whitespace-nowrap">
                         {new Date(t.date).toLocaleDateString()}
                       </td>
-                      <td className="py-3 px-4 font-sans font-medium text-white max-w-[200px] truncate">
+                      <td className="py-3.5 px-4 font-medium text-white max-w-[180px] truncate">
                         {t.tripName}
                       </td>
-                      <td className="py-3 px-4 font-sans text-gray-300 whitespace-nowrap">
+                      <td className="py-3.5 px-4 text-slate-400 whitespace-nowrap">
                         {t.vehicle?.name}
                       </td>
-                      <td className="py-3 px-4 font-bold text-emerald-400">
+                      <td className="py-3.5 px-4 font-mono font-medium text-emerald-400">
                         {t.distanceKm.toFixed(1)} km
                       </td>
-                      <td className="py-3 px-4 text-gray-300">
+                      <td className="py-3.5 px-4 font-mono text-slate-300">
                         {t.avgSpeedKmh.toFixed(0)} km/h
                       </td>
-                      <td className="py-3 px-4 font-bold text-white">
+                      <td className="py-3.5 px-4 font-mono font-medium text-white">
                         {t.fuelUsedLitres.toFixed(2)} L
                       </td>
-                      <td className="py-3 px-4 text-gray-400">
-                        {t.predictedFuelLitres != null
-                          ? `${t.predictedFuelLitres.toFixed(2)} L`
-                          : 'N/A'}
+                      <td className="py-3.5 px-4 font-mono text-slate-400">
+                        {t.predictedFuelLitres != null ? `${t.predictedFuelLitres.toFixed(2)} L` : '—'}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4">
                         {error != null ? (
-                          <span
-                            className={`inline-flex items-center gap-1 ${
-                              Math.abs(error) < 0.25 ? 'text-emerald-400' : 'text-amber-400'
-                            }`}
-                          >
+                          <span className={`inline-flex items-center gap-1 font-mono font-semibold ${Math.abs(error) < 0.25 ? 'text-emerald-400' : 'text-amber-300'}`}>
                             {error > 0 ? `+${error.toFixed(2)}` : error.toFixed(2)} L
-                            <span className="text-[10px] text-gray-500">
+                            <span className="text-[10px] text-slate-500 font-normal">
                               ({pctError?.toFixed(1)}%)
                             </span>
                           </span>
-                        ) : (
-                          'N/A'
-                        )}
+                        ) : '—'}
                       </td>
-                      <td className="py-3 px-4 font-bold text-emerald-400 whitespace-nowrap">
-                        ₹{t.actualCost.toFixed(2)}
+                      <td className="py-3.5 px-4 font-mono font-medium text-emerald-400 whitespace-nowrap">
+                        ₹{t.actualCost.toFixed(0)}
                       </td>
-                      <td className="py-3 px-4 whitespace-nowrap">
+                      <td className="py-3.5 px-4 whitespace-nowrap">
                         <DataSourceBadge source={t.dataSource} />
                       </td>
                     </tr>
@@ -291,6 +240,22 @@ export default function TripHistoryPage() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value, accent }: { label: string; value: string; accent?: string }) {
+  const colors: Record<string, string> = {
+    emerald: 'text-emerald-400 glow-green',
+    cyan: 'text-cyan-300 glow-cyan',
+    amber: 'text-amber-300',
+  };
+  return (
+    <div className="visionos-panel p-4">
+      <span className="text-[11px] text-slate-400 font-medium block">{label}</span>
+      <span className={`mt-1 block text-2xl font-bold font-mono ${accent ? colors[accent] : 'text-white'}`}>
+        {value}
+      </span>
     </div>
   );
 }
