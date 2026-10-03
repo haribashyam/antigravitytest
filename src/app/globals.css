@@ -60,6 +60,147 @@ html {
   color-scheme: dark;
 }
 
+html.light, [data-theme='light'] {
+  color-scheme: light;
+  --bg-primary: #f4f5f8;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-hover: rgba(244, 245, 248, 0.95);
+
+  --visionos-glass: rgba(255, 255, 255, 0.82);
+  --visionos-glass-elevated: rgba(255, 255, 255, 0.95);
+  --visionos-glass-subtle: rgba(0, 0, 0, 0.04);
+  --visionos-glass-hover: rgba(0, 0, 0, 0.08);
+  --visionos-border-specular: rgba(0, 0, 0, 0.12);
+  --visionos-border-subtle: rgba(0, 0, 0, 0.08);
+  --visionos-specular-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+
+  --nothing-black: #ffffff;
+  --nothing-surface: #f3f4f6;
+  --nothing-elevated: #e5e7eb;
+  --nothing-white: #0a0a0c;
+  --nothing-light-gray: #1f2937;
+  --nothing-gray: #4b5563;
+  --nothing-border: rgba(0, 0, 0, 0.12);
+  --nothing-dot-dim: rgba(0, 0, 0, 0.08);
+  --nothing-dot-active: #090a0f;
+
+  --text-primary: #090a0f;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+}
+
+html.light body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html.light .bg-dot-matrix {
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.12) 1.5px, transparent 1.5px);
+}
+
+html.light .bg-dot-matrix-fine {
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+}
+
+html.light .visionos-ornament,
+html.light .visionos-window {
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: #090a0f !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+html.light .visionos-panel {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #090a0f !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+html.light .nothing-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #090a0f !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+html.light .text-white {
+  color: #090a0f !important;
+}
+
+html.light .text-zinc-300,
+html.light .text-zinc-400,
+html.light .text-slate-300,
+html.light .text-slate-400 {
+  color: #374151 !important;
+}
+
+html.light .text-zinc-500,
+html.light .text-slate-500 {
+  color: #6b7280 !important;
+}
+
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/\[0\.08\],
+html.light .border-white\/\[0\.1\],
+html.light .border-white\/\[0\.12\],
+html.light .border-white\/\[0\.14\] {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .bg-black\/40,
+html.light .bg-black\/60,
+html.light .bg-black\/70,
+html.light .bg-black\/80 {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+}
+
+html.light .bg-white\/\[0\.04\],
+html.light .bg-white\/\[0\.05\],
+html.light .bg-white\/\[0\.06\],
+html.light .bg-white\/\[0\.08\] {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Light mode button contrast protections */
+html.light .visionos-pill-btn-primary,
+html.light .visionos-pill-btn-primary * {
+  color: #ffffff !important;
+}
+
+html.light .visionos-pill-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #090a0f !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.9), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .visionos-pill-btn:hover {
+  background: rgba(0, 0, 0, 0.1) !important;
+  color: #000000 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+html.light .macos-menu-bar {
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: #090a0f !important;
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .macos-menu-bar a,
+html.light .macos-menu-bar span {
+  color: #374151;
+}
+
+html.light .macos-menu-bar .text-slate-200,
+html.light .macos-menu-bar .text-slate-300,
+html.light .macos-menu-bar .text-slate-400 {
+  color: #4b5563 !important;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);

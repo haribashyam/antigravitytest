@@ -113,36 +113,54 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col">
-      {/* ═══════════ HERO SECTION (FLOATING OVER GLOBAL PATTERNWAVES) ═══════════ */}
-      <section className="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32">
+      {/* ═══════════ HERO SECTION (AESTHETIC CENTERPIECE OVER PATTERNWAVES) ═══════════ */}
+      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
+        {/* Soft Ambient Radial Aura matching the WebGL fluid wave surface */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.14)_0%,rgba(255,255,255,0.03)_35%,transparent_70%)] blur-3xl pointer-events-none -z-10" />
+
         <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center">
           <div className="animate-fade-in-up">
-            {/* Nothing OS / VisionOS Pill Tag */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-black/60 border border-white/15 backdrop-blur-xl px-4 py-1.5 text-xs font-mono text-zinc-300 mb-8 shadow-lg shadow-black/40">
-              <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse shadow-sm shadow-red-500/80" />
-              <span>NOTHING OS 2.0 • FULL-SCREEN FLUID MATRIX</span>
+            {/* Aesthetic Telemetry HUD Pill */}
+            <div className="inline-flex items-center gap-2.5 rounded-full bg-black/60 border border-white/20 backdrop-blur-2xl px-4 py-1.5 text-xs font-mono text-zinc-200 mb-8 shadow-2xl shadow-red-950/20 group cursor-default">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500 shadow-[0_0_8px_#ff2a34]" />
+              </span>
+              <span className="tracking-wider uppercase font-semibold text-zinc-300">
+                LIVE FLUID TELEMETRY
+              </span>
+              <span className="text-zinc-600 font-bold">•</span>
+              <span className="text-red-400 font-semibold tracking-widest text-[10.5px]">
+                60 FPS WEBGL2 WAKE
+              </span>
             </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl leading-[1.08] font-nothing">
+            {/* Architectural Cinematic Headline */}
+            <h1 className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-6xl md:text-7xl lg:text-8xl leading-[1.04] font-nothing">
               Know your real
-              <br />
-              <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-                fuel costs
+              <span className="block mt-1 bg-gradient-to-r from-zinc-950 via-zinc-800 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400 bg-clip-text text-transparent drop-shadow-sm">
+                fuel costs<span className="text-red-500 font-mono inline-block animate-pulse ml-0.5">.</span>
               </span>
-              <span className="text-red-500">.</span>
-              <br />
-              before you drive.
+              <span className="block text-2xl sm:text-4xl md:text-5xl font-light text-zinc-600 dark:text-zinc-400 mt-3 tracking-tight font-sans">
+                Before you turn the ignition.
+              </span>
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-base text-zinc-300/90 sm:text-lg leading-relaxed font-normal">
-              Automotive-grade journey fuel predictions calibrated directly against your vehicle&apos;s real driving telemetry. 
-              Zero guesswork, grounded in fluid dynamics and OLS regression.
-            </p>
+            {/* Aesthetic Frosted Glassmorphism Value Card */}
+            <div className="mx-auto mt-8 max-w-2xl px-7 py-5 rounded-3xl bg-white/75 dark:bg-black/50 border border-black/10 dark:border-white/10 backdrop-blur-2xl shadow-xl dark:shadow-2xl relative overflow-hidden bg-dot-matrix-fine group hover:border-black/20 dark:hover:border-white/20 transition-all">
+              {/* Top specular accent line */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
+              <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-200/90 leading-relaxed font-normal">
+                Automotive-grade journey fuel predictions calibrated directly against your vehicle&apos;s physical telemetry.
+                Zero guesswork — governed by quadratic aerodynamic drag ($V^2$), topography incline, and OLS regression.
+              </p>
+            </div>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            {/* Primary Action Buttons */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
               <Link
                 href="/plan"
-                className="visionos-pill-btn-primary py-3 px-6 text-sm"
+                className="visionos-pill-btn-primary py-3.5 px-7 text-sm font-semibold tracking-wide shadow-xl shadow-red-600/25"
               >
                 <Navigation className="h-4 w-4" />
                 <span>Plan a Spatial Journey</span>
@@ -150,29 +168,34 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/trips/new"
-                className="visionos-pill-btn py-3 px-6 text-sm"
+                className="visionos-pill-btn py-3.5 px-6 text-sm font-semibold tracking-wide text-zinc-800 dark:text-white"
               >
-                <Fuel className="h-4 w-4 text-red-400" />
+                <Fuel className="h-4 w-4 text-red-500" />
                 <span>Log Driving Telemetry</span>
               </Link>
             </div>
 
-            {/* Nothing OS 2.0 Industrial Telemetry Chips */}
+            {/* Central Interactive Telemetry Deck */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 border border-white/10 text-xs font-mono text-zinc-300 backdrop-blur-md">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                <span className="text-zinc-500">ENGINE:</span>
-                <span className="text-white font-bold">OLS PHYSICS KERNEL</span>
+                <span className="text-zinc-400 dark:text-zinc-500">PHYSICS:</span>
+                <span className="font-bold text-zinc-950 dark:text-white">QUADRATIC V² DRAG</span>
               </div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 border border-white/10 text-xs font-mono text-zinc-300 backdrop-blur-md">
-                <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                <span className="text-zinc-500">TELEMETRY:</span>
-                <span className="text-white font-bold">DOT-MATRIX HYBRID</span>
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-700 dark:bg-white" />
+                <span className="text-zinc-400 dark:text-zinc-500">REGRESSION:</span>
+                <span className="font-bold text-zinc-950 dark:text-white">OLS CALIBRATED</span>
               </div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 border border-white/10 text-xs font-mono text-zinc-300 backdrop-blur-md">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400" />
+                <span className="text-zinc-400 dark:text-zinc-500">PRECISION:</span>
+                <span className="font-bold text-zinc-950 dark:text-white">±0.2 LITRE MAE</span>
+              </div>
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                <span className="text-zinc-500">SURFACE:</span>
-                <span className="text-white font-bold">60 FPS WEBGL2 WAKE</span>
+                <span className="text-zinc-400 dark:text-zinc-500">SURFACE:</span>
+                <span className="font-bold text-zinc-950 dark:text-white">CLICK TO SHOCKWAVE</span>
               </div>
             </div>
           </div>

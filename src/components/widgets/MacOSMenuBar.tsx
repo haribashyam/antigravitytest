@@ -24,11 +24,13 @@ export const MacOSMenuBar: React.FC = () => {
     <header className="macos-menu-bar w-full h-9 px-4 flex items-center justify-between z-50 select-none border-b border-white/[0.08] relative">
       {/* Left Menu Items */}
       <div className="flex items-center gap-4 text-xs font-medium">
-        <Link href="/" className="flex items-center gap-1.5 text-white hover:text-emerald-400 transition-colors">
-          <svg className="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
-          <span className="font-bold tracking-tight">FuelWise</span>
+        <Link href="/" className="flex items-center gap-2 group transition-colors">
+          <div className="flex items-center justify-center w-4 h-4 rounded-md bg-zinc-950 border border-white/20 shadow-sm group-hover:border-red-500/50 transition-colors">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_#ff2a34] animate-pulse" />
+          </div>
+          <span className="font-bold tracking-tight text-white group-hover:text-red-400 font-nothing transition-colors">
+            FuelWise
+          </span>
         </Link>
         <span className="text-white/20">/</span>
         <div className="hidden lg:flex items-center gap-3 text-slate-300 text-[11px] font-mono">

@@ -3,6 +3,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import { MacOSMenuBar } from '@/components/widgets/MacOSMenuBar';
 import { GlobalPatternWaves } from '@/components/PatternWaves/GlobalPatternWaves';
+import { BrandLogo } from '@/components/BrandLogo';
 
 export const metadata: Metadata = {
   title: 'FuelWise — Know Your Real Fuel Costs Before You Drive',
@@ -57,13 +58,8 @@ export default function RootLayout({
                 {/* Brand */}
                 <div>
                   <div className="flex items-center gap-2.5">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 shadow-md shadow-emerald-500/25">
-                      <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <span className="font-bold text-white text-sm tracking-tight">FuelWise</span>
-                    <span className="text-[10px] font-medium text-emerald-400/80 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                    <BrandLogo size="sm" showSubtitle={false} href="/" />
+                    <span className="text-[10px] font-medium text-red-400/90 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-mono">
                       visionOS 2
                     </span>
                   </div>

@@ -16,6 +16,8 @@ import {
   X,
   Sparkles,
 } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
+import { ThemeToggle } from './ThemeToggle';
 
 interface UserData {
   id: string;
@@ -63,19 +65,8 @@ export default function Navbar() {
     <header className="sticky top-3 z-50 px-3 sm:px-6 w-full">
       {/* visionOS 2 Floating Pill Ornament */}
       <div className="visionos-ornament mx-auto max-w-7xl px-3 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between transition-all">
-        {/* Brand Identity */}
-        <Link href="/" className="flex items-center gap-2.5 group pl-1">
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-rose-600 shadow-md shadow-red-500/30 group-hover:scale-105 group-hover:shadow-red-500/60 transition-all">
-            <Fuel className="h-4 w-4 text-white" />
-            <div className="absolute inset-0 rounded-full border border-white/40 pointer-events-none" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold tracking-tight text-white text-[15px] leading-tight font-nothing">FuelWise</span>
-            <span className="hidden xl:inline text-[9px] text-red-400 font-mono tracking-wider uppercase font-semibold">
-              Nothing OS • Spatial
-            </span>
-          </div>
-        </Link>
+        {/* Aesthetic Brand Logo Identity */}
+        <BrandLogo size="md" href="/" />
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-1 bg-white/[0.04] p-1 rounded-full border border-white/[0.08]">
@@ -99,40 +90,45 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right Actions */}
-        <div className="hidden sm:flex items-center gap-2">
-          {user ? (
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.12] px-3 py-1.5 text-xs">
-                <div className="h-2 w-2 rounded-full bg-red-500 shadow-sm shadow-red-500/80 animate-pulse" />
-                <span className="font-medium text-white max-w-[110px] truncate">{user.name}</span>
+        {/* Right Actions & Theme Switcher */}
+        <div className="flex items-center gap-2">
+          {/* Light / Dark Mode Toggle with ⌘D shortcut */}
+          <ThemeToggle />
+
+          <div className="hidden sm:flex items-center gap-2">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.12] px-3 py-1.5 text-xs">
+                  <div className="h-2 w-2 rounded-full bg-red-500 shadow-sm shadow-red-500/80 animate-pulse" />
+                  <span className="font-medium text-white max-w-[110px] truncate">{user.name}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="visionos-pill-btn py-1.5 px-3 text-xs text-rose-300 hover:text-rose-200 hover:border-rose-400/30"
+                  title="Sign Out"
+                >
+                  <LogOut className="h-3 w-3" />
+                  <span className="hidden md:inline">Sign Out</span>
+                </button>
               </div>
-              <button
-                onClick={handleLogout}
-                className="visionos-pill-btn py-1.5 px-3 text-xs text-rose-300 hover:text-rose-200 hover:border-rose-400/30"
-                title="Sign Out"
-              >
-                <LogOut className="h-3 w-3" />
-                <span className="hidden md:inline">Sign Out</span>
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5">
-              <Link
-                href="/login"
-                className="visionos-pill-btn text-xs px-3.5 py-1.5"
-              >
-                Log In
-              </Link>
-              <Link
-                href="/signup"
-                className="visionos-pill-btn-primary text-xs px-4 py-1.5"
-              >
-                <Sparkles className="h-3 w-3" />
-                <span>Get Started</span>
-              </Link>
-            </div>
-          )}
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <Link
+                  href="/login"
+                  className="visionos-pill-btn text-xs px-3.5 py-1.5"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="visionos-pill-btn-primary text-xs px-4 py-1.5"
+                >
+                  <Sparkles className="h-3 w-3" />
+                  <span>Get Started</span>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Mobile menu trigger */}
@@ -173,6 +169,10 @@ export default function Navbar() {
             })}
 
             <div className="mt-3 pt-3 border-t border-white/[0.1] flex flex-col gap-2">
+              <div className="flex items-center justify-between pb-1">
+                <span className="text-xs font-mono text-zinc-400">INTERFACE THEME</span>
+                <ThemeToggle />
+              </div>
               {user ? (
                 <>
                   <div className="flex items-center justify-between text-xs text-slate-300 py-1.5 px-3 rounded-xl bg-white/[0.04]">
