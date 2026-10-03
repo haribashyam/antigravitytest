@@ -430,6 +430,7 @@ export interface PatternWavesProps {
   scale?: number;
   direction?: number;
   color?: string;
+  accentColor?: string;
   backgroundColor?: string;
   opacity?: number;
   fade?: 'edges' | 'center' | 'bottom' | 'top' | 'none';
@@ -458,6 +459,7 @@ export const PatternWaves: React.FC<PatternWavesProps> = ({
   scale,
   direction,
   color = '#ffffff',
+  accentColor,
   backgroundColor = '#000000',
   opacity = 1,
   fade = 'edges',
@@ -481,9 +483,10 @@ export const PatternWaves: React.FC<PatternWavesProps> = ({
   const colors = useMemo(
     () => ({
       color: parseColor(color, [1, 1, 1, 1]),
+      accent: accentColor ? parseColor(accentColor, [1, 0.16, 0.2, 1]) : null,
       background: parseColor(backgroundColor, [0, 0, 0, 1])
     }),
-    [color, backgroundColor]
+    [color, accentColor, backgroundColor]
   );
 
   useEffect(() => {
@@ -811,7 +814,9 @@ export const PatternWaves: React.FC<PatternWavesProps> = ({
       const tint = ink ? 0 : 1;
       const blend = ink ? 0.35 : 0.55;
       markUniforms.uColor.value = s.color.slice(0, 3);
-      markUniforms.uAccent.value = s.color.slice(0, 3).map((channel: number) => channel + (tint - channel) * blend);
+      markUniforms.uAccent.value = s.accent
+        ? s.accent.slice(0, 3)
+        : s.color.slice(0, 3).map((channel: number) => channel + (tint - channel) * blend);
       markUniforms.uBackground.value = background;
       renderer.render({ scene: markMesh });
       dirty = false;
@@ -850,7 +855,7 @@ export const PatternWaves: React.FC<PatternWavesProps> = ({
         pointer.lastX = spot.x;
         pointer.lastY = spot.y;
       }
-      pointer.burst = 1.2;
+      pointer.burst = 2.4;
       start();
     };
 

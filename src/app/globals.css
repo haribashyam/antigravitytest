@@ -2,15 +2,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Core spatial background */
-  --bg-primary: #060913;
-  --bg-secondary: #0a0f1d;
-  --bg-card: rgba(18, 24, 40, 0.55);
-  --bg-card-hover: rgba(26, 35, 58, 0.7);
+  /* Core spatial background - Pure Pitch Black */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: rgba(18, 18, 18, 0.65);
+  --bg-card-hover: rgba(28, 28, 28, 0.8);
 
   /* visionOS 2 Material and Glass Variables */
-  --visionos-glass: rgba(20, 26, 44, 0.52);
-  --visionos-glass-elevated: rgba(25, 34, 58, 0.68);
+  --visionos-glass: rgba(14, 14, 14, 0.62);
+  --visionos-glass-elevated: rgba(22, 22, 22, 0.78);
   --visionos-glass-subtle: rgba(255, 255, 255, 0.04);
   --visionos-glass-hover: rgba(255, 255, 255, 0.08);
   --visionos-border-specular: rgba(255, 255, 255, 0.16);
@@ -406,7 +406,7 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* visionOS Primary Luminous Action Button */
+/* visionOS Primary Luminous Action Button (Nothing Red & Crisp White) */
 .visionos-pill-btn-primary {
   display: inline-flex;
   align-items: center;
@@ -417,22 +417,22 @@ body {
   font-size: 0.8125rem;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, rgba(52, 211, 153, 0.9), rgba(16, 185, 129, 0.98));
+  background: linear-gradient(135deg, #ff2a34 0%, #d71921 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow:
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.6),
-    0 12px 30px -6px rgba(16, 185, 129, 0.45);
+    0 12px 28px -6px rgba(229, 9, 20, 0.55);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
 .visionos-pill-btn-primary:hover {
-  background: linear-gradient(135deg, rgba(52, 211, 153, 1), rgba(16, 185, 129, 1));
+  background: linear-gradient(135deg, #ff414a 0%, #e50914 100%);
   box-shadow:
     inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.8),
-    0 16px 36px -4px rgba(16, 185, 129, 0.6);
+    0 16px 36px -4px rgba(229, 9, 20, 0.75);
   transform: translateY(-1.5px) scale(1.02);
 }
 

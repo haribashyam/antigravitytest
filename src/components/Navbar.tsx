@@ -65,14 +65,14 @@ export default function Navbar() {
       <div className="visionos-ornament mx-auto max-w-7xl px-3 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between transition-all">
         {/* Brand Identity */}
         <Link href="/" className="flex items-center gap-2.5 group pl-1">
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 shadow-md shadow-emerald-500/30 group-hover:scale-105 group-hover:shadow-emerald-400/50 transition-all">
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-rose-600 shadow-md shadow-red-500/30 group-hover:scale-105 group-hover:shadow-red-500/60 transition-all">
             <Fuel className="h-4 w-4 text-white" />
             <div className="absolute inset-0 rounded-full border border-white/40 pointer-events-none" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold tracking-tight text-white text-[15px] leading-tight">FuelWise</span>
-            <span className="hidden xl:inline text-[9px] text-emerald-400/80 font-medium tracking-wider uppercase">
-              visionOS Spatial
+            <span className="font-bold tracking-tight text-white text-[15px] leading-tight font-nothing">FuelWise</span>
+            <span className="hidden xl:inline text-[9px] text-red-400 font-mono tracking-wider uppercase font-semibold">
+              Nothing OS • Spatial
             </span>
           </div>
         </Link>
@@ -88,11 +88,11 @@ export default function Navbar() {
                 href={link.href}
                 className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-white/20 text-white shadow-sm shadow-black/30 border border-white/25'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                    ? 'bg-white/15 text-white shadow-sm shadow-black/40 border border-red-500/40 text-red-200'
+                    : 'text-zinc-300 hover:text-white hover:bg-white/[0.08]'
                 }`}
               >
-                <Icon className="h-3.5 w-3.5" />
+                <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-red-400' : ''}`} />
                 <span>{link.label}</span>
               </Link>
             );
@@ -104,7 +104,7 @@ export default function Navbar() {
           {user ? (
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.12] px-3 py-1.5 text-xs">
-                <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60 animate-pulse" />
+                <div className="h-2 w-2 rounded-full bg-red-500 shadow-sm shadow-red-500/80 animate-pulse" />
                 <span className="font-medium text-white max-w-[110px] truncate">{user.name}</span>
               </div>
               <button

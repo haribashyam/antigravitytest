@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import { MacOSMenuBar } from '@/components/widgets/MacOSMenuBar';
+import { GlobalPatternWaves } from '@/components/PatternWaves/GlobalPatternWaves';
 
 export const metadata: Metadata = {
   title: 'FuelWise — Know Your Real Fuel Costs Before You Drive',
@@ -32,20 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-[#060913] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500/25 selection:text-emerald-200 relative">
-        {/* ═══════════ visionOS Spatial Environment Ambient Light Blooms ═══════════ */}
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-          {/* Top subtle aurora bloom */}
-          <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-gradient-to-b from-emerald-500/[0.12] via-teal-500/[0.06] to-transparent blur-[120px] rounded-full" />
-          {/* Cyan side light */}
-          <div className="absolute top-[25%] -left-[15%] w-[650px] h-[650px] bg-cyan-500/[0.06] blur-[140px] rounded-full" />
-          {/* Deep indigo / purple spatial depth orb */}
-          <div className="absolute top-[45%] -right-[15%] w-[700px] h-[700px] bg-indigo-500/[0.07] blur-[150px] rounded-full" />
-          {/* Bottom subtle glow */}
-          <div className="absolute -bottom-[20%] left-1/3 w-[850px] h-[550px] bg-emerald-500/[0.05] blur-[130px] rounded-full" />
-          {/* Subtle noise/mesh overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
-        </div>
+      <body className="bg-[#000000] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-red-500/30 selection:text-red-100 relative">
+        {/* ═══════════ Global Full-Screen PatternWaves (Every nook, corner, side & click) ═══════════ */}
+        <GlobalPatternWaves />
 
         {/* macOS 27 Desktop Status Menu Bar (with embedded Dynamic Island notch) */}
         <MacOSMenuBar />

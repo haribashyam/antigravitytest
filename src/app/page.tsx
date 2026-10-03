@@ -34,15 +34,14 @@ import { NothingPhoneMockup } from '@/components/widgets/NothingPhoneMockup';
 import PatternWaves from '@/components/PatternWaves/PatternWaves';
 
 export default function LandingPage() {
-  // PatternWaves Presets and Showcase State
-  const [heroWavePreset, setHeroWavePreset] = useState<'silk' | 'ocean' | 'pond' | 'lines' | 'terminal' | 'mesh'>('silk');
+  // PatternWaves Presets and Showcase State (Black, Grey, Red & White)
   const [showcasePreset, setShowcasePreset] = useState<'silk' | 'ocean' | 'pond' | 'lines' | 'terminal' | 'mesh'>('silk');
-  const [showcaseColor, setShowcaseColor] = useState('#34d399');
+  const [showcaseColor, setShowcaseColor] = useState('#ffffff');
   const [showcaseBg, setShowcaseBg] = useState('#000000');
   const [showcaseFade, setShowcaseFade] = useState<'edges' | 'center' | 'bottom' | 'top' | 'none'>('edges');
   const [showcaseInteractive, setShowcaseInteractive] = useState(true);
-  const [showcaseCursorStrength, setShowcaseCursorStrength] = useState(0.6);
-  const [showcaseCursorSize, setShowcaseCursorSize] = useState(50);
+  const [showcaseCursorStrength, setShowcaseCursorStrength] = useState(0.7);
+  const [showcaseCursorSize, setShowcaseCursorSize] = useState(60);
   const [showcasePaused, setShowcasePaused] = useState(false);
 
   // Interactive Calculator State
@@ -112,44 +111,28 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col">
-      {/* ═══════════ HERO SECTION WITH PATTERNWAVES BACKGROUND ═══════════ */}
-      <section className="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32 min-h-[580px]">
-        {/* PatternWaves interactive WebGL background from React Bits */}
-        <div className="absolute inset-0 z-0 pointer-events-auto opacity-75">
-          <PatternWaves
-            preset={heroWavePreset}
-            color="#34d399"
-            backgroundColor="transparent"
-            fade="edges"
-            fadeSize={0.65}
-            interactive={true}
-            cursorSize={60}
-            cursorStrength={0.55}
-            speed={0.28}
-          />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center pointer-events-none">
-          <div className="animate-fade-in-up pointer-events-auto">
-            {/* visionOS Spatial pill tag */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.18] backdrop-blur-xl px-4 py-1.5 text-xs font-medium text-emerald-300 mb-8 shadow-lg shadow-black/20"
-                 style={{ boxShadow: 'inset 0 1px 0.5px rgba(255, 255, 255, 0.35)' }}>
-              <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-              <span>visionOS 2 Spatial Telemetry & Physical OLS Calibration</span>
+      {/* ═══════════ HERO SECTION (FLOATING OVER GLOBAL PATTERNWAVES) ═══════════ */}
+      <section className="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32">
+        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center">
+          <div className="animate-fade-in-up">
+            {/* Nothing OS / VisionOS Pill Tag */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-black/60 border border-white/15 backdrop-blur-xl px-4 py-1.5 text-xs font-mono text-zinc-300 mb-8 shadow-lg shadow-black/40">
+              <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse shadow-sm shadow-red-500/80" />
+              <span>NOTHING OS 2.0 • FULL-SCREEN FLUID MATRIX</span>
             </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl leading-[1.08]">
+            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl leading-[1.08] font-nothing">
               Know your real
               <br />
-              <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
                 fuel costs
               </span>
-              {' '}before
+              <span className="text-red-500">.</span>
               <br />
-              you drive.
+              before you drive.
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-base text-slate-300/90 sm:text-lg leading-relaxed font-normal">
+            <p className="mx-auto mt-6 max-w-2xl text-base text-zinc-300/90 sm:text-lg leading-relaxed font-normal">
               Automotive-grade journey fuel predictions calibrated directly against your vehicle&apos;s real driving telemetry. 
               Zero guesswork, grounded in fluid dynamics and OLS regression.
             </p>
@@ -167,31 +150,9 @@ export default function LandingPage() {
                 href="/trips/new"
                 className="visionos-pill-btn py-3 px-6 text-sm"
               >
-                <Fuel className="h-4 w-4 text-emerald-400" />
+                <Fuel className="h-4 w-4 text-red-400" />
                 <span>Log Driving Telemetry</span>
               </Link>
-            </div>
-
-            {/* Fluid Wave Preset Selector Chips */}
-            <div className="mt-8 inline-flex items-center gap-1.5 p-1 rounded-full bg-black/50 border border-white/10 backdrop-blur-xl text-xs">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 px-2.5 flex items-center gap-1.5">
-                <Waves className="h-3 w-3 text-emerald-400" />
-                Surface Wave:
-              </span>
-              {(['silk', 'ocean', 'pond', 'lines', 'terminal', 'mesh'] as const).map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => setHeroWavePreset(p)}
-                  className={`px-2.5 py-1 rounded-full transition-all capitalize font-mono text-[11px] ${
-                    heroWavePreset === p
-                      ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40 shadow-sm'
-                      : 'text-slate-400 hover:text-white hover:bg-white/[0.05]'
-                  }`}
-                >
-                  {p}
-                </button>
-              ))}
             </div>
           </div>
         </div>
@@ -561,16 +522,16 @@ export default function LandingPage() {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-6 border-b border-white/[0.08]">
               <div>
                 <div className="flex items-center gap-2">
-                  <Waves className="h-5 w-5 text-emerald-400" />
-                  <h2 className="text-xl font-bold text-white tracking-tight sm:text-2xl">
+                  <Waves className="h-5 w-5 text-red-500" />
+                  <h2 className="text-xl font-bold text-white tracking-tight sm:text-2xl font-nothing">
                     &lt;PatternWaves /&gt; Fluid Surface
                   </h2>
-                  <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-bold">
-                    React Bits
+                  <span className="text-[10px] font-mono uppercase bg-red-500/10 text-red-400 border border-red-500/25 px-2.5 py-0.5 rounded-full font-bold">
+                    Nothing OS • React Bits
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-                  Interactive fluid dynamics shader modeling aerodynamic boundary layer turbulence. Move or click your cursor across the surface to cast interactive wakes, ripples, and specular glints.
+                <p className="text-xs text-zinc-400 mt-1 max-w-2xl font-mono">
+                  GLSL 3.00 ES fluid simulation in Black, Grey, Red & White. Move or click anywhere to send shockwave ripples and fiery red specular glints across the dot matrix surface.
                 </p>
               </div>
 
@@ -579,10 +540,10 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setShowcasePaused(!showcasePaused)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium border flex items-center gap-1.5 transition-all ${
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono border flex items-center gap-1.5 transition-all ${
                     showcasePaused
                       ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
-                      : 'bg-white/[0.05] text-slate-300 border-white/[0.1] hover:bg-white/[0.1]'
+                      : 'bg-white/[0.05] text-zinc-300 border-white/[0.1] hover:bg-white/[0.1]'
                   }`}
                 >
                   {showcasePaused ? '▶ Resume Surface' : '⏸ Pause Surface'}
@@ -590,13 +551,13 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setShowcaseInteractive(!showcaseInteractive)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono border transition-all ${
                     showcaseInteractive
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
-                      : 'bg-white/[0.05] text-slate-400 border-white/[0.1]'
+                      ? 'bg-red-500/20 text-red-300 border-red-500/40 shadow-sm shadow-red-500/20'
+                      : 'bg-white/[0.05] text-zinc-400 border-white/[0.1]'
                   }`}
                 >
-                  {showcaseInteractive ? 'Cursor Ripples: Active' : 'Cursor Ripples: Off'}
+                  {showcaseInteractive ? 'Cursor & Click Shockwave: ON' : 'Cursor Shockwave: OFF'}
                 </button>
               </div>
             </div>
@@ -605,7 +566,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               {/* Presets */}
               <div className="visionos-panel p-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-2 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-bold">
                   Surface Preset
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -616,8 +577,8 @@ export default function LandingPage() {
                       onClick={() => setShowcasePreset(p)}
                       className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
                         showcasePreset === p
-                          ? 'bg-emerald-500 text-slate-950 font-semibold shadow-sm shadow-emerald-500/25'
-                          : 'bg-white/[0.05] text-slate-300 hover:bg-white/[0.1] border border-white/[0.05]'
+                          ? 'bg-red-600 text-white font-semibold shadow-sm shadow-red-600/40 border border-red-400'
+                          : 'bg-white/[0.05] text-zinc-300 hover:bg-white/[0.1] border border-white/[0.05]'
                       }`}
                     >
                       {p}
@@ -628,28 +589,28 @@ export default function LandingPage() {
 
               {/* Color Tints */}
               <div className="visionos-panel p-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-2 font-bold">
-                  Color Accent
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-bold">
+                  Mark Color Accent
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    { name: 'Fuel Emerald', hex: '#34d399' },
                     { name: 'Pure White', hex: '#ffffff' },
-                    { name: 'Aero Cyan', hex: '#38bdf8' },
-                    { name: 'Exhaust Amber', hex: '#fbbf24' },
-                    { name: 'Nothing Red', hex: '#ef4444' },
+                    { name: 'Silver Grey', hex: '#d4d4d8' },
+                    { name: 'Nothing Red', hex: '#ff2a34' },
+                    { name: 'Mid Grey', hex: '#71717a' },
+                    { name: 'Deep Crimson', hex: '#dc2626' },
                   ].map((c) => (
                     <button
                       key={c.name}
                       type="button"
                       onClick={() => setShowcaseColor(c.hex)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border ${
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border font-mono ${
                         showcaseColor === c.hex
-                          ? 'border-white text-white bg-white/[0.1]'
-                          : 'border-white/[0.06] text-slate-400 hover:text-white bg-white/[0.03]'
+                          ? 'border-red-500 text-white bg-red-500/10'
+                          : 'border-white/[0.06] text-zinc-400 hover:text-white bg-white/[0.03]'
                       }`}
                     >
-                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: c.hex }} />
+                      <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: c.hex }} />
                       <span>{c.name}</span>
                     </button>
                   ))}
@@ -658,7 +619,7 @@ export default function LandingPage() {
 
               {/* Edge Vignette */}
               <div className="visionos-panel p-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-2 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-bold">
                   Fade Vignette
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -669,8 +630,8 @@ export default function LandingPage() {
                       onClick={() => setShowcaseFade(f)}
                       className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
                         showcaseFade === f
-                          ? 'bg-white text-slate-950 font-semibold'
-                          : 'bg-white/[0.05] text-slate-300 hover:bg-white/[0.1] border border-white/[0.05]'
+                          ? 'bg-white text-black font-semibold'
+                          : 'bg-white/[0.05] text-zinc-300 hover:bg-white/[0.1] border border-white/[0.05]'
                       }`}
                     >
                       {f}
@@ -682,12 +643,13 @@ export default function LandingPage() {
 
             {/* Exactly 600px height container as specified by React Bits */}
             <div
-              className="rounded-2xl overflow-hidden border border-white/[0.12] shadow-2xl relative bg-black"
+              className="rounded-2xl overflow-hidden border border-white/[0.14] shadow-2xl relative bg-black"
               style={{ width: '100%', height: '600px', position: 'relative' }}
             >
               <PatternWaves
                 preset={showcasePreset}
                 color={showcaseColor}
+                accentColor="#ff2a34"
                 backgroundColor={showcaseBg}
                 fade={showcaseFade}
                 fadeSize={0.5}
@@ -698,19 +660,19 @@ export default function LandingPage() {
               />
 
               {/* Overlay HUD indicators */}
-              <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 bg-black/70 backdrop-blur-xl border border-white/10 px-3.5 py-1.5 rounded-full shadow-lg">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                <span className="text-xs font-mono text-emerald-300 font-semibold">
+              <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 bg-black/80 backdrop-blur-xl border border-red-500/30 px-3.5 py-1.5 rounded-full shadow-lg">
+                <span className="h-2 w-2 rounded-full bg-red-500 animate-ping" />
+                <span className="text-xs font-mono text-red-400 font-semibold">
                   SURFACE: {showcasePreset.toUpperCase()}
                 </span>
-                <span className="text-[10px] font-mono text-slate-400">
-                  • Move cursor to ripple • Click for impulse splash
+                <span className="text-[10px] font-mono text-zinc-400">
+                  • Click anywhere for red impulse burst
                 </span>
               </div>
 
-              <div className="absolute bottom-4 right-4 pointer-events-none z-10 bg-black/70 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span>React Bits &lt;PatternWaves /&gt; • ogl WebGL2</span>
+              <div className="absolute bottom-4 right-4 pointer-events-none z-10 bg-black/80 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-xl text-[11px] font-mono text-zinc-400 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                <span>React Bits &lt;PatternWaves /&gt; • Black, Grey, Red & White</span>
               </div>
             </div>
           </div>
