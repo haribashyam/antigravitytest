@@ -18,6 +18,9 @@ import {
   Sliders,
   Compass,
   Waves,
+  Target,
+  Terminal,
+  Activity,
 } from 'lucide-react';
 import {
   predictFuelConsumption,
@@ -537,6 +540,184 @@ export default function LandingPage() {
         </div>
       </div>
     </section>
+
+      {/* ═══════════ SCIENTIFIC BLUEPRINT & PURPOSE SPECIFICATION (AESTHETIC NOTE) ═══════════ */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+        <div className="visionos-window overflow-hidden relative">
+          {/* macOS 27 Desktop Chrome Header */}
+          <MacOSWindowChrome
+            title="System Manifesto • Physics Kernel & Core Purpose"
+            subtitle="Mathematical Specification • Classical Aerodynamics & Closed-Loop OLS"
+          />
+
+          <div className="p-6 sm:p-10 relative">
+            <div className="visionos-grab-bar mb-6" />
+
+            {/* Section Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-black/10 dark:border-white/[0.08]">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 px-3 py-1 text-xs font-mono text-zinc-600 dark:text-zinc-400 mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  <span>// ARCHITECTURAL BLUEPRINT</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950 dark:text-white font-nothing">
+                  What is FuelWise & How Does It Work?
+                </h2>
+                <p className="mt-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-mono max-w-2xl">
+                  A high-precision journey fuel prediction engine calibrated directly to your vehicle&apos;s physical telemetry.
+                </p>
+              </div>
+
+              {/* Status pill */}
+              <div className="flex items-center gap-2 self-start md:self-auto px-3.5 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-500 dark:text-red-400 text-xs font-mono">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                <span className="font-semibold uppercase tracking-wider text-[11px]">CALIBRATED TELEMETRY KERNEL</span>
+              </div>
+            </div>
+
+            {/* 3 Bento Cards Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Bento Card 1: Sole Purpose */}
+              <div className="visionos-panel p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-2xl pointer-events-none" />
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-red-500 font-bold">
+                      01 • SOLE PURPOSE
+                    </span>
+                    <div className="w-7 h-7 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-500">
+                      <Target className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white font-nothing tracking-tight mb-2">
+                    Eliminating Window-Sticker Fiction
+                  </h3>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                    Automakers certify fuel mileage using standardized dynamometer tests (ARAI / WLTP / EPA) under sterile indoor conditions with zero wind, flat laboratory tracks, and gentle acceleration.
+                  </p>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mt-2.5">
+                    In real life, highway speeds, ghat gradients, and city gridlock reduce actual fuel efficiency by <strong>20% to 45%</strong>. FuelWise exists to replace this guesswork with <strong>mathematical certainty</strong>, computing exact fuel litres and trip expenses before you turn the ignition.
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-black/10 dark:border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
+                  <span>ACCURACY TARGET</span>
+                  <span className="font-bold text-red-500 dark:text-red-400">±0.2 LITRES MAE</span>
+                </div>
+              </div>
+
+              {/* Bento Card 2: The Physical Equation */}
+              <div className="visionos-panel p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group lg:col-span-2">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold">
+                      02 • THE GOVERNING EQUATION
+                    </span>
+                    <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/10 text-[10px] font-mono text-zinc-300">
+                      <Terminal className="w-3 h-3 text-red-400" />
+                      <span>PHYSICS KERNEL</span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white font-nothing tracking-tight mb-2">
+                    Classical Dynamics &amp; Fluid Resistance Model
+                  </h3>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                    Rather than relying on generic averages, FuelWise predicts fuel consumption by calculating the work required to overcome five fundamental resistive physical forces:
+                  </p>
+
+                  {/* Formula Code Window */}
+                  <div className="my-4 p-4 rounded-2xl bg-zinc-950 border border-white/15 text-zinc-200 font-mono text-xs shadow-inner overflow-x-auto">
+                    <div className="flex items-center justify-between text-[10px] text-zinc-500 mb-2 pb-1.5 border-b border-white/10">
+                      <span>// GENERALIZED RESISTANCE EQUATION</span>
+                      <span className="text-red-400 font-semibold">UNIT: LITRES (L)</span>
+                    </div>
+                    <div className="text-emerald-400 font-semibold whitespace-nowrap">
+                      Fuel(L) = (Distance / M₀) × [ 1 + β_v·(V/100)² + β_t·Traffic + β_l·Load + β_g·Grade ] + β_i·t_idle
+                    </div>
+                    <div className="text-zinc-400 text-[11px] mt-1.5 whitespace-nowrap">
+                      Trip Cost (₹/$) = Predicted Fuel (L) × Local Fuel Price per Litre
+                    </div>
+                  </div>
+
+                  {/* 4 Force Factors Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
+                      <div className="flex items-center gap-1.5 text-red-500 dark:text-red-400 font-semibold text-[11px] mb-1">
+                        <span>AERO DRAG (V²)</span>
+                      </div>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                        Air resistance scales quadratically with speed (Fd = ½ · ρ · Cd · A · V²). Cruising at 110 km/h consumes ~35% more fuel than at 80 km/h.
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
+                      <div className="flex items-center gap-1.5 text-purple-500 dark:text-purple-400 font-semibold text-[11px] mb-1">
+                        <span>GRAVITY &amp; INCLINE (G)</span>
+                      </div>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                        Climbing uphill demands gravitational work (W = m · g · Δh). A 4.5% mountain climb consumes over 2.4× more fuel per km than flat highway cruising.
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
+                      <div className="flex items-center gap-1.5 text-amber-500 dark:text-amber-400 font-semibold text-[11px] mb-1">
+                        <span>TRAFFIC &amp; INERTIA (T)</span>
+                      </div>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                        Braking converts kinetic energy (Ek = ½ · m · V²) into wasted heat; re-accelerating in city jams burns excessive fuel.
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
+                      <div className="flex items-center gap-1.5 text-cyan-500 dark:text-cyan-400 font-semibold text-[11px] mb-1">
+                        <span>IDLE COMBUSTION (t_idle)</span>
+                      </div>
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                        At traffic lights and stops, parasitic engine operation sustains AC compressor and electronics at 0.6–1.2 L/hr without moving distance.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom OLS Calibration Note Banner */}
+            <div className="mt-6 p-5 rounded-2xl bg-zinc-950 border border-white/15 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 keep-white shadow-xl">
+              <div className="flex items-start gap-3.5">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0 mt-0.5">
+                  <Activity className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-white font-nothing tracking-wide">
+                      Closed-Loop Machine Learning (Ordinary Least Squares)
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9.5px] font-mono text-emerald-400">
+                      β̂ = (XᵀX)⁻¹XᵀY
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-300 mt-1 max-w-3xl leading-relaxed">
+                    Every car ages differently, tyre pressures vary, and every driver has a unique throttle curve. Once you log <strong className="text-white">8 trips</strong>, FuelWise solves your vehicle&apos;s personal regression matrix with L2 regularization damping, automatically calibrating all β coefficients to your exact driving profile.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 self-end md:self-auto flex-shrink-0">
+                <Link
+                  href="/calibration"
+                  className="px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 text-xs font-mono text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  <span>Explore Calibration Engine</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-red-400" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ═══════════ HOW IT WORKS (visionOS & NOTHING OS 2.0 HYBRID) ═══════════ */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
