@@ -1,27 +1,51 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Fuel, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Fuel, Lock, Mail, ArrowRight, AlertCircle, Sparkles, CheckCircle2, User } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirect') || '/vehicles';
+  const isJustRegistered = searchParams.get('registered') === 'true';
+
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState(
+    isJustRegistered ? 'Account created successfully! Please sign in to access your garage.' : ''
+  );
   const [loading, setLoading] = useState(false);
+
+  // If already authenticated, redirect automatically
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated) {
+          router.push(redirectUrl);
+        }
+      })
+      .catch(() => {});
+  }, [redirectUrl, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     setLoading(true);
 
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          identifier: identifier.trim(),
+          email: identifier.trim(),
+          password,
+        }),
       });
 
       const data = await res.json();
@@ -29,7 +53,18 @@ export default function LoginPage() {
         throw new Error(data.error || 'Login failed');
       }
 
-      router.push('/plan');
+      // Store token and user in client storage for dual-layer authentication
+      if (data.token) {
+        try {
+          localStorage.setItem('fuelwise_token', data.token);
+          localStorage.setItem('fuelwise_user', JSON.stringify(data.user));
+        } catch {}
+      }
+
+      // Broadcast auth change event for components like Navbar
+      window.dispatchEvent(new Event('auth-state-changed'));
+
+      router.push(redirectUrl);
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'Failed to authenticate');
@@ -39,8 +74,9 @@ export default function LoginPage() {
   };
 
   const handleFillDemo = () => {
-    setEmail('demo@fuelwise.io');
+    setIdentifier('demo');
     setPassword('Password123!');
+    setError('');
   };
 
   return (
@@ -52,32 +88,40 @@ export default function LoginPage() {
 
           {/* Header */}
           <div className="text-center mb-7">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 shadow-xl shadow-emerald-500/30 mb-4">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-rose-600 shadow-xl shadow-red-500/30 mb-4">
               <Fuel className="h-6 w-6 text-white" />
             </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">Welcome back</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-white">Welcome Back</h2>
             <p className="mt-1 text-xs text-slate-400">
-              Sign in to access your calibrated fleet and trip telemetry
+              Sign in to access your personal garage, trip logs, and calibrated fuel models
             </p>
           </div>
+
+          {/* Success Banner if just registered */}
+          {successMsg && (
+            <div className="flex items-center gap-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-3.5 mb-5 text-xs text-emerald-300">
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+              <span>{successMsg}</span>
+            </div>
+          )}
 
           {/* Demo Quick Fill */}
           <div className="visionos-panel p-4 mb-6">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-300">
-                <Sparkles className="h-4 w-4 text-emerald-400" />
-                <span>Quick Demo Access</span>
+              <div className="flex items-center gap-2 text-xs font-semibold text-red-300">
+                <Sparkles className="h-4 w-4 text-red-400" />
+                <span>Instant Demo Access</span>
               </div>
               <button
                 type="button"
                 onClick={handleFillDemo}
-                className="visionos-pill-btn text-xs py-1 px-3 text-emerald-300"
+                className="visionos-pill-btn text-xs py-1 px-3 text-red-300 hover:text-white"
               >
-                Auto-fill
+                Auto-fill Demo
               </button>
             </div>
             <p className="mt-1 text-[11px] text-slate-400">
-              Pre-loaded with 14 calibrated journeys and 2 vehicle profiles.
+              Username: <code className="text-white/80">demo</code> &bull; Password: <code className="text-white/80">Password123!</code>
             </p>
           </div>
 
@@ -90,18 +134,21 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">Email</label>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                Username or Email Address
+              </label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <Mail className="h-4 w-4 text-slate-500" />
+                  <User className="h-4 w-4 text-slate-500" />
                 </div>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="e.g. demo or you@example.com"
                   className="w-full visionos-input pl-10 text-xs"
+                  autoComplete="username"
                 />
               </div>
             </div>
@@ -119,6 +166,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full visionos-input pl-10 text-xs"
+                  autoComplete="current-password"
                 />
               </div>
             </div>
@@ -128,19 +176,30 @@ export default function LoginPage() {
               disabled={loading}
               className="visionos-pill-btn-primary w-full py-3.5 text-xs font-semibold text-center justify-center mt-3 disabled:opacity-50"
             >
-              <span>{loading ? 'Authenticating...' : 'Sign In'}</span>
+              <span>{loading ? 'Signing In...' : 'Sign In'}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </form>
 
           <p className="text-center text-xs text-slate-400 mt-6 pt-4 border-t border-white/[0.08]">
-            Don&apos;t have an account?{' '}
-            <Link href="/signup" className="font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
-              Create account
+            Don&apos;t have an account yet?{' '}
+            <Link
+              href={`/signup${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
+              className="font-semibold text-red-400 hover:text-red-300 transition-colors"
+            >
+              Create Account
             </Link>
           </p>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center text-white text-xs">Loading login...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

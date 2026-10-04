@@ -19,6 +19,7 @@ import {
   TripInput,
 } from '@/lib/fuelModel';
 import { DataSourceBadge } from '@/components/Badges';
+import { authFetch } from '@/lib/apiClient';
 
 interface Vehicle {
   id: string;
@@ -76,7 +77,7 @@ export default function NewTripPage() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    fetch('/api/vehicles')
+    authFetch('/api/vehicles')
       .then((res) => res.json())
       .then((data) => {
         const vList = data.vehicles || [];
@@ -273,7 +274,7 @@ export default function NewTripPage() {
         notes: notes || undefined,
       };
 
-      const res = await fetch('/api/trips', {
+      const res = await authFetch('/api/trips', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -281,6 +282,9 @@ export default function NewTripPage() {
 
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Please sign in or create an account to log trips to your personal garage.');
+        }
         throw new Error(data.error || 'Failed to log trip');
       }
 

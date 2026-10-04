@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { verifyPassword, createSession } from '@/lib/auth';
+import { verifyPassword, createSession, SESSION_COOKIE_NAME } from '@/lib/auth';
 
 const LoginSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  identifier: z.string().optional(),
+  email: z.string().optional(),
   password: z.string().min(1, 'Password is required'),
 });
 
@@ -20,15 +21,32 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email, password } = result.data;
+    const { identifier, email, password } = result.data;
+    const loginInput = (identifier || email || '').trim();
 
-    const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+    if (!loginInput) {
+      return NextResponse.json(
+        { error: 'Please enter your email or username' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedInput = loginInput.toLowerCase();
+
+    // Query user by email, username, or display name
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: normalizedInput },
+          { username: normalizedInput },
+          { name: loginInput },
+        ],
+      },
     });
 
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'No account found matching that email or username. Please check your credentials or create an account.' },
         { status: 401 }
       );
     }
@@ -36,25 +54,33 @@ export async function POST(request: Request) {
     const isValid = await verifyPassword(password, user.passwordHash);
     if (!isValid) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid password. Please check your password and try again.' },
         { status: 401 }
       );
     }
 
-    await createSession(user.id);
+    const { token, cookieOptions } = await createSession(user.id);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
+      message: 'Logged in successfully',
       user: {
         id: user.id,
         email: user.email,
+        username: user.username,
         name: user.name,
         unitSystem: user.unitSystem,
         currency: user.currency,
         fuelPriceSource: user.fuelPriceSource,
         defaultFuelPrice: user.defaultFuelPrice,
       },
+      token,
     });
+
+    // Set cookie directly on response object for reliable delivery
+    response.cookies.set(SESSION_COOKIE_NAME, token, cookieOptions);
+
+    return response;
   } catch (err: any) {
     console.error('Login error:', err);
     return NextResponse.json(

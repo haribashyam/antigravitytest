@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import { destroySession } from '@/lib/auth';
+import { destroySession, SESSION_COOKIE_NAME } from '@/lib/auth';
 
 export async function POST() {
-  await destroySession();
-  return NextResponse.json({ success: true, message: 'Logged out successfully' });
+  const cookieOptions = await destroySession();
+  const response = NextResponse.json({ success: true, message: 'Logged out successfully' });
+  response.cookies.set(SESSION_COOKIE_NAME, '', cookieOptions);
+  return response;
 }

@@ -32,8 +32,14 @@ export default function Navbar() {
   const [user, setUser] = useState<UserData | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    fetch('/api/auth/me')
+  const checkUser = () => {
+    let headers: Record<string, string> = {};
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('fuelwise_token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    fetch('/api/auth/me', { headers })
       .then((res) => res.json())
       .then((data) => {
         if (data.authenticated && data.user) {
@@ -43,11 +49,24 @@ export default function Navbar() {
         }
       })
       .catch(() => setUser(null));
+  };
+
+  useEffect(() => {
+    checkUser();
+    window.addEventListener('auth-state-changed', checkUser);
+    return () => window.removeEventListener('auth-state-changed', checkUser);
   }, [pathname]);
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch {}
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('fuelwise_token');
+      localStorage.removeItem('fuelwise_user');
+    }
     setUser(null);
+    window.dispatchEvent(new Event('auth-state-changed'));
     router.push('/login');
     router.refresh();
   };

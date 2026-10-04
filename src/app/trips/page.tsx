@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { DataSourceBadge } from '@/components/Badges';
+import { authFetch } from '@/lib/apiClient';
 
 interface TripLog {
   id: string;
@@ -48,7 +49,7 @@ export default function TripHistoryPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/vehicles')
+    authFetch('/api/vehicles')
       .then((res) => res.json())
       .then((data) => setVehicles(data.vehicles || []))
       .catch(console.error);
@@ -60,7 +61,7 @@ export default function TripHistoryPage() {
     if (selectedVehicleId) query.set('vehicleId', selectedVehicleId);
     if (search) query.set('search', search);
 
-    fetch(`/api/trips?${query.toString()}`)
+    authFetch(`/api/trips?${query.toString()}`)
       .then((res) => res.json())
       .then((data) => setTrips(data.trips || []))
       .catch(console.error)
