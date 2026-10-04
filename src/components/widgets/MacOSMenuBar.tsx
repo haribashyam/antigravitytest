@@ -41,8 +41,8 @@ export const MacOSMenuBar: React.FC = () => {
         </div>
       </div>
 
-      {/* Center Notch: iOS 27 Dynamic Island */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-0.5 z-50">
+      {/* Center Notch: Dynamic Island Automotive HUD */}
+      <div className="absolute left-1/2 -translate-x-1/2 top-1 z-50">
         <DynamicIsland className="relative top-0 left-0 translate-x-0" />
       </div>
 
