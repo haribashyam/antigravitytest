@@ -138,7 +138,7 @@ export default function LandingPage() {
           >
             <div className="animate-fade-in-up">
               {/* Aesthetic Telemetry HUD Pill */}
-              <div className="inline-flex items-center gap-2.5 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/20 backdrop-blur-2xl px-4 py-1.5 text-xs font-mono text-zinc-900 dark:text-zinc-200 mb-8 shadow-md dark:shadow-2xl shadow-red-950/20 group cursor-default">
+              <div className="inline-flex items-center gap-2.5 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/20 backdrop-blur-2xl px-4 py-1.5 text-xs font-mono text-zinc-900 dark:text-zinc-200 mb-8 shadow-md dark:shadow-2xl shadow-red-950/20 group cursor-default">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500 shadow-[0_0_8px_#ff2a34]" />
@@ -156,7 +156,7 @@ export default function LandingPage() {
               <AntigravityTextReveal />
 
               {/* Aesthetic Frosted Glassmorphism Value Card */}
-              <div className="mx-auto mt-8 max-w-2xl px-7 py-5 rounded-3xl bg-white/90 dark:bg-black/50 border border-zinc-200 dark:border-white/10 backdrop-blur-2xl shadow-md dark:shadow-2xl relative overflow-hidden bg-dot-matrix-fine group hover:border-red-500/30 dark:hover:border-white/20 transition-all">
+              <div className="mx-auto mt-8 max-w-2xl px-7 py-5 rounded-3xl bg-white/55 dark:bg-black/50 border border-zinc-200 dark:border-white/10 backdrop-blur-2xl shadow-md dark:shadow-2xl relative overflow-hidden bg-dot-matrix-fine group hover:border-red-500/30 dark:hover:border-white/20 transition-all">
                 {/* Top specular accent line */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
                 <p className="text-sm sm:text-base text-zinc-800 dark:text-zinc-200 leading-relaxed font-semibold">
@@ -186,22 +186,22 @@ export default function LandingPage() {
 
               {/* Central Interactive Telemetry Deck */}
               <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                   <span className="text-zinc-600 dark:text-zinc-400 font-bold">PHYSICS:</span>
                   <span className="font-extrabold text-zinc-950 dark:text-white">QUADRATIC V² DRAG</span>
                 </div>
-                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-zinc-700 dark:bg-white" />
                   <span className="text-zinc-600 dark:text-zinc-400 font-bold">REGRESSION:</span>
                   <span className="font-extrabold text-zinc-950 dark:text-white">OLS CALIBRATED</span>
                 </div>
-                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400" />
                   <span className="text-zinc-600 dark:text-zinc-400 font-bold">PRECISION:</span>
                   <span className="font-extrabold text-zinc-950 dark:text-white">±0.2 LITRE MAE</span>
                 </div>
-                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                   <span className="text-zinc-600 dark:text-zinc-400 font-bold">SURFACE:</span>
                   <span className="font-extrabold text-zinc-950 dark:text-white">CLICK TO SHOCKWAVE</span>
@@ -239,7 +239,7 @@ export default function LandingPage() {
                     <h2 className="text-xl sm:text-2xl font-extrabold text-zinc-950 dark:text-white tracking-tight font-nothing">
                       Interactive Physics Simulator
                     </h2>
-                    <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">
+                    <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 backdrop-blur-md">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                       NOTHING 2.0 HYBRID COCKPIT
                     </span>
@@ -252,7 +252,7 @@ export default function LandingPage() {
             </div>
 
             {/* Quick Presets Ornament with Nothing OS Tactile Pills */}
-            <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl sm:rounded-full bg-zinc-200/80 dark:bg-black/80 border border-zinc-300/90 dark:border-white/15 backdrop-blur-md shadow-sm">
+            <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl sm:rounded-full bg-white/60 dark:bg-black/80 border border-zinc-300/90 dark:border-white/15 backdrop-blur-md shadow-sm">
               <span className="text-[11px] uppercase font-mono tracking-wider text-zinc-950 dark:text-white px-2.5 flex items-center gap-1.5 font-extrabold">
                 <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
                 PRESETS:
@@ -273,7 +273,7 @@ export default function LandingPage() {
                     className={`px-3 py-1.5 text-xs font-mono rounded-full transition-all flex items-center gap-1.5 font-bold cursor-pointer ${
                       isActive
                         ? 'bg-red-600 text-white shadow-md shadow-red-600/40 border border-red-500 font-extrabold'
-                        : 'bg-white/90 dark:bg-zinc-900/90 text-zinc-900 dark:text-zinc-100 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300/80 dark:border-white/15 shadow-xs'
+                        : 'bg-white/70 dark:bg-zinc-900/90 text-zinc-900 dark:text-zinc-100 hover:text-black dark:hover:text-white hover:bg-white/90 dark:hover:bg-zinc-800 border border-zinc-300/80 dark:border-white/15 shadow-xs backdrop-blur-sm'
                     }`}
                   >
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
@@ -567,7 +567,7 @@ export default function LandingPage() {
             {/* Section Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200 dark:border-white/[0.08]">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-2.5">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-2.5 backdrop-blur-md">
                   <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <span>// ARCHITECTURAL BLUEPRINT</span>
                 </div>
@@ -580,7 +580,7 @@ export default function LandingPage() {
               </div>
 
               {/* Status pill */}
-              <div className="flex items-center gap-2 self-start md:self-auto px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-mono font-bold">
+              <div className="flex items-center gap-2 self-start md:self-auto px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-mono font-bold backdrop-blur-sm">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
                 <span className="uppercase tracking-wider text-[11px]">CALIBRATED TELEMETRY KERNEL</span>
               </div>
@@ -590,7 +590,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Bento Card 1: Sole Purpose */}
               <AntigravityTiltCard className="h-full">
-                <div className="visionos-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md transition-all h-full">
+                <div className="visionos-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md transition-all h-full">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-2xl pointer-events-none" />
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -622,14 +622,14 @@ export default function LandingPage() {
 
               {/* Bento Card 2: The Physical Equation */}
               <AntigravityTiltCard className="lg:col-span-2 h-full">
-                <div className="visionos-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md transition-all h-full">
+                <div className="visionos-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md transition-all h-full">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-red-500/5 dark:bg-white/5 rounded-full blur-3xl pointer-events-none" />
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-700 dark:text-zinc-300 font-extrabold">
                       02 • THE GOVERNING EQUATION
                     </span>
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 backdrop-blur-md">
                       <Terminal className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
                       <span>PHYSICS KERNEL</span>
                     </div>
@@ -643,7 +643,7 @@ export default function LandingPage() {
                   </p>
 
                   {/* Formula Code Window (Translucent VisionOS Glass Terminal) */}
-                  <div className="my-4 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-black/45 backdrop-blur-xl border border-zinc-300/80 dark:border-white/15 shadow-sm overflow-x-auto transition-all">
+                  <div className="my-4 p-4 sm:p-5 rounded-2xl bg-white/50 dark:bg-black/45 backdrop-blur-xl border border-zinc-300/80 dark:border-white/15 shadow-sm overflow-x-auto transition-all">
                     <div className="flex items-center justify-between text-[11px] mb-2.5 pb-2 border-b border-zinc-300/70 dark:border-white/10 font-bold">
                       <span className="font-mono text-zinc-600 dark:text-zinc-400">// GENERALIZED RESISTANCE EQUATION</span>
                       <span className="font-mono text-red-600 dark:text-red-400 font-extrabold tracking-wider">UNIT: LITRES (L)</span>
@@ -658,7 +658,7 @@ export default function LandingPage() {
 
                   {/* 4 Force Factors Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-mono">
-                    <div className="p-3.5 rounded-2xl bg-red-500/[0.06] dark:bg-white/[0.04] border border-red-500/20 dark:border-white/10 shadow-sm">
+                    <div className="p-3.5 rounded-2xl bg-red-500/[0.06] dark:bg-white/[0.04] border border-red-500/20 dark:border-white/10 shadow-sm backdrop-blur-sm">
                       <div className="flex items-center gap-1.5 text-red-600 dark:text-red-400 font-bold text-xs mb-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                         <span>AERO DRAG (V²)</span>
@@ -668,7 +668,7 @@ export default function LandingPage() {
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-purple-500/[0.06] dark:bg-white/[0.04] border border-purple-500/20 dark:border-white/10 shadow-sm">
+                    <div className="p-3.5 rounded-2xl bg-purple-500/[0.06] dark:bg-white/[0.04] border border-purple-500/20 dark:border-white/10 shadow-sm backdrop-blur-sm">
                       <div className="flex items-center gap-1.5 text-purple-600 dark:text-purple-400 font-bold text-xs mb-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                         <span>GRAVITY &amp; INCLINE (G)</span>
@@ -678,7 +678,7 @@ export default function LandingPage() {
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-amber-500/[0.06] dark:bg-white/[0.04] border border-amber-500/20 dark:border-white/10 shadow-sm">
+                    <div className="p-3.5 rounded-2xl bg-amber-500/[0.06] dark:bg-white/[0.04] border border-amber-500/20 dark:border-white/10 shadow-sm backdrop-blur-sm">
                       <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-bold text-xs mb-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                         <span>TRAFFIC &amp; INERTIA (T)</span>
@@ -688,7 +688,7 @@ export default function LandingPage() {
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-cyan-500/[0.06] dark:bg-white/[0.04] border border-cyan-500/20 dark:border-white/10 shadow-sm">
+                    <div className="p-3.5 rounded-2xl bg-cyan-500/[0.06] dark:bg-white/[0.04] border border-cyan-500/20 dark:border-white/10 shadow-sm backdrop-blur-sm">
                       <div className="flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 font-bold text-xs mb-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
                         <span>IDLE COMBUSTION (t_idle)</span>
@@ -704,7 +704,7 @@ export default function LandingPage() {
           </div>
 
             {/* Bottom OLS Calibration Note Banner (Translucent VisionOS Glass Panel) */}
-            <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-white/70 dark:bg-black/45 border border-zinc-300/80 dark:border-white/15 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-md transition-all">
+            <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-white/50 dark:bg-black/45 border border-zinc-300/80 dark:border-white/15 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-md transition-all">
               <div className="flex items-start gap-3.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-500/15 dark:bg-emerald-500/20 border border-emerald-500/30 dark:border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-300 flex-shrink-0 mt-0.5 shadow-xs">
                   <Activity className="w-5 h-5" />
@@ -741,7 +741,7 @@ export default function LandingPage() {
       {/* ═══════════ HOW IT WORKS (visionOS & NOTHING OS 2.0 HYBRID) ═══════════ */}
       <section data-3d-section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-3 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-3 shadow-sm backdrop-blur-md">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             <span>// 01 WORKFLOW ARCHITECTURE</span>
           </div>
@@ -838,7 +838,7 @@ export default function LandingPage() {
             {/* Presets and Attributes Toolbar */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               {/* Presets */}
-              <div className="visionos-panel p-3.5 bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm">
+              <div className="visionos-panel p-3.5 bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl shadow-sm">
                 <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 block mb-2 font-bold">
                   Surface Preset
                 </span>
@@ -851,7 +851,7 @@ export default function LandingPage() {
                       className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all font-bold ${
                         showcasePreset === p
                           ? 'bg-red-600 text-white shadow-sm shadow-red-600/40 border border-red-400'
-                          : 'bg-zinc-100 dark:bg-white/[0.05] text-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-white/[0.1] border border-zinc-300 dark:border-white/[0.05]'
+                          : 'bg-white/60 dark:bg-white/[0.05] backdrop-blur-md text-zinc-800 dark:text-zinc-300 hover:bg-white/80 dark:hover:bg-white/[0.1] border border-zinc-300/80 dark:border-white/[0.05]'
                       }`}
                     >
                       {p}
@@ -861,7 +861,7 @@ export default function LandingPage() {
               </div>
 
               {/* Color Tints */}
-              <div className="visionos-panel p-3.5 bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm">
+              <div className="visionos-panel p-3.5 bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl shadow-sm">
                 <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 block mb-2 font-bold">
                   Mark Color Accent
                 </span>
@@ -880,7 +880,7 @@ export default function LandingPage() {
                       className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border font-mono font-bold ${
                         showcaseColor === c.hex
                           ? 'border-red-500 text-red-600 dark:text-white bg-red-500/10'
-                          : 'border-zinc-300 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white bg-zinc-100 dark:bg-white/[0.03]'
+                          : 'border-zinc-300/80 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white bg-white/60 dark:bg-white/[0.03] backdrop-blur-md'
                       }`}
                     >
                       <span className="w-2.5 h-2.5 rounded-full border border-black/20 dark:border-white/20" style={{ backgroundColor: c.hex }} />
@@ -891,7 +891,7 @@ export default function LandingPage() {
               </div>
 
               {/* Edge Vignette */}
-              <div className="visionos-panel p-3.5 bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm">
+              <div className="visionos-panel p-3.5 bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl shadow-sm">
                 <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 block mb-2 font-bold">
                   Fade Vignette
                 </span>
@@ -904,7 +904,7 @@ export default function LandingPage() {
                       className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all font-bold ${
                         showcaseFade === f
                           ? 'bg-zinc-950 dark:bg-white text-white dark:text-black font-extrabold shadow-sm'
-                          : 'bg-zinc-100 dark:bg-white/[0.05] text-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-white/[0.1] border border-zinc-300 dark:border-white/[0.05]'
+                          : 'bg-white/60 dark:bg-white/[0.05] backdrop-blur-md text-zinc-800 dark:text-zinc-300 hover:bg-white/80 dark:hover:bg-white/[0.1] border border-zinc-300/80 dark:border-white/[0.05]'
                       }`}
                     >
                       {f}
@@ -955,7 +955,7 @@ export default function LandingPage() {
       {/* ═══════════ FEATURE CARDS (NOTHING OS 2.0 INDUSTRIAL CARDS) ═══════════ */}
       <section data-3d-section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-3 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-black/60 backdrop-blur-md border border-zinc-300/80 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-3 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             <span>// 02 SPECIALIZED TELEMETRY MODULES</span>
           </div>
@@ -1011,11 +1011,11 @@ function SliderCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="visionos-panel p-4 flex flex-col justify-between bg-dot-matrix-fine bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 hover:border-red-500/40 dark:hover:border-white/20 transition-all rounded-2xl shadow-sm">
+    <div className="visionos-panel p-4 flex flex-col justify-between bg-dot-matrix-fine bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 hover:border-red-500/40 dark:hover:border-white/20 transition-all rounded-2xl shadow-sm">
       <div>
         <div className="flex justify-between items-center mb-2.5">
           <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 font-mono">{label}</span>
-          <span className="text-xs font-extrabold font-mono px-2.5 py-0.5 rounded-full bg-zinc-100 dark:bg-black/70 border border-zinc-300 dark:border-white/15 text-zinc-950 dark:text-white flex items-center gap-1.5 shadow-sm">
+          <span className="text-xs font-extrabold font-mono px-2.5 py-0.5 rounded-full bg-white/60 dark:bg-black/70 backdrop-blur-md border border-zinc-300/80 dark:border-white/15 text-zinc-950 dark:text-white flex items-center gap-1.5 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
             {value}
           </span>
@@ -1058,13 +1058,13 @@ function StepCard({
 }) {
   return (
     <AntigravityTiltCard className="h-full">
-      <div className="visionos-panel p-6 flex flex-col justify-between bg-dot-matrix-fine relative group bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 hover:border-red-500/30 dark:hover:border-white/20 transition-all rounded-3xl shadow-sm hover:shadow-md h-full">
+      <div className="visionos-panel p-6 flex flex-col justify-between bg-dot-matrix-fine relative group bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 hover:border-red-500/30 dark:hover:border-white/20 transition-all rounded-3xl shadow-sm hover:shadow-md h-full">
         <div>
           <div className="flex items-center justify-between mb-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-white/[0.06] border border-zinc-200 dark:border-white/[0.12] text-zinc-900 dark:text-white shadow-inner group-hover:scale-105 transition-transform">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/60 dark:bg-white/[0.06] backdrop-blur-md border border-zinc-200/80 dark:border-white/[0.12] text-zinc-900 dark:text-white shadow-inner group-hover:scale-105 transition-transform">
               {icon}
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-black/70 border border-zinc-300 dark:border-white/10 shadow-sm">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/70 backdrop-blur-md border border-zinc-300/80 dark:border-white/10 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
               <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white tracking-wider">{step}</span>
             </div>
@@ -1092,12 +1092,12 @@ function FeatureCard({
 }) {
   return (
     <AntigravityTiltCard className="h-full">
-      <Link href={href} className="visionos-panel block p-6 group hover:border-red-500/40 transition-all bg-dot-matrix-fine relative overflow-hidden bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-3xl shadow-sm hover:shadow-md h-full">
+      <Link href={href} className="visionos-panel block p-6 group hover:border-red-500/40 transition-all bg-dot-matrix-fine relative overflow-hidden bg-white/55 dark:bg-white/[0.03] backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-3xl shadow-sm hover:shadow-md h-full">
         <div className="flex items-center justify-between mb-4">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/25 text-red-600 dark:text-red-400 group-hover:scale-105 transition-transform">
             {icon}
           </div>
-          <span className="text-[11px] font-mono tracking-widest text-zinc-800 dark:text-zinc-300 font-bold uppercase bg-zinc-100 dark:bg-black/70 border border-zinc-300 dark:border-white/10 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+          <span className="text-[11px] font-mono tracking-widest text-zinc-800 dark:text-zinc-300 font-bold uppercase bg-white/60 dark:bg-black/70 backdrop-blur-md border border-zinc-300/80 dark:border-white/10 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 group-hover:bg-red-500 transition-colors" />
             {index}
           </span>

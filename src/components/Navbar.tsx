@@ -88,7 +88,7 @@ export default function Navbar() {
         <BrandLogo size="md" href="/" />
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-white/[0.04] p-1 rounded-full border border-white/[0.08]">
+        <nav className="hidden lg:flex items-center gap-1 bg-black/[0.04] dark:bg-white/[0.04] p-1 rounded-full border border-black/[0.06] dark:border-white/[0.08]">
           {primaryLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
@@ -98,11 +98,11 @@ export default function Navbar() {
                 href={link.href}
                 className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-white/15 text-white shadow-sm shadow-black/40 border border-red-500/40 text-red-200'
-                    : 'text-zinc-300 hover:text-white hover:bg-white/[0.08]'
+                    ? 'bg-red-500/10 text-red-600 dark:bg-white/15 dark:text-red-200 shadow-sm border border-red-500/30'
+                    : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.08]'
                 }`}
               >
-                <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-red-400' : ''}`} />
+                <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-red-500 dark:text-red-400' : ''}`} />
                 <span>{link.label}</span>
               </Link>
             );
@@ -117,13 +117,13 @@ export default function Navbar() {
           <div className="hidden sm:flex items-center gap-2">
             {user ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.12] px-3 py-1.5 text-xs">
+                <div className="flex items-center gap-2 rounded-full bg-white/60 dark:bg-white/[0.08] backdrop-blur-md border border-zinc-300/80 dark:border-white/[0.12] px-3 py-1.5 text-xs">
                   <div className="h-2 w-2 rounded-full bg-red-500 shadow-sm shadow-red-500/80 animate-pulse" />
-                  <span className="font-medium text-white max-w-[110px] truncate">{user.name}</span>
+                  <span className="font-medium text-zinc-900 dark:text-white max-w-[110px] truncate">{user.name}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="visionos-pill-btn py-1.5 px-3 text-xs text-rose-300 hover:text-rose-200 hover:border-rose-400/30"
+                  className="visionos-pill-btn py-1.5 px-3 text-xs text-rose-500 dark:text-rose-300 hover:text-rose-600 dark:hover:text-rose-200 hover:border-rose-400/30"
                   title="Sign Out"
                 >
                   <LogOut className="h-3 w-3" />

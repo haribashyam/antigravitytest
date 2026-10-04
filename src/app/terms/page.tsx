@@ -13,14 +13,15 @@ export default function TermsPage() {
         Back to Home
       </Link>
 
-      <div className="rounded-2xl border border-[#1f2e45] bg-[#111827] p-8 shadow-2xl space-y-6">
-        <div className="border-b border-[#1f2e45] pb-4">
-          <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-semibold">
+      <div className="visionos-window p-8 shadow-2xl space-y-6">
+        <div className="visionos-grab-bar mb-3" />
+        <div className="border-b border-zinc-200 dark:border-white/10 pb-4">
+          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold">
             <FileText className="h-4 w-4" />
             <span>LEGAL CONTRACT</span>
           </div>
-          <h1 className="mt-2 text-3xl font-extrabold text-white">Terms of Use</h1>
-          <p className="mt-1 text-xs text-gray-400">Effective Date: October 2026</p>
+          <h1 className="mt-2 text-3xl font-extrabold text-zinc-950 dark:text-white font-nothing">Terms of Use</h1>
+          <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400 font-mono">Effective Date: October 2026</p>
         </div>
 
         <section className="space-y-3 text-xs text-gray-300 leading-relaxed">

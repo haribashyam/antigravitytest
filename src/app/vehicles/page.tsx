@@ -454,10 +454,10 @@ export default function VehiclesPage() {
 
       {/* visionOS Modal Window */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl">
-          <div className="visionos-window w-full max-w-lg p-6 sm:p-8 animate-fade-in-up bg-[#141b2d]/95 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-xl">
+          <div className="visionos-window w-full max-w-lg p-6 sm:p-8 animate-fade-in-up shadow-2xl">
             <div className="visionos-grab-bar mb-3" />
-            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] dark:border-white/[0.08]">
               <h2 className="text-lg font-bold text-white">
                 {editingVehicle ? 'Edit Vehicle Specifications' : 'Register New Vehicle'}
               </h2>

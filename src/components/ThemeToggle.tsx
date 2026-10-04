@@ -83,22 +83,22 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode (Shortcut: ⌘D)`}
         aria-label="Toggle theme mode"
-        className={`group relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/60 border border-white/15 backdrop-blur-xl hover:border-red-500/50 hover:bg-white/[0.08] transition-all cursor-pointer shadow-sm ${className}`}
+        className={`group relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/60 dark:bg-black/60 border border-zinc-300/80 dark:border-white/15 backdrop-blur-xl hover:border-red-500/50 hover:bg-white/80 dark:hover:bg-white/[0.08] transition-all cursor-pointer shadow-sm ${className}`}
       >
-        <div className="relative flex items-center justify-center w-5 h-5 rounded-full bg-white/[0.08] border border-white/10 group-hover:scale-110 transition-transform">
+        <div className="relative flex items-center justify-center w-5 h-5 rounded-full bg-zinc-200/80 dark:bg-white/[0.08] border border-zinc-300/60 dark:border-white/10 group-hover:scale-110 transition-transform">
           {theme === 'dark' ? (
             <Moon className="w-3 h-3 text-red-400 group-hover:text-red-300 transition-colors" />
           ) : (
-            <Sun className="w-3 h-3 text-amber-400 group-hover:text-amber-300 transition-colors" />
+            <Sun className="w-3 h-3 text-amber-500 group-hover:text-amber-400 transition-colors" />
           )}
         </div>
 
-        <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-wider text-zinc-300 font-semibold group-hover:text-white">
+        <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-300 font-semibold group-hover:text-zinc-950 dark:group-hover:text-white">
           {theme === 'dark' ? 'Dark' : 'Light'}
         </span>
 
         {/* Keyboard Shortcut Badge */}
-        <span className="hidden md:inline text-[8px] font-mono px-1.5 py-0.5 rounded bg-white/[0.06] text-zinc-400 border border-white/[0.06]">
+        <span className="hidden md:inline text-[8px] font-mono px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 border border-black/10 dark:border-white/[0.06]">
           ⌘D
         </span>
       </button>

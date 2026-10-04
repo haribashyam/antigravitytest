@@ -64,26 +64,26 @@ html {
 
 html.light, [data-theme='light'] {
   color-scheme: light;
-  --bg-primary: #f4f5f8;
-  --bg-secondary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.88);
-  --bg-card-hover: rgba(244, 245, 248, 0.95);
+  --bg-primary: #f6f7fb;
+  --bg-secondary: rgba(255, 255, 255, 0.65);
+  --bg-card: rgba(255, 255, 255, 0.62);
+  --bg-card-hover: rgba(255, 255, 255, 0.75);
 
-  --visionos-glass: rgba(255, 255, 255, 0.82);
-  --visionos-glass-elevated: rgba(255, 255, 255, 0.95);
-  --visionos-glass-subtle: rgba(0, 0, 0, 0.04);
-  --visionos-glass-hover: rgba(0, 0, 0, 0.08);
-  --visionos-border-specular: rgba(0, 0, 0, 0.12);
-  --visionos-border-subtle: rgba(0, 0, 0, 0.08);
-  --visionos-specular-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+  --visionos-glass: rgba(255, 255, 255, 0.62);
+  --visionos-glass-elevated: rgba(255, 255, 255, 0.72);
+  --visionos-glass-subtle: rgba(0, 0, 0, 0.03);
+  --visionos-glass-hover: rgba(0, 0, 0, 0.06);
+  --visionos-border-specular: rgba(0, 0, 0, 0.10);
+  --visionos-border-subtle: rgba(0, 0, 0, 0.06);
+  --visionos-specular-highlight: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
 
   --nothing-black: #ffffff;
-  --nothing-surface: #f3f4f6;
-  --nothing-elevated: #e5e7eb;
+  --nothing-surface: rgba(255, 255, 255, 0.60);
+  --nothing-elevated: rgba(255, 255, 255, 0.75);
   --nothing-white: #0a0a0c;
   --nothing-light-gray: #1f2937;
   --nothing-gray: #4b5563;
-  --nothing-border: rgba(0, 0, 0, 0.12);
+  --nothing-border: rgba(0, 0, 0, 0.10);
   --nothing-dot-dim: rgba(0, 0, 0, 0.08);
   --nothing-dot-active: #090a0f;
 
@@ -93,7 +93,7 @@ html.light, [data-theme='light'] {
 }
 
 html.light body {
-  background-color: #f4f5f8 !important;
+  background-color: #f6f7fb !important;
   color: #111827 !important;
 }
 
@@ -111,27 +111,64 @@ html.light .bg-dot-matrix-fine {
   background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
 }
 
-/* Glass Windows & Panels in Light Mode */
+/* Glass Windows & Panels in Light Mode (Translucent Frosted Glass) */
 html.light .visionos-ornament,
 html.light .visionos-window {
-  background: rgba(255, 255, 255, 0.88) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  backdrop-filter: blur(36px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(190%) !important;
   color: #090a0f !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03),
+    0 24px 60px -16px rgba(0, 0, 0, 0.10),
+    0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .visionos-window:hover {
+  background: rgba(255, 255, 255, 0.70) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
 html.light .visionos-panel {
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(255, 255, 255, 0.48) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
   color: #090a0f !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
+    0 12px 30px -8px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light .visionos-panel:hover {
+  background: rgba(255, 255, 255, 0.60) !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
 }
 
 html.light .nothing-card {
-  background: rgba(255, 255, 255, 0.94) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
   color: #090a0f !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95),
+    0 20px 45px -12px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .nothing-card:hover {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+html.light .visionos-grab-bar {
+  background: rgba(0, 0, 0, 0.18) !important;
+}
+
+html.light .visionos-window:hover .visionos-grab-bar {
+  background: rgba(0, 0, 0, 0.32) !important;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -209,8 +246,10 @@ html:not(.light) .text-zinc-400:not(.keep-dark, .keep-dark *) {
 
 /* macOS Menu Bar & Header Dynamic Styling */
 html.light .macos-menu-bar {
-  background: rgba(255, 255, 255, 0.88) !important;
-  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(30px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
   color: #090a0f !important;
 }
 html.light .macos-menu-bar a,
@@ -226,8 +265,10 @@ html.light .macos-menu-bar .text-slate-300 {
 }
 
 html.light .macos-window-header {
-  background: rgba(0, 0, 0, 0.02) !important;
-  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.07) !important;
 }
 html.light .macos-window-header span {
   color: #090a0f !important;
@@ -270,10 +311,12 @@ html.light .hero-gradient-text {
 }
 
 html.light .telemetry-chip {
-  background-color: rgba(255, 255, 255, 0.88) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.62) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
   color: #090a0f !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 .visionos-mini-card {
@@ -282,8 +325,10 @@ html.light .telemetry-chip {
 }
 
 html.light .visionos-mini-card {
-  background-color: rgba(0, 0, 0, 0.03) !important;
+  background-color: rgba(255, 255, 255, 0.50) !important;
   border-color: rgba(0, 0, 0, 0.08) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
 }
 
 /* White Text Protection for Colored Buttons & Badges */
@@ -319,17 +364,47 @@ html.light .border-white\/\[0\.14\] {
 }
 
 html.light .bg-black\/40,
+html.light .bg-black\/45,
+html.light .bg-black\/50,
 html.light .bg-black\/60,
 html.light .bg-black\/70,
 html.light .bg-black\/80 {
-  background-color: rgba(255, 255, 255, 0.88) !important;
+  background-color: rgba(255, 255, 255, 0.60) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+html.light .bg-white\/80,
+html.light .bg-white\/90,
+html.light .bg-white\/95 {
+  background-color: rgba(255, 255, 255, 0.58) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
 }
 
 html.light .bg-white\/\[0\.04\],
 html.light .bg-white\/\[0\.05\],
 html.light .bg-white\/\[0\.06\],
 html.light .bg-white\/\[0\.08\] {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .bg-zinc-100 {
+  background-color: rgba(255, 255, 255, 0.58) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html.light .bg-zinc-100\/90 {
+  background-color: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html.light .bg-zinc-200\/80 {
+  background-color: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
 }
 
 /* Secondary Pill Button */
