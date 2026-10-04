@@ -290,10 +290,17 @@ interface DotMatrixTextProps {
 export const DotMatrixText: React.FC<DotMatrixTextProps> = ({
   text,
   size = 'md',
-  activeColor = '#ffffff',
-  inactiveColor = 'rgba(255, 255, 255, 0.06)',
+  activeColor,
+  inactiveColor,
   className = '',
 }) => {
+  const resolvedActive = activeColor && activeColor !== '#ffffff' 
+    ? activeColor 
+    : 'var(--nothing-dot-active, #ffffff)';
+  const resolvedInactive = inactiveColor && inactiveColor !== 'rgba(255, 255, 255, 0.06)' 
+    ? inactiveColor 
+    : 'var(--nothing-dot-dim, rgba(255, 255, 255, 0.06))';
+
   return (
     <div className={`inline-flex items-center select-none ${className}`} title={text}>
       <span className="sr-only">{text}</span>
@@ -302,8 +309,8 @@ export const DotMatrixText: React.FC<DotMatrixTextProps> = ({
           key={index}
           char={char}
           size={size}
-          activeColor={activeColor}
-          inactiveColor={inactiveColor}
+          activeColor={resolvedActive}
+          inactiveColor={resolvedInactive}
         />
       ))}
     </div>

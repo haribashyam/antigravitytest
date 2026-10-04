@@ -93,8 +93,14 @@ html.light, [data-theme='light'] {
 }
 
 html.light body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: #f4f5f8 !important;
+  color: #111827 !important;
+}
+
+html:not(.light) body,
+html.dark body {
+  background-color: #000000 !important;
+  color: #f8fafc !important;
 }
 
 html.light .bg-dot-matrix {
@@ -105,52 +111,200 @@ html.light .bg-dot-matrix-fine {
   background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
 }
 
+/* Glass Windows & Panels in Light Mode */
 html.light .visionos-ornament,
 html.light .visionos-window {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
   color: #090a0f !important;
   border-color: rgba(0, 0, 0, 0.12) !important;
   box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
 }
 
 html.light .visionos-panel {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
   color: #090a0f !important;
   border-color: rgba(0, 0, 0, 0.1) !important;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
 }
 
 html.light .nothing-card {
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
   color: #090a0f !important;
   border-color: rgba(0, 0, 0, 0.12) !important;
   box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
 }
 
-html.light h1.text-white,
-html.light h2.text-white,
-html.light h3.text-white,
-html.light h4.text-white,
-html.light p.text-white,
-html.light span.text-white:not(.keep-white, .keep-white *),
-html.light div.text-white:not(.keep-white, .keep-white *) {
+/* ══════════════════════════════════════════════════════════════════
+   AUTOMATIC RECIPROCAL TEXT COLOR INVERSION
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 1. LIGHT MODE: Invert light text to crisp high-contrast dark, protecting intentional dark containers */
+html.light h1:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light h2:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light h3:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light h4:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light h5:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light h6:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-white:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-slate-50:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-slate-100:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-slate-200:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-zinc-50:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-zinc-100:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-zinc-200:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-gray-50:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-gray-100:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-gray-200:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *) {
   color: #090a0f !important;
 }
 
-html.light .keep-white,
-html.light .keep-white * {
-  color: #ffffff !important;
+html.light .text-slate-300:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-slate-400:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-zinc-300:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-zinc-400:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-gray-300:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-gray-400:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *) {
+  color: #1f2937 !important;
 }
 
-html.light .text-zinc-300:not(.keep-white, .keep-white *),
-html.light .text-zinc-400:not(.keep-white, .keep-white *),
-html.light .text-slate-300:not(.keep-white, .keep-white *),
-html.light .text-slate-400:not(.keep-white, .keep-white *) {
+html.light .text-slate-500:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-zinc-500:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *),
+html.light .text-gray-500:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *) {
   color: #374151 !important;
 }
 
-html.light .text-zinc-500:not(.keep-white, .keep-white *),
-html.light .text-slate-500:not(.keep-white, .keep-white *) {
+html.light .text-zinc-600:not(.keep-white, .keep-white *, [class*="bg-black"] *, [class*="bg-zinc-950"] *, [class*="bg-zinc-900"] *) {
+  color: #1f2937 !important;
+}
+
+/* 2. DARK MODE: Invert any dark classes so they NEVER blend into pitch black, and brighten dim grays */
+html:not(.light) h1:not(.keep-dark, .keep-dark *),
+html:not(.light) h2:not(.keep-dark, .keep-dark *),
+html:not(.light) h3:not(.keep-dark, .keep-dark *),
+html:not(.light) h4:not(.keep-dark, .keep-dark *),
+html:not(.light) h5:not(.keep-dark, .keep-dark *),
+html:not(.light) h6:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-black:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-zinc-950:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-zinc-900:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-slate-950:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-slate-900:not(.keep-dark, .keep-dark *) {
+  color: #ffffff !important;
+}
+
+html:not(.light) .text-zinc-800:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-zinc-700:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-slate-800:not(.keep-dark, .keep-dark *),
+html:not(.light) .text-slate-700:not(.keep-dark, .keep-dark *) {
+  color: #f4f4f5 !important;
+}
+
+html:not(.light) .text-zinc-600:not(.keep-dark, .keep-dark *) {
+  color: #d4d4d8 !important;
+}
+
+html:not(.light) .text-zinc-400:not(.keep-dark, .keep-dark *) {
+  color: #e4e4e7 !important;
+}
+
+/* macOS Menu Bar & Header Dynamic Styling */
+html.light .macos-menu-bar {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+  color: #090a0f !important;
+}
+html.light .macos-menu-bar a,
+html.light .macos-menu-bar span {
+  color: #1f2937 !important;
+}
+html.light .macos-menu-bar .text-white {
+  color: #090a0f !important;
+}
+html.light .macos-menu-bar .text-slate-400,
+html.light .macos-menu-bar .text-slate-300 {
+  color: #4b5563 !important;
+}
+
+html.light .macos-window-header {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light .macos-window-header span {
+  color: #090a0f !important;
+}
+html.light .macos-window-header .text-slate-400 {
+  color: #4b5563 !important;
+}
+
+/* Hero Gradient Dynamic Inversion */
+.hero-gradient-text {
+  background-image: linear-gradient(135deg, #ffffff 0%, #e4e4e7 50%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+html.light .hero-gradient-text {
+  background-image: linear-gradient(135deg, #090a0f 0%, #1f2937 55%, #4b5563 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* Telemetry Chips Dynamic Inversion */
+.telemetry-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  background-color: rgba(18, 18, 20, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f4f4f5 !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+html.light .telemetry-chip {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #090a0f !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.visionos-mini-card {
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html.light .visionos-mini-card {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* White Text Protection for Colored Buttons & Badges */
+.keep-white,
+.keep-white *,
+.visionos-pill-btn-primary,
+.visionos-pill-btn-primary * {
+  color: #ffffff !important;
+}
+
+/* Form Inputs in Light Mode */
+html.light input:not([type="checkbox"]):not([type="radio"]),
+html.light select,
+html.light textarea {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  color: #090a0f !important;
+  border-color: rgba(0, 0, 0, 0.16) !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
   color: #6b7280 !important;
 }
 
@@ -178,25 +332,25 @@ html.light .bg-white\/\[0\.08\] {
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Light mode button contrast protections */
-html.light .visionos-pill-btn-primary,
-html.light .visionos-pill-btn-primary * {
-  color: #ffffff !important;
+/* Secondary Pill Button */
+.visionos-pill-btn {
+  color: #ffffff;
 }
 
 html.light .visionos-pill-btn {
-  background: rgba(0, 0, 0, 0.05) !important;
+  background: rgba(0, 0, 0, 0.06) !important;
   color: #090a0f !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
   box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.9), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 html.light .visionos-pill-btn:hover {
   background: rgba(0, 0, 0, 0.1) !important;
   color: #000000 !important;
-  border-color: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(0, 0, 0, 0.22) !important;
 }
 
+/* macOS Top Menu Bar in Light Mode */
 html.light .macos-menu-bar {
   background: rgba(255, 255, 255, 0.88) !important;
   color: #090a0f !important;

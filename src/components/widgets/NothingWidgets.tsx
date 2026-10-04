@@ -40,7 +40,7 @@ export const NothingAnalogClock: React.FC<{ size?: number; className?: string }>
         className="w-full h-full p-2"
       >
         {/* Outer subtle ring */}
-        <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+        <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" className="text-black/10 dark:text-white/10" strokeWidth="1" />
         
         {/* Perimeter ticks */}
         {ticks.map((deg, idx) => {
@@ -52,7 +52,8 @@ export const NothingAnalogClock: React.FC<{ size?: number; className?: string }>
               y1={isMajor ? "10" : "12"}
               x2="50"
               y2={isMajor ? "16" : "14"}
-              stroke={isMajor ? "#ffffff" : "rgba(255, 255, 255, 0.35)"}
+              stroke="currentColor"
+              className={isMajor ? "text-zinc-950 dark:text-white" : "text-zinc-400 dark:text-white/35"}
               strokeWidth={isMajor ? "2" : "1"}
               strokeLinecap="round"
               transform={`rotate(${deg} 50 50)`}
@@ -66,7 +67,8 @@ export const NothingAnalogClock: React.FC<{ size?: number; className?: string }>
           y1="50"
           x2="50"
           y2="28"
-          stroke="#ffffff"
+          stroke="currentColor"
+          className="text-zinc-950 dark:text-white"
           strokeWidth="3.5"
           strokeLinecap="round"
           transform={`rotate(${hrDeg} 50 50)`}
@@ -78,7 +80,8 @@ export const NothingAnalogClock: React.FC<{ size?: number; className?: string }>
           y1="50"
           x2="50"
           y2="18"
-          stroke="rgba(255, 255, 255, 0.85)"
+          stroke="currentColor"
+          className="text-zinc-700 dark:text-white/85"
           strokeWidth="2"
           strokeLinecap="round"
           transform={`rotate(${minDeg} 50 50)`}
@@ -217,14 +220,14 @@ export const NothingEqualizer: React.FC<NothingEqualizerProps> = ({
 
   return (
     <div className={`p-4 nothing-card flex flex-col gap-2 ${className}`}>
-      <div className="flex items-center justify-between border-b border-white/10 pb-2">
+      <div className="flex items-center justify-between border-b border-zinc-200 dark:border-white/10 pb-2">
         <div className="flex items-center gap-2">
           <div className="nothing-rec-dot" />
-          <span className="text-xs font-mono font-semibold tracking-wider text-slate-200 uppercase">
+          <span className="text-xs font-mono font-bold tracking-wider text-zinc-900 dark:text-slate-200 uppercase">
             Power Demand Grid
           </span>
         </div>
-        <span className="text-[10px] font-mono text-slate-400 tracking-widest">
+        <span className="text-[10px] font-mono text-zinc-600 dark:text-slate-400 font-bold tracking-widest">
           PHYSICS FLOW
         </span>
       </div>
@@ -234,7 +237,7 @@ export const NothingEqualizer: React.FC<NothingEqualizerProps> = ({
           const activeCount = Math.round(Math.max(0, Math.min(1, item.value)) * dotRows);
           return (
             <div key={colIdx} className="flex flex-col items-center gap-1.5">
-              <div className="flex flex-col-reverse gap-1.5 p-1 bg-white/[0.03] rounded-full border border-white/5">
+              <div className="flex flex-col-reverse gap-1.5 p-1 bg-black/[0.04] dark:bg-white/[0.03] rounded-full border border-black/5 dark:border-white/5">
                 {Array.from({ length: dotRows }).map((_, rIdx) => {
                   const isActive = rIdx < activeCount;
                   const isPeak = isActive && rIdx >= dotRows - 2;
@@ -246,8 +249,8 @@ export const NothingEqualizer: React.FC<NothingEqualizerProps> = ({
                         backgroundColor: isActive
                           ? isPeak
                             ? '#e50914'
-                            : '#ffffff'
-                          : 'rgba(255, 255, 255, 0.08)',
+                            : 'var(--nothing-dot-active, #ffffff)'
+                          : 'var(--nothing-dot-dim, rgba(255, 255, 255, 0.08))',
                         boxShadow: isActive
                           ? isPeak
                             ? '0 0 6px #e50914'
@@ -258,7 +261,7 @@ export const NothingEqualizer: React.FC<NothingEqualizerProps> = ({
                   );
                 })}
               </div>
-              <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase">
+              <span className="text-[9px] font-mono font-extrabold tracking-wider text-zinc-700 dark:text-zinc-300 uppercase">
                 {item.label}
               </span>
             </div>

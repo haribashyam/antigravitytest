@@ -33,6 +33,10 @@ import { MacOSWindowChrome } from '@/components/widgets/MacOSWindowChrome';
 import { NothingEqualizer, NothingFuelGauge, NothingAnalogClock } from '@/components/widgets/NothingWidgets';
 import { DotMatrixText } from '@/components/widgets/DotMatrixDisplay';
 import PatternWaves from '@/components/PatternWaves/PatternWaves';
+import { AntigravityTextReveal } from '@/components/effects/AntigravityTextReveal';
+import { AntigravityDepthParallax } from '@/components/effects/AntigravityDepthParallax';
+import { AntigravityFeatureArc } from '@/components/effects/AntigravityFeatureArc';
+import { AntigravityTiltCard } from '@/components/effects/useMouseTilt';
 
 export default function LandingPage() {
   // PatternWaves Presets and Showcase State (Black, Grey, Red & White)
@@ -115,98 +119,103 @@ export default function LandingPage() {
   }, [distanceKm, baseMileageKmPerL, avgSpeedKmh, trafficIntensity, loadRatio, aggressiveFactor, gradientPercent, idleMinutes, fuelPricePerLitre]);
 
   return (
-    <div className="flex flex-col">
-      {/* ═══════════ HERO SECTION (AESTHETIC CENTERPIECE OVER PATTERNWAVES) ═══════════ */}
-      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
-        {/* Soft Ambient Radial Aura matching the WebGL fluid wave surface */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.14)_0%,rgba(255,255,255,0.03)_35%,transparent_70%)] blur-3xl pointer-events-none -z-10" />
+    <AntigravityDepthParallax>
+      <div className="flex flex-col">
+        {/* ═══════════ HERO SECTION (AESTHETIC CENTERPIECE OVER PATTERNWAVES) ═══════════ */}
+        <section
+          data-hero-pin-section
+          className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28"
+        >
+          {/* Soft Ambient Radial Aura matching the WebGL fluid wave surface */}
+          <div
+            data-parallax-layer="1"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.14)_0%,rgba(255,255,255,0.03)_35%,transparent_70%)] blur-3xl pointer-events-none -z-10"
+          />
 
-        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center">
-          <div className="animate-fade-in-up">
-            {/* Aesthetic Telemetry HUD Pill */}
-            <div className="inline-flex items-center gap-2.5 rounded-full bg-black/60 border border-white/20 backdrop-blur-2xl px-4 py-1.5 text-xs font-mono text-zinc-200 mb-8 shadow-2xl shadow-red-950/20 group cursor-default">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500 shadow-[0_0_8px_#ff2a34]" />
-              </span>
-              <span className="tracking-wider uppercase font-semibold text-zinc-300">
-                LIVE FLUID TELEMETRY
-              </span>
-              <span className="text-zinc-600 font-bold">•</span>
-              <span className="text-red-400 font-semibold tracking-widest text-[10.5px]">
-                60 FPS WEBGL2 WAKE
-              </span>
-            </div>
-
-            {/* Architectural Cinematic Headline */}
-            <h1 className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-6xl md:text-7xl lg:text-8xl leading-[1.04] font-nothing">
-              Know your real
-              <span className="block mt-1 bg-gradient-to-r from-zinc-950 via-zinc-800 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400 bg-clip-text text-transparent drop-shadow-sm">
-                fuel costs<span className="text-red-500 font-mono inline-block animate-pulse ml-0.5">.</span>
-              </span>
-              <span className="block text-2xl sm:text-4xl md:text-5xl font-light text-zinc-600 dark:text-zinc-400 mt-3 tracking-tight font-sans">
-                Before you turn the ignition.
-              </span>
-            </h1>
-
-            {/* Aesthetic Frosted Glassmorphism Value Card */}
-            <div className="mx-auto mt-8 max-w-2xl px-7 py-5 rounded-3xl bg-white/75 dark:bg-black/50 border border-black/10 dark:border-white/10 backdrop-blur-2xl shadow-xl dark:shadow-2xl relative overflow-hidden bg-dot-matrix-fine group hover:border-black/20 dark:hover:border-white/20 transition-all">
-              {/* Top specular accent line */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
-              <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-200/90 leading-relaxed font-normal">
-                Automotive-grade journey fuel predictions calibrated directly against your vehicle&apos;s physical telemetry.
-                Zero guesswork — governed by quadratic aerodynamic drag ($V^2$), topography incline, and OLS regression.
-              </p>
-            </div>
-
-            {/* Primary Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
-              <Link
-                href="/plan"
-                className="visionos-pill-btn-primary py-3.5 px-7 text-sm font-semibold tracking-wide shadow-xl shadow-red-600/25"
-              >
-                <Navigation className="h-4 w-4" />
-                <span>Plan a Spatial Journey</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/trips/new"
-                className="visionos-pill-btn py-3.5 px-6 text-sm font-semibold tracking-wide text-zinc-800 dark:text-white"
-              >
-                <Fuel className="h-4 w-4 text-red-500" />
-                <span>Log Driving Telemetry</span>
-              </Link>
-            </div>
-
-            {/* Central Interactive Telemetry Deck */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                <span className="text-zinc-400 dark:text-zinc-500">PHYSICS:</span>
-                <span className="font-bold text-zinc-950 dark:text-white">QUADRATIC V² DRAG</span>
+          <div
+            data-hero-text
+            className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center"
+          >
+            <div className="animate-fade-in-up">
+              {/* Aesthetic Telemetry HUD Pill */}
+              <div className="inline-flex items-center gap-2.5 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/20 backdrop-blur-2xl px-4 py-1.5 text-xs font-mono text-zinc-900 dark:text-zinc-200 mb-8 shadow-md dark:shadow-2xl shadow-red-950/20 group cursor-default">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500 shadow-[0_0_8px_#ff2a34]" />
+                </span>
+                <span className="tracking-wider uppercase font-bold text-zinc-900 dark:text-zinc-200">
+                  LIVE FLUID TELEMETRY
+                </span>
+                <span className="text-zinc-400 dark:text-zinc-600 font-bold">•</span>
+                <span className="text-red-600 dark:text-red-400 font-bold tracking-widest text-[10.5px]">
+                  60 FPS WEBGL2 WAKE
+                </span>
               </div>
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-700 dark:bg-white" />
-                <span className="text-zinc-400 dark:text-zinc-500">REGRESSION:</span>
-                <span className="font-bold text-zinc-950 dark:text-white">OLS CALIBRATED</span>
+
+              {/* Architectural Cinematic Headline (Google Antigravity Typewriter Reveal) */}
+              <AntigravityTextReveal />
+
+              {/* Aesthetic Frosted Glassmorphism Value Card */}
+              <div className="mx-auto mt-8 max-w-2xl px-7 py-5 rounded-3xl bg-white/90 dark:bg-black/50 border border-zinc-200 dark:border-white/10 backdrop-blur-2xl shadow-md dark:shadow-2xl relative overflow-hidden bg-dot-matrix-fine group hover:border-red-500/30 dark:hover:border-white/20 transition-all">
+                {/* Top specular accent line */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
+                <p className="text-sm sm:text-base text-zinc-800 dark:text-zinc-200 leading-relaxed font-semibold">
+                  Automotive-grade journey fuel predictions calibrated directly against your vehicle&apos;s physical telemetry.
+                  Zero guesswork — governed by quadratic aerodynamic drag ($V^2$), topography incline, and OLS regression.
+                </p>
               </div>
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400" />
-                <span className="text-zinc-400 dark:text-zinc-500">PRECISION:</span>
-                <span className="font-bold text-zinc-950 dark:text-white">±0.2 LITRE MAE</span>
+
+              {/* Primary Action Buttons */}
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+                <Link
+                  href="/plan"
+                  className="visionos-pill-btn-primary py-3.5 px-7 text-sm font-bold tracking-wide shadow-xl shadow-red-600/25"
+                >
+                  <Navigation className="h-4 w-4" />
+                  <span>Plan a Spatial Journey</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/trips/new"
+                  className="visionos-pill-btn py-3.5 px-6 text-sm font-bold tracking-wide text-zinc-900 dark:text-white"
+                >
+                  <Fuel className="h-4 w-4 text-red-500" />
+                  <span>Log Driving Telemetry</span>
+                </Link>
               </div>
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 text-xs font-mono text-zinc-800 dark:text-zinc-300 backdrop-blur-md shadow-md dark:shadow-lg dark:shadow-black/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                <span className="text-zinc-400 dark:text-zinc-500">SURFACE:</span>
-                <span className="font-bold text-zinc-950 dark:text-white">CLICK TO SHOCKWAVE</span>
+
+              {/* Central Interactive Telemetry Deck */}
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  <span className="text-zinc-600 dark:text-zinc-400 font-bold">PHYSICS:</span>
+                  <span className="font-extrabold text-zinc-950 dark:text-white">QUADRATIC V² DRAG</span>
+                </div>
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-700 dark:bg-white" />
+                  <span className="text-zinc-600 dark:text-zinc-400 font-bold">REGRESSION:</span>
+                  <span className="font-extrabold text-zinc-950 dark:text-white">OLS CALIBRATED</span>
+                </div>
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400" />
+                  <span className="text-zinc-600 dark:text-zinc-400 font-bold">PRECISION:</span>
+                  <span className="font-extrabold text-zinc-950 dark:text-white">±0.2 LITRE MAE</span>
+                </div>
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-300 backdrop-blur-md shadow-sm dark:shadow-lg dark:shadow-black/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  <span className="text-zinc-600 dark:text-zinc-400 font-bold">SURFACE:</span>
+                  <span className="font-extrabold text-zinc-950 dark:text-white">CLICK TO SHOCKWAVE</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ═══════════ LIVE visionOS SPATIAL CALCULATOR WINDOW ═══════════ */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full -mt-8 mb-24">
+        {/* ═══════════ LIVE visionOS SPATIAL CALCULATOR WINDOW (Image 3 Spatial Zoom) ═══════════ */}
+        <section
+          data-cockpit-window
+          className="mx-auto max-w-6xl px-4 sm:px-6 w-full -mt-8 mb-24"
+        >
         <div className="visionos-window overflow-hidden">
           {/* macOS 27 Desktop Chrome Header */}
           <MacOSWindowChrome
@@ -219,23 +228,23 @@ export default function LandingPage() {
             <div className="visionos-grab-bar" />
 
           {/* Window Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/[0.08]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200 dark:border-white/[0.08]">
             <div>
               <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/10 border border-red-500/30 text-red-500">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400">
                   <Sliders className="h-4 w-4" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-bold text-white tracking-tight sm:text-2xl font-nothing">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-zinc-950 dark:text-white tracking-tight font-nothing">
                       Interactive Physics Simulator
                     </h2>
-                    <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/10 text-[10px] font-mono text-zinc-300">
+                    <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                       NOTHING 2.0 HYBRID COCKPIT
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-400 mt-0.5">
+                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-semibold mt-0.5">
                     Real-time quadratic aerodynamic drag ($V^2$), payload load ratio, grade gradient, and traffic friction.
                   </p>
                 </div>
@@ -243,9 +252,9 @@ export default function LandingPage() {
             </div>
 
             {/* Quick Presets Ornament with Nothing OS Tactile Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 px-2.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+            <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl sm:rounded-full bg-zinc-200/80 dark:bg-black/80 border border-zinc-300/90 dark:border-white/15 backdrop-blur-md shadow-sm">
+              <span className="text-[11px] uppercase font-mono tracking-wider text-zinc-950 dark:text-white px-2.5 flex items-center gap-1.5 font-extrabold">
+                <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
                 PRESETS:
               </span>
               {(['city', 'highway', 'mountain', 'commute'] as const).map((p) => {
@@ -261,10 +270,10 @@ export default function LandingPage() {
                     key={p}
                     type="button"
                     onClick={() => applyPreset(p)}
-                    className={`px-3 py-1 text-[11px] font-mono rounded-full transition-all flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 text-xs font-mono rounded-full transition-all flex items-center gap-1.5 font-bold cursor-pointer ${
                       isActive
-                        ? 'bg-red-600 text-white font-semibold shadow-md shadow-red-600/30 border border-red-500'
-                        : 'text-zinc-300 hover:text-white hover:bg-white/[0.08] border border-transparent'
+                        ? 'bg-red-600 text-white shadow-md shadow-red-600/40 border border-red-500 font-extrabold'
+                        : 'bg-white/90 dark:bg-zinc-900/90 text-zinc-900 dark:text-zinc-100 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300/80 dark:border-white/15 shadow-xs'
                     }`}
                   >
                     {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
@@ -455,38 +464,37 @@ export default function LandingPage() {
 
                     {/* Nothing OS 2.0 Dot Matrix Metrics Cards */}
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                      <div className="p-3.5 rounded-2xl bg-black/70 border border-white/10 relative overflow-hidden">
+                      <div className="p-3.5 rounded-2xl bg-zinc-100/90 dark:bg-black/70 border border-zinc-200 dark:border-white/10 relative overflow-hidden shadow-sm">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-medium">Real Mileage</span>
+                          <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 font-bold">Real Mileage</span>
                           <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                         </div>
                         <div className="flex items-baseline gap-1.5 my-1">
                           <DotMatrixText
                             text={calculation.pred.effectiveMileageKmPerL.toFixed(1)}
                             size="sm"
-                            activeColor="#ffffff"
                           />
-                          <span className="text-xs font-mono font-bold text-red-400">km/L</span>
+                          <span className="text-xs font-mono font-extrabold text-red-600 dark:text-red-400">km/L</span>
                         </div>
-                        <span className="text-[10px] font-mono text-zinc-500 block">
+                        <span className="text-[11px] font-mono font-semibold text-zinc-600 dark:text-zinc-400 block">
                           rated: {baseMileageKmPerL} km/L
                         </span>
                       </div>
 
-                      <div className="p-3.5 rounded-2xl bg-black/70 border border-white/10 relative overflow-hidden">
+                      <div className="p-3.5 rounded-2xl bg-zinc-100/90 dark:bg-black/70 border border-zinc-200 dark:border-white/10 relative overflow-hidden shadow-sm">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-medium">Estimated Cost</span>
-                          <span className="text-[10px] font-mono text-amber-400">₹{calculation.cost.costPerKm.toFixed(2)}/km</span>
+                          <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 font-bold">Estimated Cost</span>
+                          <span className="text-[11px] font-mono font-bold text-amber-600 dark:text-amber-400">₹{calculation.cost.costPerKm.toFixed(2)}/km</span>
                         </div>
                         <div className="flex items-baseline gap-1 my-1">
-                          <span className="text-base font-bold font-mono text-white">₹</span>
+                          <span className="text-base font-extrabold font-mono text-zinc-950 dark:text-white">₹</span>
                           <DotMatrixText
                             text={calculation.cost.totalCost.toFixed(0)}
                             size="sm"
                             activeColor="#ff2a34"
                           />
                         </div>
-                        <span className="text-[10px] font-mono text-zinc-500 block">
+                        <span className="text-[11px] font-mono font-semibold text-zinc-600 dark:text-zinc-400 block">
                           {calculation.pred.totalFuelLiters.toFixed(1)} L fuel pumped
                         </span>
                       </div>
@@ -495,7 +503,7 @@ export default function LandingPage() {
                     {/* Dynamic Nothing Dot-Matrix Power Demand Grid (Equalizer) */}
                     <div className="mt-4">
                       <NothingEqualizer
-                        className="bg-black/70 border-white/10"
+                        className="bg-zinc-100/90 dark:bg-black/70 border-zinc-200 dark:border-white/10 shadow-sm"
                         levels={[
                           { label: 'Aero V²', value: Math.min(1, Math.pow(avgSpeedKmh / 120, 2)) },
                           { label: 'Grade', value: Math.min(1, Math.max(0, (gradientPercent + 4) / 10)) },
@@ -507,17 +515,17 @@ export default function LandingPage() {
                     </div>
 
                     {/* Physics Breakdown */}
-                    <div className="mt-4 pt-3 border-t border-white/[0.08]">
-                      <span className="text-xs font-mono font-semibold text-zinc-300 mb-2 block tracking-wider uppercase">
+                    <div className="mt-4 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
+                      <span className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100 mb-2 block tracking-wider uppercase">
                         // Friction Loss Breakdown
                       </span>
                       <div className="space-y-1.5 text-xs font-mono">
-                        <BreakdownRow label="Base Highway Cruising" value={`${calculation.pred.baseFuelLiters.toFixed(2)} L`} color="text-zinc-300" />
-                        <BreakdownRow label="Aerodynamic Drag (V²)" value={`+${calculation.pred.speedTermLiters.toFixed(2)} L`} color="text-red-400" />
-                        <BreakdownRow label="Traffic Congestion" value={`+${calculation.pred.trafficTermLiters.toFixed(2)} L`} color="text-amber-400" />
-                        <BreakdownRow label="Payload & Passenger Weight" value={`+${calculation.pred.loadTermLiters.toFixed(2)} L`} color="text-zinc-200" />
-                        <BreakdownRow label="Elevation Grade" value={`${calculation.pred.gradientTermLiters >= 0 ? '+' : ''}${calculation.pred.gradientTermLiters.toFixed(2)} L`} color="text-purple-400" />
-                        <BreakdownRow label="Engine Idling Runtime" value={`+${calculation.pred.idleTermLiters.toFixed(2)} L`} color="text-rose-400" />
+                        <BreakdownRow label="Base Highway Cruising" value={`${calculation.pred.baseFuelLiters.toFixed(2)} L`} color="text-zinc-800 dark:text-zinc-200" />
+                        <BreakdownRow label="Aerodynamic Drag (V²)" value={`+${calculation.pred.speedTermLiters.toFixed(2)} L`} color="text-red-600 dark:text-red-400" />
+                        <BreakdownRow label="Traffic Congestion" value={`+${calculation.pred.trafficTermLiters.toFixed(2)} L`} color="text-amber-600 dark:text-amber-400" />
+                        <BreakdownRow label="Payload & Passenger Weight" value={`+${calculation.pred.loadTermLiters.toFixed(2)} L`} color="text-zinc-800 dark:text-zinc-200" />
+                        <BreakdownRow label="Elevation Grade" value={`${calculation.pred.gradientTermLiters >= 0 ? '+' : ''}${calculation.pred.gradientTermLiters.toFixed(2)} L`} color="text-purple-600 dark:text-purple-400" />
+                        <BreakdownRow label="Engine Idling Runtime" value={`+${calculation.pred.idleTermLiters.toFixed(2)} L`} color="text-rose-600 dark:text-rose-400" />
                       </div>
                     </div>
                   </div>
@@ -541,8 +549,11 @@ export default function LandingPage() {
       </div>
     </section>
 
+      {/* ═══════════ GOOGLE ANTIGRAVITY FLOATING TOOL ARC & TYPEWRITER PROMPT (Image 4) ═══════════ */}
+      <AntigravityFeatureArc />
+
       {/* ═══════════ SCIENTIFIC BLUEPRINT & PURPOSE SPECIFICATION (AESTHETIC NOTE) ═══════════ */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+      <section data-3d-section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
         <div className="visionos-window overflow-hidden relative">
           {/* macOS 27 Desktop Chrome Header */}
           <MacOSWindowChrome
@@ -554,153 +565,161 @@ export default function LandingPage() {
             <div className="visionos-grab-bar mb-6" />
 
             {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-black/10 dark:border-white/[0.08]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200 dark:border-white/[0.08]">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 px-3 py-1 text-xs font-mono text-zinc-600 dark:text-zinc-400 mb-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-2.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <span>// ARCHITECTURAL BLUEPRINT</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950 dark:text-white font-nothing">
-                  What is FuelWise & How Does It Work?
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white font-nothing">
+                  What is FuelWise &amp; How Does It Work?
                 </h2>
-                <p className="mt-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-mono max-w-2xl">
+                <p className="mt-1.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-mono font-semibold max-w-2xl">
                   A high-precision journey fuel prediction engine calibrated directly to your vehicle&apos;s physical telemetry.
                 </p>
               </div>
 
               {/* Status pill */}
-              <div className="flex items-center gap-2 self-start md:self-auto px-3.5 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-500 dark:text-red-400 text-xs font-mono">
+              <div className="flex items-center gap-2 self-start md:self-auto px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-mono font-bold">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                <span className="font-semibold uppercase tracking-wider text-[11px]">CALIBRATED TELEMETRY KERNEL</span>
+                <span className="uppercase tracking-wider text-[11px]">CALIBRATED TELEMETRY KERNEL</span>
               </div>
             </div>
 
             {/* 3 Bento Cards Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Bento Card 1: Sole Purpose */}
-              <div className="visionos-panel p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group">
+              <AntigravityTiltCard className="h-full">
+                <div className="visionos-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md transition-all h-full">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-2xl pointer-events-none" />
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-red-500 font-bold">
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-red-600 dark:text-red-400 font-extrabold">
                       01 • SOLE PURPOSE
                     </span>
-                    <div className="w-7 h-7 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-500">
-                      <Target className="w-3.5 h-3.5" />
+                    <div className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-600 dark:text-red-400">
+                      <Target className="w-4 h-4" />
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white font-nothing tracking-tight mb-2">
+                  <h3 className="text-xl font-extrabold text-zinc-950 dark:text-white font-nothing tracking-tight mb-3">
                     Eliminating Window-Sticker Fiction
                   </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                  <p className="text-xs sm:text-[13px] text-zinc-800 dark:text-zinc-200 font-medium leading-relaxed">
                     Automakers certify fuel mileage using standardized dynamometer tests (ARAI / WLTP / EPA) under sterile indoor conditions with zero wind, flat laboratory tracks, and gentle acceleration.
                   </p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mt-2.5">
-                    In real life, highway speeds, ghat gradients, and city gridlock reduce actual fuel efficiency by <strong>20% to 45%</strong>. FuelWise exists to replace this guesswork with <strong>mathematical certainty</strong>, computing exact fuel litres and trip expenses before you turn the ignition.
+                  <p className="text-xs sm:text-[13px] text-zinc-800 dark:text-zinc-200 font-medium leading-relaxed mt-3">
+                    In real life, highway speeds, ghat gradients, and city gridlock reduce actual fuel efficiency by <strong className="font-extrabold text-zinc-950 dark:text-white underline decoration-red-500/50 decoration-2">20% to 45%</strong>. FuelWise exists to replace this guesswork with <strong className="font-extrabold text-zinc-950 dark:text-white underline decoration-red-500/50 decoration-2">mathematical certainty</strong>, computing exact fuel litres and trip expenses before you turn the ignition.
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-black/10 dark:border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
+                <div className="mt-6 pt-4 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-between text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">
                   <span>ACCURACY TARGET</span>
-                  <span className="font-bold text-red-500 dark:text-red-400">±0.2 LITRES MAE</span>
+                  <span className="font-extrabold text-red-600 dark:text-red-400">±0.2 LITRES MAE</span>
                 </div>
-              </div>
+                </div>
+              </AntigravityTiltCard>
 
               {/* Bento Card 2: The Physical Equation */}
-              <div className="visionos-panel p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group lg:col-span-2">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+              <AntigravityTiltCard className="lg:col-span-2 h-full">
+                <div className="visionos-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-dot-matrix-fine group bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md transition-all h-full">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-red-500/5 dark:bg-white/5 rounded-full blur-3xl pointer-events-none" />
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold">
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-700 dark:text-zinc-300 font-extrabold">
                       02 • THE GOVERNING EQUATION
                     </span>
-                    <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/10 text-[10px] font-mono text-zinc-300">
-                      <Terminal className="w-3 h-3 text-red-400" />
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">
+                      <Terminal className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
                       <span>PHYSICS KERNEL</span>
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white font-nothing tracking-tight mb-2">
+                  <h3 className="text-xl font-extrabold text-zinc-950 dark:text-white font-nothing tracking-tight mb-3">
                     Classical Dynamics &amp; Fluid Resistance Model
                   </h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                  <p className="text-xs sm:text-[13px] text-zinc-800 dark:text-zinc-200 font-medium leading-relaxed">
                     Rather than relying on generic averages, FuelWise predicts fuel consumption by calculating the work required to overcome five fundamental resistive physical forces:
                   </p>
 
-                  {/* Formula Code Window */}
-                  <div className="my-4 p-4 rounded-2xl bg-zinc-950 border border-white/15 text-zinc-200 font-mono text-xs shadow-inner overflow-x-auto">
-                    <div className="flex items-center justify-between text-[10px] text-zinc-500 mb-2 pb-1.5 border-b border-white/10">
-                      <span>// GENERALIZED RESISTANCE EQUATION</span>
-                      <span className="text-red-400 font-semibold">UNIT: LITRES (L)</span>
+                  {/* Formula Code Window (Translucent VisionOS Glass Terminal) */}
+                  <div className="my-4 p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-black/45 backdrop-blur-xl border border-zinc-300/80 dark:border-white/15 shadow-sm overflow-x-auto transition-all">
+                    <div className="flex items-center justify-between text-[11px] mb-2.5 pb-2 border-b border-zinc-300/70 dark:border-white/10 font-bold">
+                      <span className="font-mono text-zinc-600 dark:text-zinc-400">// GENERALIZED RESISTANCE EQUATION</span>
+                      <span className="font-mono text-red-600 dark:text-red-400 font-extrabold tracking-wider">UNIT: LITRES (L)</span>
                     </div>
-                    <div className="text-emerald-400 font-semibold whitespace-nowrap">
+                    <div className="font-mono text-emerald-700 dark:text-emerald-400 font-extrabold text-xs sm:text-sm whitespace-nowrap tracking-wide">
                       Fuel(L) = (Distance / M₀) × [ 1 + β_v·(V/100)² + β_t·Traffic + β_l·Load + β_g·Grade ] + β_i·t_idle
                     </div>
-                    <div className="text-zinc-400 text-[11px] mt-1.5 whitespace-nowrap">
+                    <div className="font-mono text-zinc-900 dark:text-zinc-200 font-bold text-xs mt-2 whitespace-nowrap">
                       Trip Cost (₹/$) = Predicted Fuel (L) × Local Fuel Price per Litre
                     </div>
                   </div>
 
                   {/* 4 Force Factors Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
-                      <div className="flex items-center gap-1.5 text-red-500 dark:text-red-400 font-semibold text-[11px] mb-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-mono">
+                    <div className="p-3.5 rounded-2xl bg-red-500/[0.06] dark:bg-white/[0.04] border border-red-500/20 dark:border-white/10 shadow-sm">
+                      <div className="flex items-center gap-1.5 text-red-600 dark:text-red-400 font-bold text-xs mb-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                         <span>AERO DRAG (V²)</span>
                       </div>
-                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                      <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-relaxed font-mono">
                         Air resistance scales quadratically with speed (Fd = ½ · ρ · Cd · A · V²). Cruising at 110 km/h consumes ~35% more fuel than at 80 km/h.
                       </p>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
-                      <div className="flex items-center gap-1.5 text-purple-500 dark:text-purple-400 font-semibold text-[11px] mb-1">
+                    <div className="p-3.5 rounded-2xl bg-purple-500/[0.06] dark:bg-white/[0.04] border border-purple-500/20 dark:border-white/10 shadow-sm">
+                      <div className="flex items-center gap-1.5 text-purple-600 dark:text-purple-400 font-bold text-xs mb-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                         <span>GRAVITY &amp; INCLINE (G)</span>
                       </div>
-                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                      <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-relaxed font-mono">
                         Climbing uphill demands gravitational work (W = m · g · Δh). A 4.5% mountain climb consumes over 2.4× more fuel per km than flat highway cruising.
                       </p>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
-                      <div className="flex items-center gap-1.5 text-amber-500 dark:text-amber-400 font-semibold text-[11px] mb-1">
+                    <div className="p-3.5 rounded-2xl bg-amber-500/[0.06] dark:bg-white/[0.04] border border-amber-500/20 dark:border-white/10 shadow-sm">
+                      <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-bold text-xs mb-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                         <span>TRAFFIC &amp; INERTIA (T)</span>
                       </div>
-                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                      <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-relaxed font-mono">
                         Braking converts kinetic energy (Ek = ½ · m · V²) into wasted heat; re-accelerating in city jams burns excessive fuel.
                       </p>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-white/40 dark:bg-white/[0.03] border border-black/5 dark:border-white/10">
-                      <div className="flex items-center gap-1.5 text-cyan-500 dark:text-cyan-400 font-semibold text-[11px] mb-1">
+                    <div className="p-3.5 rounded-2xl bg-cyan-500/[0.06] dark:bg-white/[0.04] border border-cyan-500/20 dark:border-white/10 shadow-sm">
+                      <div className="flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 font-bold text-xs mb-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
                         <span>IDLE COMBUSTION (t_idle)</span>
                       </div>
-                      <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
+                      <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-relaxed font-mono">
                         At traffic lights and stops, parasitic engine operation sustains AC compressor and electronics at 0.6–1.2 L/hr without moving distance.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </AntigravityTiltCard>
+          </div>
 
-            {/* Bottom OLS Calibration Note Banner */}
-            <div className="mt-6 p-5 rounded-2xl bg-zinc-950 border border-white/15 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 keep-white shadow-xl">
+            {/* Bottom OLS Calibration Note Banner (Translucent VisionOS Glass Panel) */}
+            <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-white/70 dark:bg-black/45 border border-zinc-300/80 dark:border-white/15 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-md transition-all">
               <div className="flex items-start gap-3.5">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0 mt-0.5">
-                  <Activity className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/15 dark:bg-emerald-500/20 border border-emerald-500/30 dark:border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-300 flex-shrink-0 mt-0.5 shadow-xs">
+                  <Activity className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-white font-nothing tracking-wide">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-extrabold text-zinc-950 dark:text-white font-nothing tracking-wide">
                       Closed-Loop Machine Learning (Ordinary Least Squares)
                     </span>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9.5px] font-mono text-emerald-400">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 dark:bg-emerald-500/20 border border-emerald-500/30 text-[10.5px] font-mono font-extrabold text-emerald-700 dark:text-emerald-300">
                       β̂ = (XᵀX)⁻¹XᵀY
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-300 mt-1 max-w-3xl leading-relaxed">
-                    Every car ages differently, tyre pressures vary, and every driver has a unique throttle curve. Once you log <strong className="text-white">8 trips</strong>, FuelWise solves your vehicle&apos;s personal regression matrix with L2 regularization damping, automatically calibrating all β coefficients to your exact driving profile.
+                  <p className="text-xs sm:text-[13px] font-medium text-zinc-800 dark:text-zinc-200 mt-1 max-w-3xl leading-relaxed">
+                    Every car ages differently, tyre pressures vary, and every driver has a unique throttle curve. Once you log <strong className="font-extrabold text-zinc-950 dark:text-white underline decoration-emerald-500/60 decoration-2">8 trips</strong>, FuelWise solves your vehicle&apos;s personal regression matrix with L2 regularization damping, automatically calibrating all β coefficients to your exact driving profile.
                   </p>
                 </div>
               </div>
@@ -708,10 +727,10 @@ export default function LandingPage() {
               <div className="flex items-center gap-2 self-end md:self-auto flex-shrink-0">
                 <Link
                   href="/calibration"
-                  className="px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 text-xs font-mono text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  className="px-4 py-2.5 rounded-full bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white/15 dark:hover:bg-white/25 dark:text-white border border-zinc-900 dark:border-white/25 text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
                 >
                   <span>Explore Calibration Engine</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-red-400" />
+                  <ChevronRight className="w-4 h-4 text-red-500 dark:text-red-400" />
                 </Link>
               </div>
             </div>
@@ -720,16 +739,16 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════ HOW IT WORKS (visionOS & NOTHING OS 2.0 HYBRID) ═══════════ */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+      <section data-3d-section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full bg-black/60 border border-white/10 px-3.5 py-1 text-xs font-mono text-zinc-400 mb-3 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-3 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             <span>// 01 WORKFLOW ARCHITECTURE</span>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl font-nothing">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white font-nothing">
             Four Steps to Mathematical Precision
           </h2>
-          <p className="mt-3 text-zinc-400 text-sm font-mono">
+          <p className="mt-2.5 text-zinc-700 dark:text-zinc-300 text-xs sm:text-sm font-mono font-semibold">
             Moving beyond inaccurate window-sticker ratings with your personal driving calibration.
           </p>
         </div>
@@ -737,25 +756,25 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <StepCard
             step="01"
-            icon={<Car className="h-5 w-5 text-zinc-200" />}
+            icon={<Car className="h-5 w-5" />}
             title="Register Vehicle"
             description="Add your vehicle specification, rated baseline mileage M₀, and fuel grade."
           />
           <StepCard
             step="02"
-            icon={<MapPin className="h-5 w-5 text-zinc-200" />}
+            icon={<MapPin className="h-5 w-5" />}
             title="Log Journey Trips"
             description="Log trips with real GPS distance, average speed, traffic levels, and actual fuel pumped."
           />
           <StepCard
             step="03"
-            icon={<BarChart3 className="h-5 w-5 text-zinc-200" />}
+            icon={<BarChart3 className="h-5 w-5" />}
             title="OLS Calibration"
             description="At 8+ logged trips, our matrix engine solves regression coefficients specific to your driving style."
           />
           <StepCard
             step="04"
-            icon={<Zap className="h-5 w-5 text-zinc-200" />}
+            icon={<Zap className="h-5 w-5" />}
             title="Spatial Predictions"
             description="Preview exact fuel quantities and rupee expenses for any route before starting the engine."
           />
@@ -763,7 +782,7 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════ REACT BITS PATTERNWAVES INTERACTIVE SHOWCASE ═══════════ */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+      <section data-3d-section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
         <div className="visionos-window overflow-hidden">
           <MacOSWindowChrome
             title="React Bits • <PatternWaves /> WebGL Dynamics Surface"
@@ -773,19 +792,19 @@ export default function LandingPage() {
           <div className="p-6 sm:p-8">
             <div className="visionos-grab-bar" />
 
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-6 border-b border-white/[0.08]">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-6 border-b border-zinc-200 dark:border-white/[0.08]">
               <div>
                 <div className="flex items-center gap-2">
                   <Waves className="h-5 w-5 text-red-500" />
-                  <h2 className="text-xl font-bold text-white tracking-tight sm:text-2xl font-nothing">
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-zinc-950 dark:text-white tracking-tight font-nothing">
                     &lt;PatternWaves /&gt; Fluid Surface
                   </h2>
-                  <span className="text-[10px] font-mono uppercase bg-red-500/10 text-red-400 border border-red-500/25 px-2.5 py-0.5 rounded-full font-bold">
+                  <span className="text-[10px] font-mono uppercase bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 px-2.5 py-0.5 rounded-full font-bold">
                     Nothing OS • React Bits
                   </span>
                 </div>
-                <p className="text-xs text-zinc-400 mt-1 max-w-2xl font-mono">
-                  GLSL 3.00 ES fluid simulation in Black, Grey, Red & White. Move or click anywhere to send shockwave ripples and fiery red specular glints across the dot matrix surface.
+                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 mt-1 max-w-2xl font-mono font-semibold">
+                  GLSL 3.00 ES fluid simulation in Black, Grey, Red &amp; White. Move or click anywhere to send shockwave ripples and fiery red specular glints across the dot matrix surface.
                 </p>
               </div>
 
@@ -794,10 +813,10 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setShowcasePaused(!showcasePaused)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-mono border flex items-center gap-1.5 transition-all ${
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-bold border flex items-center gap-1.5 transition-all ${
                     showcasePaused
-                      ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
-                      : 'bg-white/[0.05] text-zinc-300 border-white/[0.1] hover:bg-white/[0.1]'
+                      ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-400/40'
+                      : 'bg-zinc-100 dark:bg-white/[0.05] text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-white/[0.1] hover:bg-zinc-200 dark:hover:bg-white/[0.1]'
                   }`}
                 >
                   {showcasePaused ? '▶ Resume Surface' : '⏸ Pause Surface'}
@@ -805,10 +824,10 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setShowcaseInteractive(!showcaseInteractive)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-mono border transition-all ${
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-bold border transition-all ${
                     showcaseInteractive
-                      ? 'bg-red-500/20 text-red-300 border-red-500/40 shadow-sm shadow-red-500/20'
-                      : 'bg-white/[0.05] text-zinc-400 border-white/[0.1]'
+                      ? 'bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/40 shadow-sm shadow-red-500/20'
+                      : 'bg-zinc-100 dark:bg-white/[0.05] text-zinc-800 dark:text-zinc-300 border-zinc-300 dark:border-white/[0.1]'
                   }`}
                 >
                   {showcaseInteractive ? 'Cursor & Click Shockwave: ON' : 'Cursor Shockwave: OFF'}
@@ -819,8 +838,8 @@ export default function LandingPage() {
             {/* Presets and Attributes Toolbar */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               {/* Presets */}
-              <div className="visionos-panel p-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-bold">
+              <div className="visionos-panel p-3.5 bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 block mb-2 font-bold">
                   Surface Preset
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -829,10 +848,10 @@ export default function LandingPage() {
                       key={p}
                       type="button"
                       onClick={() => setShowcasePreset(p)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all font-bold ${
                         showcasePreset === p
-                          ? 'bg-red-600 text-white font-semibold shadow-sm shadow-red-600/40 border border-red-400'
-                          : 'bg-white/[0.05] text-zinc-300 hover:bg-white/[0.1] border border-white/[0.05]'
+                          ? 'bg-red-600 text-white shadow-sm shadow-red-600/40 border border-red-400'
+                          : 'bg-zinc-100 dark:bg-white/[0.05] text-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-white/[0.1] border border-zinc-300 dark:border-white/[0.05]'
                       }`}
                     >
                       {p}
@@ -842,8 +861,8 @@ export default function LandingPage() {
               </div>
 
               {/* Color Tints */}
-              <div className="visionos-panel p-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-bold">
+              <div className="visionos-panel p-3.5 bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 block mb-2 font-bold">
                   Mark Color Accent
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -858,13 +877,13 @@ export default function LandingPage() {
                       key={c.name}
                       type="button"
                       onClick={() => setShowcaseColor(c.hex)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border font-mono ${
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border font-mono font-bold ${
                         showcaseColor === c.hex
-                          ? 'border-red-500 text-white bg-red-500/10'
-                          : 'border-white/[0.06] text-zinc-400 hover:text-white bg-white/[0.03]'
+                          ? 'border-red-500 text-red-600 dark:text-white bg-red-500/10'
+                          : 'border-zinc-300 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white bg-zinc-100 dark:bg-white/[0.03]'
                       }`}
                     >
-                      <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: c.hex }} />
+                      <span className="w-2.5 h-2.5 rounded-full border border-black/20 dark:border-white/20" style={{ backgroundColor: c.hex }} />
                       <span>{c.name}</span>
                     </button>
                   ))}
@@ -872,8 +891,8 @@ export default function LandingPage() {
               </div>
 
               {/* Edge Vignette */}
-              <div className="visionos-panel p-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-bold">
+              <div className="visionos-panel p-3.5 bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-800 dark:text-zinc-200 block mb-2 font-bold">
                   Fade Vignette
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -882,10 +901,10 @@ export default function LandingPage() {
                       key={f}
                       type="button"
                       onClick={() => setShowcaseFade(f)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono capitalize transition-all font-bold ${
                         showcaseFade === f
-                          ? 'bg-white text-black font-semibold'
-                          : 'bg-white/[0.05] text-zinc-300 hover:bg-white/[0.1] border border-white/[0.05]'
+                          ? 'bg-zinc-950 dark:bg-white text-white dark:text-black font-extrabold shadow-sm'
+                          : 'bg-zinc-100 dark:bg-white/[0.05] text-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-white/[0.1] border border-zinc-300 dark:border-white/[0.05]'
                       }`}
                     >
                       {f}
@@ -897,7 +916,7 @@ export default function LandingPage() {
 
             {/* Exactly 600px height container as specified by React Bits */}
             <div
-              className="rounded-2xl overflow-hidden border border-white/[0.14] shadow-2xl relative bg-black"
+              className="rounded-2xl overflow-hidden border border-zinc-300 dark:border-white/[0.14] shadow-2xl relative bg-black keep-white"
               style={{ width: '100%', height: '600px', position: 'relative' }}
             >
               <PatternWaves
@@ -916,17 +935,17 @@ export default function LandingPage() {
               {/* Overlay HUD indicators */}
               <div className="absolute top-4 left-4 pointer-events-none z-10 flex items-center gap-2 bg-black/80 backdrop-blur-xl border border-red-500/30 px-3.5 py-1.5 rounded-full shadow-lg">
                 <span className="h-2 w-2 rounded-full bg-red-500 animate-ping" />
-                <span className="text-xs font-mono text-red-400 font-semibold">
+                <span className="text-xs font-mono text-red-400 font-bold">
                   SURFACE: {showcasePreset.toUpperCase()}
                 </span>
-                <span className="text-[10px] font-mono text-zinc-400">
+                <span className="text-[10px] font-mono text-zinc-300 font-semibold">
                   • Click anywhere for red impulse burst
                 </span>
               </div>
 
-              <div className="absolute bottom-4 right-4 pointer-events-none z-10 bg-black/80 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-xl text-[11px] font-mono text-zinc-400 flex items-center gap-2">
+              <div className="absolute bottom-4 right-4 pointer-events-none z-10 bg-black/80 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-xl text-[11px] font-mono text-zinc-300 flex items-center gap-2 font-semibold">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                <span>React Bits &lt;PatternWaves /&gt; • Black, Grey, Red & White</span>
+                <span>React Bits &lt;PatternWaves /&gt; • Black, Grey, Red &amp; White</span>
               </div>
             </div>
           </div>
@@ -934,16 +953,16 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════ FEATURE CARDS (NOTHING OS 2.0 INDUSTRIAL CARDS) ═══════════ */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
+      <section data-3d-section className="mx-auto max-w-6xl px-4 sm:px-6 w-full mb-28">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full bg-black/60 border border-white/10 px-3.5 py-1 text-xs font-mono text-zinc-400 mb-3 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-black/60 border border-zinc-300 dark:border-white/10 px-3.5 py-1 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 mb-3 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             <span>// 02 SPECIALIZED TELEMETRY MODULES</span>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl font-nothing">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white font-nothing">
             Engineered Diagnostics Suite
           </h2>
-          <p className="mt-2 text-xs font-mono text-zinc-400">
+          <p className="mt-2 text-xs sm:text-sm font-mono font-semibold text-zinc-700 dark:text-zinc-300">
             Automotive telemetry algorithms calibrated for real-world driving environments.
           </p>
         </div>
@@ -972,6 +991,7 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
+    </AntigravityDepthParallax>
   );
 }
 
@@ -991,18 +1011,18 @@ function SliderCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="visionos-panel p-4 flex flex-col justify-between bg-dot-matrix-fine hover:border-white/20 transition-all">
+    <div className="visionos-panel p-4 flex flex-col justify-between bg-dot-matrix-fine bg-white/90 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 hover:border-red-500/40 dark:hover:border-white/20 transition-all rounded-2xl shadow-sm">
       <div>
         <div className="flex justify-between items-center mb-2.5">
-          <span className="text-xs font-medium text-zinc-300 font-mono">{label}</span>
-          <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-full bg-black/70 border border-white/10 text-white flex items-center gap-1.5">
+          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 font-mono">{label}</span>
+          <span className="text-xs font-extrabold font-mono px-2.5 py-0.5 rounded-full bg-zinc-100 dark:bg-black/70 border border-zinc-300 dark:border-white/15 text-zinc-950 dark:text-white flex items-center gap-1.5 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
             {value}
           </span>
         </div>
         {children}
       </div>
-      {hint && <span className="text-[10px] font-mono text-zinc-500 mt-2 block">{hint}</span>}
+      {hint && <span className="text-[11px] font-mono font-semibold text-zinc-600 dark:text-zinc-400 mt-2 block">{hint}</span>}
     </div>
   );
 }
@@ -1017,9 +1037,9 @@ function BreakdownRow({
   color: string;
 }) {
   return (
-    <div className="flex justify-between items-center py-0.5">
-      <span className="text-zinc-400">{label}</span>
-      <span className={`font-mono font-medium ${color}`}>{value}</span>
+    <div className="flex justify-between items-center py-1">
+      <span className="text-zinc-700 dark:text-zinc-300 font-semibold text-xs">{label}</span>
+      <span className={`font-mono font-bold text-xs ${color}`}>{value}</span>
     </div>
   );
 }
@@ -1037,21 +1057,23 @@ function StepCard({
   accent?: string;
 }) {
   return (
-    <div className="visionos-panel p-6 flex flex-col justify-between bg-dot-matrix-fine relative group hover:border-white/20 transition-all">
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.06] border border-white/[0.12] text-white shadow-inner group-hover:scale-105 transition-transform">
-            {icon}
+    <AntigravityTiltCard className="h-full">
+      <div className="visionos-panel p-6 flex flex-col justify-between bg-dot-matrix-fine relative group bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 hover:border-red-500/30 dark:hover:border-white/20 transition-all rounded-3xl shadow-sm hover:shadow-md h-full">
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-white/[0.06] border border-zinc-200 dark:border-white/[0.12] text-zinc-900 dark:text-white shadow-inner group-hover:scale-105 transition-transform">
+              {icon}
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-black/70 border border-zinc-300 dark:border-white/10 shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white tracking-wider">{step}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 border border-white/10">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-            <DotMatrixText text={step} size="xs" activeColor="#ffffff" />
-          </div>
+          <h3 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white mb-2 font-nothing">{title}</h3>
+          <p className="text-xs sm:text-[13px] text-zinc-700 dark:text-zinc-300 font-semibold leading-relaxed font-mono">{description}</p>
         </div>
-        <h3 className="text-base font-semibold text-white mb-2 font-nothing">{title}</h3>
-        <p className="text-xs text-zinc-400 leading-relaxed font-mono">{description}</p>
       </div>
-    </div>
+    </AntigravityTiltCard>
   );
 }
 
@@ -1069,23 +1091,25 @@ function FeatureCard({
   href: string;
 }) {
   return (
-    <Link href={href} className="visionos-panel block p-6 group hover:border-red-500/40 transition-all bg-dot-matrix-fine relative overflow-hidden">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/25 text-red-500 group-hover:scale-105 transition-transform">
-          {icon}
+    <AntigravityTiltCard className="h-full">
+      <Link href={href} className="visionos-panel block p-6 group hover:border-red-500/40 transition-all bg-dot-matrix-fine relative overflow-hidden bg-white/95 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/10 rounded-3xl shadow-sm hover:shadow-md h-full">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/25 text-red-600 dark:text-red-400 group-hover:scale-105 transition-transform">
+            {icon}
+          </div>
+          <span className="text-[11px] font-mono tracking-widest text-zinc-800 dark:text-zinc-300 font-bold uppercase bg-zinc-100 dark:bg-black/70 border border-zinc-300 dark:border-white/10 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500 group-hover:bg-red-500 transition-colors" />
+            {index}
+          </span>
         </div>
-        <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase bg-black/70 border border-white/10 px-2 py-0.5 rounded-full flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 group-hover:bg-red-500 transition-colors" />
-          {index}
+        <h3 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors mb-2 font-nothing">
+          {title}
+        </h3>
+        <p className="text-xs sm:text-[13px] text-zinc-700 dark:text-zinc-300 font-semibold leading-relaxed mb-4 font-mono">{description}</p>
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 dark:text-red-400 group-hover:gap-2.5 transition-all font-mono">
+          Open Module <ChevronRight className="h-4 w-4" />
         </span>
-      </div>
-      <h3 className="text-base font-semibold text-white group-hover:text-red-400 transition-colors mb-2 font-nothing">
-        {title}
-      </h3>
-      <p className="text-xs text-zinc-400 leading-relaxed mb-4 font-mono">{description}</p>
-      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400 group-hover:gap-2.5 transition-all font-mono">
-        Open Module <ChevronRight className="h-3.5 w-3.5" />
-      </span>
-    </Link>
+      </Link>
+    </AntigravityTiltCard>
   );
 }
