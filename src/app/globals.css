@@ -756,18 +756,46 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   color: #f8fafc;
-  padding: 0.625rem 0.875rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
   font-size: 0.875rem;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.light .visionos-input,
+[data-theme='light'] .visionos-input {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  color: #0f172a;
+}
+
+html.light .visionos-input::placeholder,
+[data-theme='light'] .visionos-input::placeholder {
+  color: #64748b;
+  opacity: 0.85;
 }
 
 .visionos-input:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(52, 211, 153, 0.6) !important;
+  border-color: rgba(239, 68, 68, 0.6) !important;
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.2),
-    0 0 0 3px rgba(52, 211, 153, 0.18) !important;
+    0 0 0 3px rgba(239, 68, 68, 0.18) !important;
+}
+
+html.light .visionos-input:focus,
+[data-theme='light'] .visionos-input:focus {
+  background: #ffffff;
+  border-color: rgba(239, 68, 68, 0.7) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Explicit class for inputs with left icons */
+.visionos-input-icon-left {
+  padding-left: 2.75rem !important;
 }
 
 /* Legacy glass card alias for backward compatibility */

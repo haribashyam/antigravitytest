@@ -74,7 +74,6 @@ export default function VehiclesPage() {
   const [notes, setNotes] = useState('');
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [authActionLoading, setAuthActionLoading] = useState(false);
 
   const fetchUserDataAndVehicles = async () => {
     try {
@@ -113,31 +112,6 @@ export default function VehiclesPage() {
     window.addEventListener('auth-state-changed', handleAuthChange);
     return () => window.removeEventListener('auth-state-changed', handleAuthChange);
   }, []);
-
-  const handleQuickDemoLogin = async () => {
-    setAuthActionLoading(true);
-    setFormError('');
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: 'demo', password: 'Password123!' }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Demo login failed');
-
-      if (data.token) {
-        localStorage.setItem('fuelwise_token', data.token);
-        localStorage.setItem('fuelwise_user', JSON.stringify(data.user));
-      }
-      window.dispatchEvent(new Event('auth-state-changed'));
-      await fetchUserDataAndVehicles();
-    } catch (err: any) {
-      setFormError(err.message || 'Demo login failed');
-    } finally {
-      setAuthActionLoading(false);
-    }
-  };
 
   const openAddModal = () => {
     setEditingVehicle(null);
@@ -289,7 +263,7 @@ export default function VehiclesPage() {
             <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
               <Link
                 href="/login?redirect=/vehicles"
-                className="visionos-pill-btn text-xs py-2 px-3.5 flex items-center gap-1.5 text-slate-200"
+                className="visionos-pill-btn text-xs py-2 px-4 flex items-center gap-1.5 text-slate-200"
               >
                 <LogIn className="h-3.5 w-3.5" />
                 <span>Sign In</span>
@@ -301,16 +275,6 @@ export default function VehiclesPage() {
                 <UserPlus className="h-3.5 w-3.5" />
                 <span>Create Account</span>
               </Link>
-              <button
-                type="button"
-                onClick={handleQuickDemoLogin}
-                disabled={authActionLoading}
-                className="visionos-pill-btn text-xs py-2 px-3 text-red-300 hover:text-white flex items-center gap-1"
-                title="Log in to Demo account with 1 click"
-              >
-                <Zap className="h-3.5 w-3.5" />
-                <span>{authActionLoading ? 'Loading...' : '1-Click Demo Garage'}</span>
-              </button>
             </div>
           </div>
         </div>
@@ -323,11 +287,11 @@ export default function VehiclesPage() {
         <div className="visionos-window p-16 text-center">
           <Car className="mx-auto h-12 w-12 text-slate-600 mb-4" />
           <h3 className="text-base font-semibold text-white">
-            {isAuthenticated === false ? 'No vehicles visible in guest mode' : 'No vehicles registered yet'}
+            {isAuthenticated === false ? 'Sign in to access your garage' : 'No vehicles registered yet'}
           </h3>
           <p className="mt-1.5 text-xs text-slate-400 max-w-md mx-auto">
             {isAuthenticated === false
-              ? 'Sign in to access your saved garage, or click 1-Click Demo Garage to explore pre-calibrated test vehicles.'
+              ? 'Sign in or create an account to view and manage your personal vehicles, trip logs, and calibrations.'
               : 'Add your first vehicle to start logging trips and calibrating personal consumption models.'}
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -335,17 +299,16 @@ export default function VehiclesPage() {
               <>
                 <Link
                   href="/login?redirect=/vehicles"
-                  className="visionos-pill-btn text-xs py-2.5 px-4"
+                  className="visionos-pill-btn text-xs py-2.5 px-5 flex items-center gap-2 text-white"
                 >
-                  <LogIn className="h-4 w-4 mr-1.5" /> Sign In
+                  <LogIn className="h-4 w-4" /> Sign In
                 </Link>
-                <button
-                  onClick={handleQuickDemoLogin}
-                  disabled={authActionLoading}
-                  className="visionos-pill-btn-primary text-xs py-2.5 px-4"
+                <Link
+                  href="/signup?redirect=/vehicles"
+                  className="visionos-pill-btn-primary text-xs py-2.5 px-5 flex items-center gap-2"
                 >
-                  <Zap className="h-4 w-4 mr-1.5" /> 1-Click Demo Garage
-                </button>
+                  <UserPlus className="h-4 w-4" /> Create Account
+                </Link>
               </>
             ) : (
               <button
@@ -514,20 +477,12 @@ export default function VehiclesPage() {
                   <div>
                     <span className="font-semibold block text-white">Sign In Required to Save Vehicle</span>
                     <span className="text-[11px] text-amber-200/90 block mt-0.5">
-                      You are in guest mode. To link this vehicle to your personal profile, please sign in or use the quick demo.
+                      You are currently in guest mode. To link this vehicle to your personal profile, please sign in or register an account.
                     </span>
                     <div className="flex items-center gap-2 mt-2.5">
-                      <button
-                        type="button"
-                        onClick={handleQuickDemoLogin}
-                        disabled={authActionLoading}
-                        className="visionos-pill-btn-primary text-[11px] py-1 px-3"
-                      >
-                        {authActionLoading ? 'Signing in...' : '1-Click Sign In (Demo)'}
-                      </button>
                       <Link
                         href="/login?redirect=/vehicles"
-                        className="visionos-pill-btn text-[11px] py-1 px-3 text-slate-200"
+                        className="visionos-pill-btn-primary text-[11px] py-1 px-3 text-white"
                       >
                         Sign In
                       </Link>
@@ -535,7 +490,7 @@ export default function VehiclesPage() {
                         href="/signup?redirect=/vehicles"
                         className="visionos-pill-btn text-[11px] py-1 px-3 text-slate-200"
                       >
-                        Register Account
+                        Create Account
                       </Link>
                     </div>
                   </div>

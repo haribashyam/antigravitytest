@@ -142,7 +142,8 @@ export default function TripHistoryPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search trips by name or location..."
-            className="w-full visionos-input pl-10 text-xs"
+            className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+            style={{ paddingLeft: '2.75rem' }}
           />
         </div>
 

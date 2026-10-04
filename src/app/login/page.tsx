@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Fuel, Lock, Mail, ArrowRight, AlertCircle, Sparkles, CheckCircle2, User } from 'lucide-react';
+import { Fuel, Lock, ArrowRight, AlertCircle, CheckCircle2, User } from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
@@ -73,12 +73,6 @@ function LoginForm() {
     }
   };
 
-  const handleFillDemo = () => {
-    setIdentifier('demo');
-    setPassword('Password123!');
-    setError('');
-  };
-
   return (
     <div className="flex min-h-[82vh] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md animate-fade-in-up">
@@ -87,46 +81,26 @@ function LoginForm() {
           <div className="visionos-grab-bar" />
 
           {/* Header */}
-          <div className="text-center mb-7">
+          <div className="text-center mb-8">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-rose-600 shadow-xl shadow-red-500/30 mb-4">
               <Fuel className="h-6 w-6 text-white" />
             </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">Welcome Back</h2>
-            <p className="mt-1 text-xs text-slate-400">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Welcome Back</h2>
+            <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-400">
               Sign in to access your personal garage, trip logs, and calibrated fuel models
             </p>
           </div>
 
           {/* Success Banner if just registered */}
           {successMsg && (
-            <div className="flex items-center gap-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-3.5 mb-5 text-xs text-emerald-300">
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+            <div className="flex items-center gap-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-3.5 mb-5 text-xs text-emerald-600 dark:text-emerald-300">
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
               <span>{successMsg}</span>
             </div>
           )}
 
-          {/* Demo Quick Fill */}
-          <div className="visionos-panel p-4 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-semibold text-red-300">
-                <Sparkles className="h-4 w-4 text-red-400" />
-                <span>Instant Demo Access</span>
-              </div>
-              <button
-                type="button"
-                onClick={handleFillDemo}
-                className="visionos-pill-btn text-xs py-1 px-3 text-red-300 hover:text-white"
-              >
-                Auto-fill Demo
-              </button>
-            </div>
-            <p className="mt-1 text-[11px] text-slate-400">
-              Username: <code className="text-white/80">demo</code> &bull; Password: <code className="text-white/80">Password123!</code>
-            </p>
-          </div>
-
           {error && (
-            <div className="flex items-center gap-2 rounded-2xl bg-rose-500/10 border border-rose-500/20 p-3.5 mb-5 text-xs text-rose-300">
+            <div className="flex items-center gap-2 rounded-2xl bg-rose-500/10 border border-rose-500/20 p-3.5 mb-5 text-xs text-rose-600 dark:text-rose-300">
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -134,30 +108,33 @@ function LoginForm() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Username or Email Address
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <User className="h-4 w-4 text-slate-500" />
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <User className="h-4 w-4" />
                 </div>
                 <input
                   type="text"
                   required
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="e.g. demo or you@example.com"
-                  className="w-full visionos-input pl-10 text-xs"
+                  placeholder="e.g. haribashyam or you@example.com"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
                   autoComplete="username"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <Lock className="h-4 w-4 text-slate-500" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <Lock className="h-4 w-4" />
                 </div>
                 <input
                   type="password"
@@ -165,7 +142,8 @@ function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full visionos-input pl-10 text-xs"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
                   autoComplete="current-password"
                 />
               </div>
@@ -174,18 +152,18 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="visionos-pill-btn-primary w-full py-3.5 text-xs font-semibold text-center justify-center mt-3 disabled:opacity-50"
+              className="visionos-pill-btn-primary w-full py-3.5 text-xs sm:text-sm font-semibold text-center justify-center mt-4 disabled:opacity-50"
             >
               <span>{loading ? 'Signing In...' : 'Sign In'}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-4 w-4" />
             </button>
           </form>
 
-          <p className="text-center text-xs text-slate-400 mt-6 pt-4 border-t border-white/[0.08]">
+          <p className="text-center text-xs text-slate-600 dark:text-slate-400 mt-6 pt-5 border-t border-slate-200 dark:border-white/[0.08]">
             Don&apos;t have an account yet?{' '}
             <Link
               href={`/signup${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
-              className="font-semibold text-red-400 hover:text-red-300 transition-colors"
+              className="font-semibold text-red-500 hover:text-red-400 transition-colors"
             >
               Create Account
             </Link>
@@ -198,7 +176,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center text-white text-xs">Loading login...</div>}>
+    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center text-xs">Loading...</div>}>
       <LoginForm />
     </Suspense>
   );

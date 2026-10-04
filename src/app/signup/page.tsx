@@ -11,8 +11,6 @@ import {
   AtSign,
   ArrowRight,
   AlertCircle,
-  Sparkles,
-  CheckCircle2,
 } from 'lucide-react';
 
 function SignupForm() {
@@ -101,14 +99,14 @@ function SignupForm() {
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-rose-600 shadow-xl shadow-red-500/30 mb-4">
               <Gauge className="h-6 w-6 text-white" />
             </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">Create an Account</h2>
-            <p className="mt-1 text-xs text-slate-400">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Create an Account</h2>
+            <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-400">
               Set up your personal garage to track individual vehicles, trip logs, and personalized calibrations
             </p>
           </div>
 
           {error && (
-            <div className="rounded-2xl bg-rose-500/10 border border-rose-500/20 p-3.5 mb-5 text-xs text-rose-300">
+            <div className="rounded-2xl bg-rose-500/10 border border-rose-500/20 p-3.5 mb-5 text-xs text-rose-600 dark:text-rose-300">
               <div className="flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{error}</span>
@@ -117,7 +115,7 @@ function SignupForm() {
                 <div className="mt-2.5 pt-2 border-t border-rose-500/20">
                   <Link
                     href={`/login${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
-                    className="inline-flex items-center gap-1 font-semibold text-white underline hover:text-red-200"
+                    className="inline-flex items-center gap-1 font-semibold text-red-500 underline hover:text-red-400"
                   >
                     Click here to Sign In to your existing account &rarr;
                   </Link>
@@ -126,14 +124,14 @@ function SignupForm() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-3.5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">
-                Username <span className="text-slate-500 text-[10px]">(unique identifier)</span>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Username <span className="text-slate-500 text-[10px] font-normal">(unique identifier)</span>
               </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <AtSign className="h-4 w-4 text-slate-500" />
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <AtSign className="h-4 w-4" />
                 </div>
                 <input
                   type="text"
@@ -141,17 +139,20 @@ function SignupForm() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_.-]/g, ''))}
                   placeholder="e.g. haribashyam"
-                  className="w-full visionos-input pl-10 text-xs"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
                   autoComplete="username"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <User className="h-4 w-4 text-slate-500" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Full Name
+              </label>
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <User className="h-4 w-4" />
                 </div>
                 <input
                   type="text"
@@ -159,17 +160,20 @@ function SignupForm() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Hari Bashyam"
-                  className="w-full visionos-input pl-10 text-xs"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
                   autoComplete="name"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <Mail className="h-4 w-4 text-slate-500" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Email Address
+              </label>
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <Mail className="h-4 w-4" />
                 </div>
                 <input
                   type="email"
@@ -177,17 +181,20 @@ function SignupForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full visionos-input pl-10 text-xs"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
                   autoComplete="email"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Password</label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <Lock className="h-4 w-4 text-slate-500" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <Lock className="h-4 w-4" />
                 </div>
                 <input
                   type="password"
@@ -196,7 +203,8 @@ function SignupForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Minimum 6 characters"
-                  className="w-full visionos-input pl-10 text-xs"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
                   autoComplete="new-password"
                 />
               </div>
@@ -204,11 +212,13 @@ function SignupForm() {
 
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Preferred Units</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Preferred Units
+                </label>
                 <select
                   value={unitSystem}
                   onChange={(e) => setUnitSystem(e.target.value)}
-                  className="w-full visionos-input text-xs cursor-pointer"
+                  className="w-full visionos-input text-xs sm:text-sm cursor-pointer"
                 >
                   <option value="metric" className="bg-[#0b101d] text-white">Metric (km, L, km/L)</option>
                   <option value="imperial" className="bg-[#0b101d] text-white">Imperial (mi, gal, MPG)</option>
@@ -216,11 +226,13 @@ function SignupForm() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Currency</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Currency
+                </label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full visionos-input text-xs cursor-pointer"
+                  className="w-full visionos-input text-xs sm:text-sm cursor-pointer"
                 >
                   <option value="INR" className="bg-[#0b101d] text-white">INR (₹)</option>
                   <option value="USD" className="bg-[#0b101d] text-white">USD ($)</option>
@@ -233,18 +245,18 @@ function SignupForm() {
             <button
               type="submit"
               disabled={loading}
-              className="visionos-pill-btn-primary w-full py-3.5 text-xs font-semibold text-center justify-center mt-3 disabled:opacity-50"
+              className="visionos-pill-btn-primary w-full py-3.5 text-xs sm:text-sm font-semibold text-center justify-center mt-4 disabled:opacity-50"
             >
               <span>{loading ? 'Creating Your Account...' : 'Register & Enter Garage'}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-4 w-4" />
             </button>
           </form>
 
-          <p className="text-center text-xs text-slate-400 mt-5 pt-4 border-t border-white/[0.08]">
+          <p className="text-center text-xs text-slate-600 dark:text-slate-400 mt-6 pt-5 border-t border-slate-200 dark:border-white/[0.08]">
             Already have an account?{' '}
             <Link
               href={`/login${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
-              className="font-semibold text-red-400 hover:text-red-300 transition-colors"
+              className="font-semibold text-red-500 hover:text-red-400 transition-colors"
             >
               Sign In Instead
             </Link>
@@ -257,7 +269,7 @@ function SignupForm() {
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center text-white text-xs">Loading signup...</div>}>
+    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center text-xs">Loading...</div>}>
       <SignupForm />
     </Suspense>
   );
