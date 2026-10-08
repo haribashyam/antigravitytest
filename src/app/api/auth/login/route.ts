@@ -32,17 +32,43 @@ export async function POST(request: Request) {
     }
 
     const normalizedInput = loginInput.toLowerCase();
+    const withoutAt = normalizedInput.startsWith('@') ? normalizedInput.slice(1) : normalizedInput;
+    const rawWithoutAt = loginInput.startsWith('@') ? loginInput.slice(1) : loginInput;
 
-    // Query user by email, username, or display name
-    const user = await prisma.user.findFirst({
+    // Query user by email, username, handle without @, or display name
+    let user = await prisma.user.findFirst({
       where: {
         OR: [
           { email: normalizedInput },
+          { email: withoutAt },
           { username: normalizedInput },
+          { username: withoutAt },
           { name: loginInput },
+          { name: rawWithoutAt },
         ],
       },
     });
+
+    // Fallback: check case-insensitive match for name and username across accounts
+    if (!user) {
+      const allUsers = await prisma.user.findMany({
+        take: 100,
+      });
+      user =
+        allUsers.find((u) => {
+          const uEmail = u.email.toLowerCase();
+          const uUsername = u.username ? u.username.toLowerCase() : '';
+          const uName = u.name.toLowerCase();
+          return (
+            uEmail === normalizedInput ||
+            uEmail === withoutAt ||
+            uUsername === normalizedInput ||
+            uUsername === withoutAt ||
+            uName === normalizedInput ||
+            uName === withoutAt
+          );
+        }) || null;
+    }
 
     if (!user) {
       return NextResponse.json(
@@ -51,7 +77,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const isValid = await verifyPassword(password, user.passwordHash);
+    let isValid = await verifyPassword(password, user.passwordHash);
+    // If exact password doesn't match and there is leading/trailing space, test trimmed
+    if (!isValid && password.trim() !== password) {
+      isValid = await verifyPassword(password.trim(), user.passwordHash);
+    }
+
     if (!isValid) {
       return NextResponse.json(
         { error: 'Invalid password. Please check your password and try again.' },

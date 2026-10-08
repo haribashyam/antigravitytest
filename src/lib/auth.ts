@@ -25,6 +25,7 @@ export function getSessionCookieOptions(expiresAt: Date) {
     secure: isSecureProduction,
     sameSite: 'lax' as const,
     expires: expiresAt,
+    maxAge: SESSION_DURATION_DAYS * 24 * 60 * 60,
     path: '/',
   };
 }
@@ -67,13 +68,32 @@ export async function getCurrentUser(req?: Request) {
   try {
     let token: string | undefined;
 
-    // 1. Try reading from Next.js cookie store
-    try {
-      const cookieStore = await cookies();
-      token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-    } catch {}
+    // 1. Prioritize reading directly from Request headers if passed (fast and immune to context loss)
+    if (req) {
+      const authHeader = req.headers.get('authorization') || req.headers.get('x-session-token');
+      if (authHeader) {
+        token = authHeader.replace(/^Bearer\s+/i, '').trim();
+      }
+      if (!token) {
+        const cookieHeader = req.headers.get('cookie');
+        if (cookieHeader) {
+          const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${SESSION_COOKIE_NAME}=([^;]+)`));
+          if (match) {
+            token = decodeURIComponent(match[1]);
+          }
+        }
+      }
+    }
 
-    // 2. Try reading from Request headers or next/headers (Bearer token fallback)
+    // 2. Try reading from Next.js cookie store
+    if (!token) {
+      try {
+        const cookieStore = await cookies();
+        token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+      } catch {}
+    }
+
+    // 3. Try reading from Next.js header list
     if (!token) {
       try {
         const { headers } = await import('next/headers');
@@ -83,13 +103,6 @@ export async function getCurrentUser(req?: Request) {
           token = authHeader.replace(/^Bearer\s+/i, '').trim();
         }
       } catch {}
-    }
-
-    if (!token && req) {
-      const authHeader = req.headers.get('authorization') || req.headers.get('x-session-token');
-      if (authHeader) {
-        token = authHeader.replace(/^Bearer\s+/i, '').trim();
-      }
     }
 
     if (!token) return null;

@@ -4,11 +4,13 @@ import { getCurrentUser } from '@/lib/auth';
 import { calibrateVehicleCoefficients, TripRecord } from '@/lib/regression';
 import { POPULATION_BASELINE_COEFFICIENTS, MIN_TRIPS_FOR_CALIBRATION } from '@/lib/fuelModel';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ vehicleId: string }> }
 ) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { vehicleId } = await params;
@@ -92,10 +94,10 @@ export async function GET(
 }
 
 export async function POST(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ vehicleId: string }> }
 ) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { vehicleId } = await params;

@@ -25,7 +25,7 @@ const PredictSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const user = await getCurrentUser();
+    const user = await getCurrentUser(request);
     const body = await request.json();
     const parsed = PredictSchema.safeParse(body);
 

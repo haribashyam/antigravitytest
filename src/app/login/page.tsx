@@ -3,16 +3,22 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Fuel, Lock, ArrowRight, AlertCircle, CheckCircle2, User } from 'lucide-react';
+import { Fuel, Lock, ArrowRight, AlertCircle, CheckCircle2, User, Eye, EyeOff } from 'lucide-react';
+import { authFetch } from '@/lib/apiClient';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || '/vehicles';
+  const rawRedirect = searchParams.get('redirect');
+  const redirectUrl =
+    rawRedirect && !rawRedirect.startsWith('/login') && !rawRedirect.startsWith('/signup')
+      ? rawRedirect
+      : '/vehicles';
   const isJustRegistered = searchParams.get('registered') === 'true';
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState(
     isJustRegistered ? 'Account created successfully! Please sign in to access your garage.' : ''
@@ -21,11 +27,16 @@ function LoginForm() {
 
   // If already authenticated, redirect automatically
   useEffect(() => {
-    fetch('/api/auth/me')
+    authFetch('/api/auth/me')
       .then((res) => res.json())
       .then((data) => {
         if (data.authenticated) {
           router.push(redirectUrl);
+        } else {
+          try {
+            localStorage.removeItem('fuelwise_token');
+            localStorage.removeItem('fuelwise_user');
+          } catch {}
         }
       })
       .catch(() => {});
@@ -37,13 +48,15 @@ function LoginForm() {
     setSuccessMsg('');
     setLoading(true);
 
+    const trimmedIdentifier = identifier.trim();
+
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          identifier: identifier.trim(),
-          email: identifier.trim(),
+          identifier: trimmedIdentifier,
+          email: trimmedIdentifier,
           password,
         }),
       });
@@ -129,23 +142,44 @@ function LoginForm() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Password
+                </label>
+                {password.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[11px] font-medium text-red-500 hover:text-red-400 dark:text-red-400 dark:hover:text-red-300 transition-colors focus:outline-none flex items-center gap-1"
+                  >
+                    {showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    <span>{showPassword ? 'Hide Password' : 'Show Password'}</span>
+                  </button>
+                )}
+              </div>
               <div className="relative flex items-center">
                 <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
                   <Lock className="h-4 w-4" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
-                  style={{ paddingLeft: '2.75rem' }}
+                  className="w-full visionos-input visionos-input-icon-left visionos-input-icon-right text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem', paddingRight: '2.75rem' }}
                   autoComplete="current-password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
             </div>
 

@@ -10,8 +10,10 @@ const UpdateSettingsSchema = z.object({
   defaultFuelPrice: z.number().positive().optional(),
 });
 
-export async function GET() {
-  const user = await getCurrentUser();
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: Request) {
+  const user = await getCurrentUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   return NextResponse.json({
@@ -25,7 +27,7 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {

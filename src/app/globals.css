@@ -915,6 +915,11 @@ html.light .visionos-input:focus,
   padding-left: 2.75rem !important;
 }
 
+/* Explicit class for inputs with right actions / show-hide password toggles */
+.visionos-input-icon-right {
+  padding-right: 2.75rem !important;
+}
+
 /* Legacy glass card alias for backward compatibility */
 .glass-card {
   background: var(--visionos-glass);

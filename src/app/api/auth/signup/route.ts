@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     // Determine clean username
-    let cleanUsername = username?.trim().toLowerCase();
+    let cleanUsername = username?.trim().replace(/^@/, '').toLowerCase();
     if (!cleanUsername) {
       // Auto-derive from email prefix or name if not explicitly provided
       const baseCandidate = (normalizedEmail.split('@')[0] || name).toLowerCase().replace(/[^a-z0-9_.-]/g, '');

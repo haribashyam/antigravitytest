@@ -11,17 +11,28 @@ import {
   AtSign,
   ArrowRight,
   AlertCircle,
+  Eye,
+  EyeOff,
+  Check,
 } from 'lucide-react';
+import { authFetch } from '@/lib/apiClient';
 
 function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || '/vehicles';
+  const rawRedirect = searchParams.get('redirect');
+  const redirectUrl =
+    rawRedirect && !rawRedirect.startsWith('/login') && !rawRedirect.startsWith('/signup')
+      ? rawRedirect
+      : '/vehicles';
 
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [currency, setCurrency] = useState('INR');
   const [unitSystem, setUnitSystem] = useState('metric');
   const [error, setError] = useState('');
@@ -30,28 +41,49 @@ function SignupForm() {
 
   // If already authenticated, redirect automatically
   useEffect(() => {
-    fetch('/api/auth/me')
+    authFetch('/api/auth/me')
       .then((res) => res.json())
       .then((data) => {
         if (data.authenticated) {
           router.push(redirectUrl);
+        } else {
+          try {
+            localStorage.removeItem('fuelwise_token');
+            localStorage.removeItem('fuelwise_user');
+          } catch {}
         }
       })
       .catch(() => {});
   }, [redirectUrl, router]);
 
+  const passwordsMatch = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword;
+  const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsExistingUser(false);
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (confirmPassword && password !== confirmPassword) {
+      setError('Passwords do not match. Please verify your password confirmation.');
+      return;
+    }
+
     setLoading(true);
+
+    const cleanUsername = username.trim().replace(/^@/, '').toLowerCase();
 
     try {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: username.trim().toLowerCase() || undefined,
+          username: cleanUsername || undefined,
           name: name.trim(),
           email: email.trim().toLowerCase(),
           password,
@@ -127,27 +159,6 @@ function SignupForm() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                Username <span className="text-slate-500 text-[10px] font-normal">(unique identifier)</span>
-              </label>
-              <div className="relative flex items-center">
-                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
-                  <AtSign className="h-4 w-4" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_.-]/g, ''))}
-                  placeholder="e.g. haribashyam"
-                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
-                  style={{ paddingLeft: '2.75rem' }}
-                  autoComplete="username"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Full Name
               </label>
               <div className="relative flex items-center">
@@ -163,6 +174,29 @@ function SignupForm() {
                   className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
                   style={{ paddingLeft: '2.75rem' }}
                   autoComplete="name"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Username <span className="text-slate-500 text-[10px] font-normal">(optional handle)</span>
+                </label>
+                <span className="text-[10px] text-slate-400">auto-created if blank</span>
+              </div>
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <AtSign className="h-4 w-4" />
+                </div>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value.replace(/^@/, '').toLowerCase().replace(/[^a-z0-9_.-]/g, ''))}
+                  placeholder="e.g. haribashyam (or leave empty)"
+                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem' }}
+                  autoComplete="username"
                 />
               </div>
             </div>
@@ -189,24 +223,88 @@ function SignupForm() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Password
+                </label>
+                {password.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[11px] font-medium text-red-500 hover:text-red-400 dark:text-red-400 dark:hover:text-red-300 transition-colors focus:outline-none flex items-center gap-1"
+                  >
+                    {showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    <span>{showPassword ? 'Hide Password' : 'Show Password'}</span>
+                  </button>
+                )}
+              </div>
               <div className="relative flex items-center">
                 <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
                   <Lock className="h-4 w-4" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Minimum 6 characters"
-                  className="w-full visionos-input visionos-input-icon-left text-xs sm:text-sm"
-                  style={{ paddingLeft: '2.75rem' }}
+                  className="w-full visionos-input visionos-input-icon-left visionos-input-icon-right text-xs sm:text-sm"
+                  style={{ paddingLeft: '2.75rem', paddingRight: '2.75rem' }}
                   autoComplete="new-password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Confirm Password
+                </label>
+                {passwordsMatch && (
+                  <span className="text-[11px] font-medium text-emerald-500 flex items-center gap-1">
+                    <Check className="h-3 w-3" /> Passwords match
+                  </span>
+                )}
+                {passwordsMismatch && (
+                  <span className="text-[11px] font-medium text-rose-500">
+                    Passwords do not match
+                  </span>
+                )}
+              </div>
+              <div className="relative flex items-center">
+                <div className="pointer-events-none absolute left-3.5 flex items-center text-slate-400 dark:text-slate-500">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter password"
+                  className={`w-full visionos-input visionos-input-icon-left visionos-input-icon-right text-xs sm:text-sm ${
+                    passwordsMismatch ? 'border-rose-500/50 focus:border-rose-500' : ''
+                  }`}
+                  style={{ paddingLeft: '2.75rem', paddingRight: '2.75rem' }}
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                  title={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
             </div>
 
