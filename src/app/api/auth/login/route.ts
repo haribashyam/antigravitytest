@@ -35,37 +35,87 @@ export async function POST(request: Request) {
     const withoutAt = normalizedInput.startsWith('@') ? normalizedInput.slice(1) : normalizedInput;
     const rawWithoutAt = loginInput.startsWith('@') ? loginInput.slice(1) : loginInput;
 
-    // Query user by email, username, handle without @, or display name
+    // Build comprehensive search candidates (including domain typo fixes and email local-part)
+    const candidates = new Set<string>();
+    candidates.add(normalizedInput);
+    candidates.add(withoutAt);
+
+    const domainFixes: Record<string, string> = {
+      'gmial.com': 'gmail.com',
+      'gamil.com': 'gmail.com',
+      'gmal.com': 'gmail.com',
+      'gmai.com': 'gmail.com',
+      'gmaill.com': 'gmail.com',
+      'gmail.co': 'gmail.com',
+      'yaho.com': 'yahoo.com',
+      'yahooo.com': 'yahoo.com',
+      'hotmial.com': 'hotmail.com',
+      'outlok.com': 'outlook.com',
+    };
+
+    if (normalizedInput.includes('@')) {
+      const atIdx = normalizedInput.indexOf('@');
+      const local = normalizedInput.slice(0, atIdx);
+      const domain = normalizedInput.slice(atIdx + 1);
+
+      if (local) {
+        candidates.add(local); // e.g. "haribashyam.11"
+      }
+
+      if (domainFixes[domain]) {
+        candidates.add(`${local}@${domainFixes[domain]}`);
+      }
+      for (const [typo, fixed] of Object.entries(domainFixes)) {
+        if (domain === fixed) {
+          candidates.add(`${local}@${typo}`);
+        }
+      }
+    } else {
+      // If user typed only the username/prefix (e.g. "haribashyam.11"), also check as gmail candidate
+      candidates.add(`${normalizedInput}@gmail.com`);
+    }
+
+    const orConditions: any[] = [];
+    for (const c of candidates) {
+      orConditions.push({ email: c });
+      orConditions.push({ username: c });
+    }
+    orConditions.push({ name: loginInput });
+    orConditions.push({ name: rawWithoutAt });
+
+    // Query user in database
     let user = await prisma.user.findFirst({
       where: {
-        OR: [
-          { email: normalizedInput },
-          { email: withoutAt },
-          { username: normalizedInput },
-          { username: withoutAt },
-          { name: loginInput },
-          { name: rawWithoutAt },
-        ],
+        OR: orConditions,
       },
     });
 
-    // Fallback: check case-insensitive match for name and username across accounts
+    // Fallback: check case-insensitive match for email local-part, email, username, and display name across accounts
     if (!user) {
       const allUsers = await prisma.user.findMany({
-        take: 100,
+        take: 200,
       });
+
       user =
         allUsers.find((u) => {
           const uEmail = u.email.toLowerCase();
+          const uEmailLocal = uEmail.split('@')[0];
           const uUsername = u.username ? u.username.toLowerCase() : '';
           const uName = u.name.toLowerCase();
+
+          for (const c of candidates) {
+            if (
+              c === uEmail ||
+              c === uEmailLocal ||
+              c === uUsername ||
+              c === uName
+            ) {
+              return true;
+            }
+          }
           return (
-            uEmail === normalizedInput ||
-            uEmail === withoutAt ||
-            uUsername === normalizedInput ||
-            uUsername === withoutAt ||
-            uName === normalizedInput ||
-            uName === withoutAt
+            loginInput.toLowerCase() === uName ||
+            (loginInput.startsWith('@') && loginInput.slice(1).toLowerCase() === uName)
           );
         }) || null;
     }

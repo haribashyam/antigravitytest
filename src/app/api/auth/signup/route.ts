@@ -32,7 +32,29 @@ export async function POST(request: Request) {
     }
 
     const { name, username, email, password, unitSystem, currency, defaultFuelPrice } = result.data;
-    const normalizedEmail = email.trim().toLowerCase();
+    
+    // Auto-correct common domain typos (e.g. gmial.com -> gmail.com)
+    let normalizedEmail = email.trim().toLowerCase();
+    const domainFixes: Record<string, string> = {
+      'gmial.com': 'gmail.com',
+      'gamil.com': 'gmail.com',
+      'gmal.com': 'gmail.com',
+      'gmai.com': 'gmail.com',
+      'gmaill.com': 'gmail.com',
+      'gmail.co': 'gmail.com',
+      'yaho.com': 'yahoo.com',
+      'yahooo.com': 'yahoo.com',
+      'hotmial.com': 'hotmail.com',
+      'outlok.com': 'outlook.com',
+    };
+    const atIndex = normalizedEmail.indexOf('@');
+    if (atIndex > 0) {
+      const localPart = normalizedEmail.slice(0, atIndex);
+      const domainPart = normalizedEmail.slice(atIndex + 1);
+      if (domainFixes[domainPart]) {
+        normalizedEmail = `${localPart}@${domainFixes[domainPart]}`;
+      }
+    }
 
     // Check if email already exists
     const existingEmail = await prisma.user.findUnique({
